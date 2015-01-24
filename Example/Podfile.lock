@@ -1,0 +1,17 @@
+PODS:
+  - Branch (0.3.97)
+  - BranchInvite (0.1.0):
+    - Branch
+
+DEPENDENCIES:
+  - BranchInvite (from `..`)
+
+EXTERNAL SOURCES:
+  BranchInvite:
+    :path: ..
+
+SPEC CHECKSUMS:
+  Branch: 5ac398f3dc8d884308422721f6965bca1ff81735
+  BranchInvite: c9af972df95456714a1c91410ef5a0d9e126c905
+
+COCOAPODS: 0.35.0
