@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
   s.source_files = 'Classes/*.{h,m}'
 
   s.framework = 'AddressBook'
+  s.framework = 'MessageUI'
 
   s.resource_bundles = {
     'BranchInvite' => [ 'Resources/*' ]

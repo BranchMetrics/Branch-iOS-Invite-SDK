@@ -9,10 +9,12 @@
 #import "BranchInviteTextContactProvider.h"
 #import "BranchInviteAddressBookContact.h"
 #import <AddressBook/AddressBook.h>
+#import <MessageUI/MessageUI.h>
 
-@interface BranchInviteTextContactProvider ()
+@interface BranchInviteTextContactProvider () <MFMessageComposeViewControllerDelegate>
 
 @property (strong, nonatomic) NSArray *addressBookContacts;
+@property (weak, nonatomic) id <BranchInviteSendingCompletionDelegate> inviteSendingCompletionDelegate;
 
 @end
 
@@ -33,6 +35,48 @@
 
 - (NSArray *)contacts {
     return self.addressBookContacts;
+}
+
+- (UIViewController *)inviteSendingController:(NSArray *)selectedContacts inviteUrl:(NSString *)inviteUrl completionDelegate:(id <BranchInviteSendingCompletionDelegate>)completionDelegate {
+    if (![MFMessageComposeViewController canSendText]) {
+        NSLog(@"Cannot send texts.");
+        [completionDelegate invitesCanceled];
+        return nil;
+    }
+    
+    self.inviteSendingCompletionDelegate = completionDelegate;
+    
+    NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
+    for (BranchInviteAddressBookContact *addressBookContact in selectedContacts) {
+        ABMultiValueRef numbers = ABRecordCopyValue(addressBookContact.contact, kABPersonPhoneProperty);
+        
+        for (int i = 0; i < ABMultiValueGetCount(numbers); i++) {
+            NSString *phoneNumber = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(numbers, i);
+            
+            [phoneNumbers addObject:phoneNumber];
+        }
+        
+        CFRelease(numbers);
+    }
+    
+    // TODO allow message specification
+    MFMessageComposeViewController *messageComposeController = [[MFMessageComposeViewController alloc] init];
+    [messageComposeController setMessageComposeDelegate:self];
+    [messageComposeController setRecipients:phoneNumbers];
+    [messageComposeController setSubject:@"Come Join Me in this Cool App!"];
+    [messageComposeController setBody:[NSString stringWithFormat:@"I've been using this cool app lately, and I was hoping you'd come and join me. You can check it out here: %@", inviteUrl]];
+    
+    return messageComposeController;
+}
+
+#pragma mark - MFMessageComposeDelegate methods
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+    if (result == MessageComposeResultSent) {
+        [self.inviteSendingCompletionDelegate invitesSent];
+    }
+    else {
+        [self.inviteSendingCompletionDelegate invitesCanceled];
+    }
 }
 
 #pragma mark - Internals
@@ -60,7 +104,7 @@
 }
 
 - (void)loadContactsFromAddressBook:(ABAddressBookRef)addressBook {
-    NSArray *allContacts = (__bridge NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBook);
+    NSArray *allContacts = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBook);
     NSMutableArray *addressBookContacts = [[NSMutableArray alloc] init];
     
     for (id recordRef in allContacts) {
@@ -80,8 +124,6 @@
     }
     
     self.addressBookContacts = addressBookContacts;
-    
-    CFRelease(addressBook);
 }
 
 @end

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BranchInviteControllerDelegate.h"
 
 @interface BranchInviteViewController : UIViewController
 
-+ (BranchInviteViewController *)branchInviteViewController;
++ (UINavigationController *)branchInviteViewControllerWithDelegate:(id <BranchInviteControllerDelegate>)delegate;
 
 @end
