@@ -7,21 +7,14 @@
 //
 
 #import "ViewController.h"
-
-@interface ViewController ()
-
-@end
+#import "BranchInviteViewController.h"
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (IBAction)inviteButtonPressed:(id)sender {
+    id branchInviteViewController = [BranchInviteViewController branchInviteViewController];
+    
+    [self presentViewController:branchInviteViewController animated:YES completion:NULL];
 }
 
 @end
