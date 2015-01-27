@@ -81,16 +81,27 @@
     for (NSIndexPath *indexPath in selectedIndexPaths) {
         [selectedContacts addObject:contacts[indexPath.row]];
     }
-
-    [branch userCompletedAction:@"selected_contacts"];
     
-    [branch getShortURLWithParams:@{ } andChannel:@"invite" andFeature:BRANCH_FEATURE_TAG_INVITE andCallback:^(NSString *url, NSError *error) {
+    // Optional
+    id normalizedImageUrl = [NSNull null];
+    if ([self.delegate respondsToSelector:@selector(invitingUserImageUrl)]) {
+        normalizedImageUrl = [self.delegate invitingUserImageUrl];
+    }
+    
+    NSDictionary *urlParams = @{
+        @"invitingUserId": [self.delegate invitingUserId],
+        @"invitingUserFullname": [self.delegate invitingUserFullname],
+        @"invitingUserImageUrl": normalizedImageUrl
+    };
+    
+    [branch getShortURLWithParams:urlParams andChannel:@"invite" andFeature:BRANCH_FEATURE_TAG_INVITE andCallback:^(NSString *url, NSError *error) {
         if (error) {
-            [branch userCompletedAction:@"canceled_invite"];
             NSLog(@"Failed to retrieve short url for invite");
             return;
         }
         
+        [branch userCompletedAction:@"selected_contacts"];
+
         UIViewController *inviteSendingViewController = [provider inviteSendingController:selectedContacts inviteUrl:url completionDelegate:self];
         [self presentViewController:inviteSendingViewController animated:YES completion:NULL];
     }];

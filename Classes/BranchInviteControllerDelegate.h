@@ -8,7 +8,17 @@
 
 @protocol BranchInviteControllerDelegate <NSObject>
 
+#pragma mark - Controller Delegation
+@required
 - (void)inviteControllerDidFinish;
 - (void)inviteControllerDidCancel;
+
+#pragma mark - Inviting User Information
+@required
+- (NSString *)invitingUserId;
+- (NSString *)invitingUserFullname;
+
+@optional
+- (NSString *)invitingUserImageUrl;
 
 @end
