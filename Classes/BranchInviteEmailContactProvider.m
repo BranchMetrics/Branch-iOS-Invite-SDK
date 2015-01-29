@@ -127,6 +127,9 @@
         CFRelease(emails);
     }
     
+    // Sort by displayName
+    [addressBookContacts sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES] ]];
+    
     self.addressBookContacts = addressBookContacts;
 }
 
