@@ -50,8 +50,14 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     
-    // TODO allow these to be specified
-    self.contactProviders = @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
+    // Determine if providers are specified, or use default
+    if ([self.delegate respondsToSelector:@selector(inviteContactProviders)]) {
+        self.contactProviders = [self.delegate inviteContactProviders];
+    }
+    else {
+        self.contactProviders = @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
+    }
+    
     self.currentContacts = [self.contactProviders[0] contacts];
 
     self.segmentedControl.selectedTextColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1];

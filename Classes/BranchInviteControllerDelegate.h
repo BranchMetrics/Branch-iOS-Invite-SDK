@@ -13,6 +13,9 @@
 - (void)inviteControllerDidFinish;
 - (void)inviteControllerDidCancel;
 
+@optional
+- (NSArray *)inviteContactProviders;
+
 #pragma mark - Inviting User Information
 @required
 - (NSString *)invitingUserId;

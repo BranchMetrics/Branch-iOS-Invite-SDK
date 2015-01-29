@@ -46,4 +46,9 @@
     return @"https://www.gravatar.com/avatar/28ed70ee3c8275f1d307d1c5b6eddfa5";
 }
 
+// TODO implement this w/ a custom provider
+//- (NSArray *)inviteContactProviders {
+//    return @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
+//}
+
 @end
