@@ -11,11 +11,13 @@
 
 @protocol BranchInviteContactProvider <NSObject>
 
+// TODO document
 - (NSString *)segmentTitle;
+- (NSString *)channel;
 - (NSArray *)contacts;
 - (UIViewController *)inviteSendingController:(NSArray *)selectedContacts inviteUrl:(NSString *)inviteUrl completionDelegate:(id <BranchInviteSendingCompletionDelegate>)completionDelegate;
 
-// TODO
+// TODO what to show when there are no contacts
 // - (UIView *)emptyListView;
 
 @end

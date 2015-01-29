@@ -74,6 +74,7 @@
     Branch *branch = [Branch getInstance];
     id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
     NSArray *contacts = [provider contacts];
+    NSString *channel = [provider channel];
     NSArray *selectedIndexPaths = [self.contactTable indexPathsForSelectedRows];
     NSMutableArray *selectedContacts = [[NSMutableArray alloc] init];
 
@@ -94,7 +95,7 @@
         @"invitingUserImageUrl": normalizedImageUrl
     };
     
-    [branch getShortURLWithParams:urlParams andChannel:@"invite" andFeature:BRANCH_FEATURE_TAG_INVITE andCallback:^(NSString *url, NSError *error) {
+    [branch getShortURLWithParams:urlParams andChannel:channel andFeature:BRANCH_FEATURE_TAG_INVITE andCallback:^(NSString *url, NSError *error) {
         if (error) {
             NSLog(@"Failed to retrieve short url for invite");
             return;

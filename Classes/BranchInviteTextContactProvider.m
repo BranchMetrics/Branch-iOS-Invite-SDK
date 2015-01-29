@@ -33,6 +33,10 @@
     return @"Text";
 }
 
+- (NSString *)channel {
+    return @"Text";
+}
+
 - (NSArray *)contacts {
     return self.addressBookContacts;
 }
