@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BranchInviteViewController">
             <connections>
                 <outlet property="contactTable" destination="PrD-g2-lRs" id="7oX-cj-2Gd"/>
+                <outlet property="searchBar" destination="3nZ-M1-ddd" id="8QX-Mp-vsb"/>
                 <outlet property="segmentedControl" destination="GGn-J9-uch" id="RZJ-2Y-3T0"/>
                 <outlet property="view" destination="Wah-5Z-Gdf" id="VLH-Uk-WJl"/>
             </connections>
@@ -25,19 +26,29 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PrD-g2-lRs">
-                    <rect key="frame" x="0.0" y="61" width="600" height="539"/>
+                    <rect key="frame" x="0.0" y="104" width="600" height="496"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="VdE-XI-mAs"/>
                         <outlet property="delegate" destination="-1" id="rx7-Ux-Kov"/>
                     </connections>
                 </tableView>
+                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="3nZ-M1-ddd">
+                    <rect key="frame" x="0.0" y="60" width="600" height="44"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="cCA-rS-BAZ"/>
+                    </connections>
+                </searchBar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="3nZ-M1-ddd" secondAttribute="trailing" id="5wS-Zk-343"/>
                 <constraint firstItem="GGn-J9-uch" firstAttribute="leading" secondItem="Wah-5Z-Gdf" secondAttribute="leading" id="LVQ-O4-Ljq"/>
+                <constraint firstItem="PrD-g2-lRs" firstAttribute="top" secondItem="3nZ-M1-ddd" secondAttribute="bottom" id="Nnf-p9-6dd"/>
+                <constraint firstItem="3nZ-M1-ddd" firstAttribute="top" secondItem="GGn-J9-uch" secondAttribute="bottom" id="Qb9-g6-nhk"/>
                 <constraint firstItem="PrD-g2-lRs" firstAttribute="leading" secondItem="Wah-5Z-Gdf" secondAttribute="leading" id="Qqu-54-WWl"/>
-                <constraint firstItem="PrD-g2-lRs" firstAttribute="top" secondItem="GGn-J9-uch" secondAttribute="bottom" constant="1" id="SW2-qx-TH1"/>
+                <constraint firstItem="3nZ-M1-ddd" firstAttribute="leading" secondItem="Wah-5Z-Gdf" secondAttribute="leading" id="awd-R8-9dj"/>
                 <constraint firstAttribute="bottom" secondItem="PrD-g2-lRs" secondAttribute="bottom" id="bnv-zd-Svf"/>
                 <constraint firstAttribute="trailing" secondItem="GGn-J9-uch" secondAttribute="trailing" id="cND-00-zuT"/>
                 <constraint firstAttribute="trailing" secondItem="PrD-g2-lRs" secondAttribute="trailing" id="j7w-7m-oDI"/>

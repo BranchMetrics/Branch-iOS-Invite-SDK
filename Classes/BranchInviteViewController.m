@@ -14,12 +14,14 @@
 #import "BranchInviteTextContactProvider.h"
 #import <Branch/Branch.h>
 
-@interface BranchInviteViewController () <BranchInviteSendingCompletionDelegate>
+@interface BranchInviteViewController () <BranchInviteSendingCompletionDelegate, UISearchBarDelegate>
 
 @property (strong, nonatomic) NSArray *contactProviders;
+@property (strong, nonatomic) NSArray *currentContacts;
 @property (weak, nonatomic) id <BranchInviteControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet HMSegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UITableView *contactTable;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 
@@ -50,6 +52,7 @@
     
     // TODO allow these to be specified
     self.contactProviders = @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
+    self.currentContacts = [self.contactProviders[0] contacts];
 
     self.segmentedControl.selectedTextColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1];
     self.segmentedControl.selectionIndicatorColor = [UIColor colorWithRed:45/255.0 green:157/255.0 blue:188/255.0 alpha:1];
@@ -63,6 +66,9 @@
 
 #pragma mark - Interaction Methods
 - (void)providerChanged {
+    id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
+    self.currentContacts = [provider contacts];
+
     [self.contactTable reloadData];
 }
 
@@ -73,14 +79,13 @@
 - (void)donePressed {
     Branch *branch = [Branch getInstance];
     id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
-    NSArray *contacts = [provider contacts];
     NSString *channel = [provider channel];
     NSArray *selectedIndexPaths = [self.contactTable indexPathsForSelectedRows];
     NSMutableArray *selectedContacts = [[NSMutableArray alloc] init];
 
     // TODO there might be a way to get this directly w/o the for loop
     for (NSIndexPath *indexPath in selectedIndexPaths) {
-        [selectedContacts addObject:contacts[indexPath.row]];
+        [selectedContacts addObject:self.currentContacts[indexPath.row]];
     }
     
     // Optional
@@ -125,22 +130,42 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+#pragma mark - UISearchBarDelegate methods
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
+    NSArray *allContactsForProvider = [provider contacts];
+
+    if (searchText.length) {
+        self.currentContacts = [allContactsForProvider filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"displayName CONTAINS[cd] %@", searchText]];
+    }
+    else {
+        self.currentContacts = allContactsForProvider;
+    }
+    
+    [self.contactTable reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+}
+
 #pragma mark - UITableView Data Source / Delegate methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
-    
-    return [[provider contacts] count];
+    return [self.currentContacts count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell"];
-    id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
-    BranchInviteContact *contact = [provider contacts][indexPath.row];
+    BranchInviteContact *contact = self.currentContacts[indexPath.row];
     
     // TODO sexify
     cell.textLabel.text = contact.displayName;
 
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.searchBar resignFirstResponder];
 }
 
 @end
