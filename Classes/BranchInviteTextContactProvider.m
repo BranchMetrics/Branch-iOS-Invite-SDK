@@ -67,7 +67,6 @@
     MFMessageComposeViewController *messageComposeController = [[MFMessageComposeViewController alloc] init];
     [messageComposeController setMessageComposeDelegate:self];
     [messageComposeController setRecipients:phoneNumbers];
-    [messageComposeController setSubject:@"Come Join Me in this Cool App!"];
     [messageComposeController setBody:[NSString stringWithFormat:@"I've been using this cool app lately, and I was hoping you'd come and join me. You can check it out here: %@", inviteUrl]];
     
     return messageComposeController;

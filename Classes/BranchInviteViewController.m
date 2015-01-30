@@ -65,6 +65,7 @@
     self.segmentedControl.sectionTitles = [self.contactProviders valueForKey:@"segmentTitle"];
     [self.segmentedControl addTarget:self action:@selector(providerChanged) forControlEvents:UIControlEventValueChanged];
     
+    self.contactTable.allowsMultipleSelection = YES;
     [self.contactTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ContactCell"];
     
     // Load contacts for the first provider
@@ -95,11 +96,10 @@
     Branch *branch = [Branch getInstance];
     id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
     NSString *channel = [provider channel];
-    NSArray *selectedIndexPaths = [self.contactTable indexPathsForSelectedRows];
     NSMutableArray *selectedContacts = [[NSMutableArray alloc] init];
 
     // TODO there might be a way to get this directly w/o the for loop
-    for (NSIndexPath *indexPath in selectedIndexPaths) {
+    for (NSIndexPath *indexPath in self.contactTable.indexPathsForSelectedRows) {
         [selectedContacts addObject:self.currentContacts[indexPath.row]];
     }
     
@@ -165,12 +165,30 @@
     
     // TODO sexify
     cell.textLabel.text = contact.displayName;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    if ([tableView.indexPathsForSelectedRows containsObject:indexPath]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.searchBar resignFirstResponder];
+
+    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.searchBar resignFirstResponder];
+
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryNone;
 }
 
 #pragma mark - Internal methods
