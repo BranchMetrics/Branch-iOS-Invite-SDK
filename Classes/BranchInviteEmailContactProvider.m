@@ -20,15 +20,15 @@
 
 @implementation BranchInviteEmailContactProvider
 
-- (id)init {
-    if (self = [super init]) {
-        [self loadContactsFromAddressBookIfPossible];
-    }
-    
-    return self;
+#pragma mark - BranchInviteContactProvider methods
+- (void)loadContactsWithCallback:(callbackWithStatus)callback {
+    [self loadContactsFromAddressBookIfPossible:callback];
 }
 
-#pragma mark - BranchInviteContactProvider methods
+- (NSString *)loadFailureMessage {
+    return @"Couldn't show email contacts; permission for address book was denied.";
+}
+
 - (NSString *)segmentTitle {
     return @"Email";
 }
@@ -84,7 +84,7 @@
 }
 
 #pragma mark - Internals
-- (void)loadContactsFromAddressBookIfPossible {
+- (void)loadContactsFromAddressBookIfPossible:(callbackWithStatus)callback {
     ABAuthorizationStatus authorizationStatus = ABAddressBookGetAuthorizationStatus();
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, nil); // TODO pass in options and error maybe?
     
@@ -92,22 +92,22 @@
         ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
             // TODO check error maybe?
             if (!granted) {
-                NSLog(@"Permission for Address Book was denied");
+                callback(NO, nil);
             }
             else {
-                [self loadContactsFromAddressBook:addressBook];
+                [self loadContactsFromAddressBook:addressBook callback:callback];
             }
         });
     }
     else if (authorizationStatus == kABAuthorizationStatusAuthorized) {
-        [self loadContactsFromAddressBook:addressBook];
+        [self loadContactsFromAddressBook:addressBook callback:callback];
     }
     else {
-        NSLog(@"Permission for Address Book was denied");
+        callback(NO, nil);
     }
 }
 
-- (void)loadContactsFromAddressBook:(ABAddressBookRef)addressBook {
+- (void)loadContactsFromAddressBook:(ABAddressBookRef)addressBook callback:(callbackWithStatus)callback {
     NSArray *allContacts = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBook);
     NSMutableArray *addressBookContacts = [[NSMutableArray alloc] init];
     
@@ -131,6 +131,8 @@
     [addressBookContacts sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES] ]];
     
     self.addressBookContacts = addressBookContacts;
+    
+    callback(YES, nil);
 }
 
 @end

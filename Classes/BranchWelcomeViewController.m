@@ -18,6 +18,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *welcomeBodyLabel;
 @property (weak, nonatomic) IBOutlet UIButton *confirmInviteButton;
 
+- (IBAction)continuePressed;
+- (IBAction)cancelPressed;
+
 @end
 
 @implementation BranchWelcomeViewController
@@ -27,8 +30,7 @@
 }
 
 + (BranchWelcomeViewController *)branchWelcomeViewControllerWithDelegate:(id <BranchWelcomeControllerDelegate>)delegate branchOpts:(NSDictionary *)branchOpts {
-    NSString *branchInviteBundlePath = [[NSBundle mainBundle] pathForResource:@"BranchInvite" ofType:@"bundle"];
-    NSBundle *branchInviteBundle = [NSBundle bundleWithPath:branchInviteBundlePath];
+    NSBundle *branchInviteBundle = [BranchWelcomeViewController branchInviteBundle];
     
     BranchWelcomeViewController *branchWelcomeController = [[BranchWelcomeViewController alloc] initWithNibName:@"BranchWelcomeViewController" bundle:branchInviteBundle];
     branchWelcomeController.delegate = delegate;
@@ -42,14 +44,13 @@
     
     [[Branch getInstance] userCompletedAction:@"viewed_personal_welcome"];
     
-    // Don't want to be laid out under the nav bar.
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
+    // Place holder image
+    NSBundle *branchInviteBundle = [BranchWelcomeViewController branchInviteBundle];
+    UIImage *userIcon = [UIImage imageNamed:@"user" inBundle:branchInviteBundle compatibleWithTraitCollection:nil];
+    self.userImageView.image = userIcon;
 
     NSString *invitingUserFullname = self.branchOpts[@"invitingUserFullname"];
+    NSString *invitingUserShortName = self.branchOpts[@"invitingUserShortName"] ?: invitingUserFullname;
     NSURL *invitingUserImageUrl = [NSURL URLWithString:self.branchOpts[@"invitingUserImageUrl"]];
     
     if (invitingUserImageUrl) {
@@ -65,13 +66,25 @@
     }
 
     self.welcomeTitleLabel.text = [NSString stringWithFormat:@"%@ has invited you to use this app!", invitingUserFullname];
-    self.welcomeBodyLabel.text = [NSString stringWithFormat:@"Welcome to the app! You've been invited to join the fun by another user, %@.", invitingUserFullname];
-    [self.confirmInviteButton setTitle:[NSString stringWithFormat:@"Press here to continue via %@'s referral", invitingUserFullname] forState:UIControlStateNormal];
+    self.welcomeBodyLabel.text = [NSString stringWithFormat:@"Welcome to the app! You've been invited to join the fun by another user, %@.", invitingUserShortName];
+    [self.confirmInviteButton setTitle:[NSString stringWithFormat:@"Press to join %@", invitingUserShortName] forState:UIControlStateNormal];
 }
 
 #pragma mark - Interaction methods
 - (void)cancelPressed {
     [self.delegate welcomeControllerWasCanceled];
+}
+
+- (void)continuePressed {
+    [self.delegate welcomeControllerConfirmedInvite];
+}
+
+#pragma mark - Internal methods
++ (NSBundle *)branchInviteBundle {
+    NSString *branchInviteBundlePath = [[NSBundle mainBundle] pathForResource:@"BranchInvite" ofType:@"bundle"];
+    NSBundle *branchInviteBundle = [NSBundle bundleWithPath:branchInviteBundlePath];
+
+    return branchInviteBundle;
 }
 
 @end

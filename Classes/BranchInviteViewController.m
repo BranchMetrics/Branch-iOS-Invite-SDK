@@ -57,8 +57,6 @@
     else {
         self.contactProviders = @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
     }
-    
-    self.currentContacts = [self.contactProviders[0] contacts];
 
     self.segmentedControl.selectedTextColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1];
     self.segmentedControl.selectionIndicatorColor = [UIColor colorWithRed:45/255.0 green:157/255.0 blue:188/255.0 alpha:1];
@@ -68,14 +66,25 @@
     [self.segmentedControl addTarget:self action:@selector(providerChanged) forControlEvents:UIControlEventValueChanged];
     
     [self.contactTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ContactCell"];
+    
+    // Load contacts for the first provider
+    [self loadContactsForProviderThenLoadTable:[self.contactProviders firstObject]];
 }
 
 #pragma mark - Interaction Methods
 - (void)providerChanged {
     id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
-    self.currentContacts = [provider contacts];
-
-    [self.contactTable reloadData];
+    NSArray *contacts = [provider contacts];
+    
+    // For now, blindly assuming that "if empty, not loaded." This will have the interesting side effect of allowing providers who have
+    // failed to reattempt if the user has corrected the error condition. Not sure if this is preferable or not, yet to be determined.
+    if (![contacts count]) {
+        [self loadContactsForProviderThenLoadTable:provider];
+    }
+    else {
+        self.currentContacts = contacts;
+        [self.contactTable reloadData];
+    }
 }
 
 - (void)cancelPressed {
@@ -94,19 +103,9 @@
         [selectedContacts addObject:self.currentContacts[indexPath.row]];
     }
     
-    // Optional
-    id normalizedImageUrl = [NSNull null];
-    if ([self.delegate respondsToSelector:@selector(invitingUserImageUrl)]) {
-        normalizedImageUrl = [self.delegate invitingUserImageUrl];
-    }
+    NSDictionary *invitingUserParams = [self createInvitingUserParams];
     
-    NSDictionary *urlParams = @{
-        @"invitingUserId": [self.delegate invitingUserId],
-        @"invitingUserFullname": [self.delegate invitingUserFullname],
-        @"invitingUserImageUrl": normalizedImageUrl
-    };
-    
-    [branch getShortURLWithParams:urlParams andChannel:channel andFeature:BRANCH_FEATURE_TAG_INVITE andCallback:^(NSString *url, NSError *error) {
+    [branch getShortURLWithParams:invitingUserParams andChannel:channel andFeature:BRANCH_FEATURE_TAG_INVITE andCallback:^(NSString *url, NSError *error) {
         if (error) {
             NSLog(@"Failed to retrieve short url for invite");
             return;
@@ -172,6 +171,47 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.searchBar resignFirstResponder];
+}
+
+#pragma mark - Internal methods
+- (void)loadContactsForProviderThenLoadTable:(id <BranchInviteContactProvider>)provider {
+    [provider loadContactsWithCallback:^(BOOL loaded, NSError *error) {
+        if (loaded) {
+            self.currentContacts = [provider contacts];
+            [self.contactTable reloadData];
+        }
+        else {
+            NSString *failureMessage = [provider loadFailureMessage];
+            [[[UIAlertView alloc] initWithTitle:@"Failed to load contacts" message:failureMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        }
+    }];
+}
+
+- (NSDictionary *)createInvitingUserParams {
+    // Required user info
+    NSString *userId = [self.delegate invitingUserId];
+    NSString *userFullname = [self.delegate invitingUserFullname];
+    
+    // Optional user info
+    id normalizedImageUrl = [NSNull null];
+    if ([self.delegate respondsToSelector:@selector(invitingUserImageUrl)]) {
+        normalizedImageUrl = [self.delegate invitingUserImageUrl];
+    }
+    
+    NSString *normalizedShortName;
+    if ([self.delegate respondsToSelector:@selector(invitingUserShortName)]) {
+        normalizedShortName = [self.delegate invitingUserShortName];
+    }
+    else {
+        normalizedShortName = userFullname;
+    }
+    
+    return @{
+        @"invitingUserId": userId,
+        @"invitingUserFullname": userFullname,
+        @"invitingUserShortName": normalizedShortName,
+        @"invitingUserImageUrl": normalizedImageUrl
+    };
 }
 
 @end

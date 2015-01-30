@@ -22,6 +22,7 @@
 - (NSString *)invitingUserFullname;
 
 @optional
+- (NSString *)invitingUserShortName;
 - (NSString *)invitingUserImageUrl;
 
 @end

@@ -35,11 +35,15 @@
 }
 
 - (NSString *)invitingUserId {
-    return @"fooby-dooby-doo";
+    return @"shortstuffsushi";
 }
 
 - (NSString *)invitingUserFullname {
-    return @"Fooby Doo";
+    return @"Graham Mueller";
+}
+
+- (NSString *)invitingUserShortName {
+    return @"Graham";
 }
 
 - (NSString *)invitingUserImageUrl {
