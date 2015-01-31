@@ -46,8 +46,8 @@
     
     // Place holder image
     NSBundle *branchInviteBundle = [BranchWelcomeViewController branchInviteBundle];
-    UIImage *userIcon = [UIImage imageNamed:@"user" inBundle:branchInviteBundle compatibleWithTraitCollection:nil];
-    self.userImageView.image = userIcon;
+    NSString *userPlaceholderIconPath = [branchInviteBundle pathForResource:@"user" ofType:@"png"];
+    self.userImageView.image = [UIImage imageWithContentsOfFile:userPlaceholderIconPath];
 
     NSString *invitingUserFullname = self.branchOpts[@"invitingUserFullname"];
     NSString *invitingUserShortName = self.branchOpts[@"invitingUserShortName"] ?: invitingUserFullname;
@@ -65,9 +65,18 @@
         });
     }
 
-    self.welcomeTitleLabel.text = [NSString stringWithFormat:@"%@ has invited you to use this app!", invitingUserFullname];
-    self.welcomeBodyLabel.text = [NSString stringWithFormat:@"Welcome to the app! You've been invited to join the fun by another user, %@.", invitingUserShortName];
+    NSString *welcomeTitleText = [NSString stringWithFormat:@"%@ has invited you to use this app!", invitingUserFullname];
+    NSString *welcomeBodyText = [NSString stringWithFormat:@"Welcome to the app! You've been invited to join the fun by another user, %@.", invitingUserShortName];
+
+    self.welcomeTitleLabel.text = welcomeTitleText;
+    self.welcomeBodyLabel.text = welcomeBodyText;
     [self.confirmInviteButton setTitle:[NSString stringWithFormat:@"Press to join %@", invitingUserShortName] forState:UIControlStateNormal];
+
+    // Versions prior to iOS 8.0 don't auto adjust label frames
+    if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1) {
+        [self resizeWelcomeTitleForText:welcomeTitleText];
+        [self resizeWelcomeBodyForText:welcomeBodyText];
+    }
 }
 
 #pragma mark - Interaction methods
@@ -85,6 +94,26 @@
     NSBundle *branchInviteBundle = [NSBundle bundleWithPath:branchInviteBundlePath];
 
     return branchInviteBundle;
+}
+
+- (void)resizeWelcomeTitleForText:(NSString *)welcomeTitleText {
+    CGRect welcomeTitleLabelFrame = self.welcomeTitleLabel.frame;
+    CGFloat welcomeTitleLabelWidth = welcomeTitleLabelFrame.size.width;
+    
+    CGFloat height = [welcomeTitleText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(welcomeTitleLabelWidth, CGFLOAT_MAX)].height;
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeTitleLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
+
+    [self.view addConstraint:heightConstraint];
+}
+
+- (void)resizeWelcomeBodyForText:(NSString *)welcomeBodyText {
+    CGRect welcomeBodyLabelFrame = self.welcomeBodyLabel.frame;
+    CGFloat welcomeBodyLabelWidth = welcomeBodyLabelFrame.size.width;
+    
+    CGFloat height = [welcomeBodyText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(welcomeBodyLabelWidth, CGFLOAT_MAX)].height;
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeBodyLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
+
+    [self.view addConstraint:heightConstraint];
 }
 
 @end
