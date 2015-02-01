@@ -140,6 +140,11 @@
             addressBookContact.displayName = (__bridge_transfer NSString *)ABRecordCopyCompositeName(contact);
             addressBookContact.contact = CFRetain(contact);
             
+            if (ABPersonHasImageData(contact)) {
+                NSData *contactImageData = (__bridge_transfer NSData *)ABPersonCopyImageData(contact);
+                addressBookContact.displayImage = [UIImage imageWithData:contactImageData];
+            }
+            
             [addressBookContacts addObject:addressBookContact];
         }
         

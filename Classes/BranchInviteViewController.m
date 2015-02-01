@@ -12,6 +12,7 @@
 #import "BranchInviteSendingCompletionDelegate.h"
 #import "BranchInviteEmailContactProvider.h"
 #import "BranchInviteTextContactProvider.h"
+#import "BranchInviteDefaultContactCell.h"
 #import <Branch/Branch.h>
 #import "BranchInviteBundleUtil.h"
 
@@ -56,16 +57,22 @@
     else {
         self.contactProviders = @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
     }
-
-    self.segmentedControl.selectedTextColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1];
-    self.segmentedControl.selectionIndicatorColor = [UIColor colorWithRed:45/255.0 green:157/255.0 blue:188/255.0 alpha:1];
+    
+    self.segmentedControl.textColor = [UIColor whiteColor];
+    self.segmentedControl.selectedTextColor = [UIColor whiteColor];
+    self.segmentedControl.selectionIndicatorColor = [UIColor whiteColor];
+    self.segmentedControl.backgroundColor = [UIColor colorWithRed:45/255.0 green:157/255.0 blue:188/255.0 alpha:1];
     self.segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleBox;
     self.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
     self.segmentedControl.sectionTitles = [self.contactProviders valueForKey:@"segmentTitle"];
     [self.segmentedControl addTarget:self action:@selector(providerChanged) forControlEvents:UIControlEventValueChanged];
     
     self.contactTable.allowsMultipleSelection = YES;
-    [self.contactTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ContactCell"];
+    
+    // TODO allow for specification
+//    [self.contactTable registerClass:[BranchInviteDefaultContactCell class] forCellReuseIdentifier:@"ContactCell"];
+    [self.contactTable registerNib:[BranchInviteBundleUtil nibNamed:@"BranchInviteDefaultContactCell"] forCellReuseIdentifier:@"ContactCell"];
+    self.contactTable.rowHeight = 56;
     
     // Load contacts for the first provider
     [self loadContactsForProviderThenLoadTable:[self.contactProviders firstObject]];
@@ -97,7 +104,6 @@
     NSString *channel = [provider channel];
     NSMutableArray *selectedContacts = [[NSMutableArray alloc] init];
 
-    // TODO there might be a way to get this directly w/o the for loop
     for (NSIndexPath *indexPath in self.contactTable.indexPathsForSelectedRows) {
         [selectedContacts addObject:self.currentContacts[indexPath.row]];
     }
@@ -159,35 +165,27 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell"];
+    UITableViewCell <BranchInviteContactCell>*cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell"];
     BranchInviteContact *contact = self.currentContacts[indexPath.row];
     
-    // TODO sexify
-    cell.textLabel.text = contact.displayName;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    if ([tableView.indexPathsForSelectedRows containsObject:indexPath]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
-    else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+    BOOL isSelected = [tableView.indexPathsForSelectedRows containsObject:indexPath];
+    [cell configureCellWithContact:contact selected:isSelected];
 
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.searchBar resignFirstResponder];
-
-    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    UITableViewCell <BranchInviteContactCell>*cell = (UITableViewCell <BranchInviteContactCell>*)[tableView cellForRowAtIndexPath:indexPath];
+    [cell updateForSelection];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.searchBar resignFirstResponder];
 
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    UITableViewCell <BranchInviteContactCell>*cell = (UITableViewCell <BranchInviteContactCell>*)[tableView cellForRowAtIndexPath:indexPath];
+    [cell updateForDeselection];
 }
 
 #pragma mark - Internal methods

@@ -6,11 +6,11 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface BranchInviteContact : NSObject
 
-@property (strong, nonatomic) id identifier;
 @property (strong, nonatomic) NSString *displayName;
+@property (strong, nonatomic) UIImage *displayImage;
 
 @end
