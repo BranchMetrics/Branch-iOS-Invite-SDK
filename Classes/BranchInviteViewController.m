@@ -41,7 +41,18 @@
     [super loadView];
     
     [[Branch getInstance] userCompletedAction:@"viewed_invite_screen"];
+    
+    [self configureNavigationItems];
+    [self configureContactProviders];
+    [self configureSegmentedControl];
+    [self configureContactTable];
+    
+    // Load contacts for the first provider
+    [self loadContactsForProviderThenLoadTable:[self.contactProviders firstObject]];
+}
 
+#pragma mark - Configuration
+- (void)configureNavigationItems {
     // Don't want to be laid out under the nav bar.
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -49,7 +60,9 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
-    
+}
+
+- (void)configureContactProviders {
     // Determine if providers are specified, or use default
     if ([self.delegate respondsToSelector:@selector(inviteContactProviders)]) {
         self.contactProviders = [self.delegate inviteContactProviders];
@@ -57,25 +70,57 @@
     else {
         self.contactProviders = @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
     }
-    
+}
+
+- (void)configureSegmentedControl {
+    // Set up all of the defaults
     self.segmentedControl.textColor = [UIColor whiteColor];
     self.segmentedControl.selectedTextColor = [UIColor whiteColor];
     self.segmentedControl.selectionIndicatorColor = [UIColor whiteColor];
     self.segmentedControl.backgroundColor = [UIColor colorWithRed:45/255.0 green:157/255.0 blue:188/255.0 alpha:1];
     self.segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleBox;
     self.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
+
+    // Now allow for overrides
+    if ([self.delegate respondsToSelector:@selector(configureSegmentedControl:)]) {
+        [self.delegate configureSegmentedControl:self.segmentedControl];
+    }
+
+    // Clean up any nefarious action additions
+    for (id target in [self.segmentedControl allTargets]) {
+        for (NSString *action in [self.segmentedControl actionsForTarget:target forControlEvent:UIControlEventValueChanged]) {
+            [self.segmentedControl removeTarget:target action:NSSelectorFromString(action) forControlEvents:UIControlEventValueChanged];
+        }
+    }
+
     self.segmentedControl.sectionTitles = [self.contactProviders valueForKey:@"segmentTitle"];
     [self.segmentedControl addTarget:self action:@selector(providerChanged) forControlEvents:UIControlEventValueChanged];
-    
+}
+
+- (void)configureContactTable {
     self.contactTable.allowsMultipleSelection = YES;
     
-    // TODO allow for specification
-//    [self.contactTable registerClass:[BranchInviteDefaultContactCell class] forCellReuseIdentifier:@"ContactCell"];
-    [self.contactTable registerNib:[BranchInviteBundleUtil nibNamed:@"BranchInviteDefaultContactCell"] forCellReuseIdentifier:@"ContactCell"];
-    self.contactTable.rowHeight = 56;
+    // Optionally allow for row height specification, or use default (44)
+    CGFloat rowHeightForContactRows = 44;
+    if ([self.delegate respondsToSelector:@selector(heightForContactRows)]) {
+        rowHeightForContactRows = [self.delegate heightForContactRows];
+    }
     
-    // Load contacts for the first provider
-    [self loadContactsForProviderThenLoadTable:[self.contactProviders firstObject]];
+    // Table configuration. Prefer custom nib to custom class, and custom class to our default.
+    if ([self.delegate respondsToSelector:@selector(nibForContactRows)]) {
+        UINib *nibForContactRows = [self.delegate nibForContactRows];
+        [self.contactTable registerNib:nibForContactRows forCellReuseIdentifier:@"ContactCell"];
+        self.contactTable.rowHeight = rowHeightForContactRows;
+    }
+    else if ([self.delegate respondsToSelector:@selector(classForContactRows)]) {
+        Class classForContactRows = [self.delegate classForContactRows];
+        [self.contactTable registerClass:classForContactRows forCellReuseIdentifier:@"ContactCell"];
+        self.contactTable.rowHeight = rowHeightForContactRows;
+    }
+    else {
+        [self.contactTable registerNib:[BranchInviteBundleUtil nibNamed:@"BranchInviteDefaultContactCell"] forCellReuseIdentifier:@"ContactCell"];
+        self.contactTable.rowHeight = 56;
+    }
 }
 
 #pragma mark - Interaction Methods

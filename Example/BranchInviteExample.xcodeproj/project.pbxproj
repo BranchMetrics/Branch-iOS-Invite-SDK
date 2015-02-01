@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4650EDB81A7EC6DA00558DB7 /* ExampleContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4650EDB71A7EC6DA00558DB7 /* ExampleContactCell.m */; };
+		4650EDBB1A7EC77100558DB7 /* ExampleContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4650EDBA1A7EC77100558DB7 /* ExampleContactCell.xib */; };
 		4661E5731A7D365B00B6130D /* MysteryIncContactProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 4661E5721A7D365B00B6130D /* MysteryIncContactProvider.m */; };
 		4661E5761A7D39D000B6130D /* MysteryIncInviteController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4661E5751A7D39D000B6130D /* MysteryIncInviteController.xib */; };
 		4686F3FA1A7328910029ABCC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4686F3F91A7328910029ABCC /* main.m */; };
@@ -31,6 +33,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4650EDB61A7EC6DA00558DB7 /* ExampleContactCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleContactCell.h; sourceTree = "<group>"; };
+		4650EDB71A7EC6DA00558DB7 /* ExampleContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleContactCell.m; sourceTree = "<group>"; };
+		4650EDBA1A7EC77100558DB7 /* ExampleContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleContactCell.xib; sourceTree = "<group>"; };
 		4661E5711A7D365B00B6130D /* MysteryIncContactProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MysteryIncContactProvider.h; sourceTree = "<group>"; };
 		4661E5721A7D365B00B6130D /* MysteryIncContactProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MysteryIncContactProvider.m; sourceTree = "<group>"; };
 		4661E5751A7D39D000B6130D /* MysteryIncInviteController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MysteryIncInviteController.xib; sourceTree = "<group>"; };
@@ -73,10 +78,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4650EDB91A7EC75800558DB7 /* ExampleContactCell */ = {
+			isa = PBXGroup;
+			children = (
+				4650EDB61A7EC6DA00558DB7 /* ExampleContactCell.h */,
+				4650EDB71A7EC6DA00558DB7 /* ExampleContactCell.m */,
+				4650EDBA1A7EC77100558DB7 /* ExampleContactCell.xib */,
+			);
+			name = ExampleContactCell;
+			sourceTree = "<group>";
+		};
 		4661E5701A7D363300B6130D /* ExampleCustomizations */ = {
 			isa = PBXGroup;
 			children = (
 				4661E5741A7D39AF00B6130D /* MysteryIncContactProvider */,
+				4650EDB91A7EC75800558DB7 /* ExampleContactCell */,
 			);
 			name = ExampleCustomizations;
 			sourceTree = "<group>";
@@ -255,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4686F4031A7328910029ABCC /* Main.storyboard in Resources */,
+				4650EDBB1A7EC77100558DB7 /* ExampleContactCell.xib in Resources */,
 				4661E5761A7D39D000B6130D /* MysteryIncInviteController.xib in Resources */,
 				4686F4081A7328910029ABCC /* LaunchScreen.xib in Resources */,
 				4686F4051A7328910029ABCC /* Images.xcassets in Resources */,
@@ -311,6 +328,7 @@
 				4686F4001A7328910029ABCC /* ViewController.m in Sources */,
 				4686F3FD1A7328910029ABCC /* AppDelegate.m in Sources */,
 				4661E5731A7D365B00B6130D /* MysteryIncContactProvider.m in Sources */,
+				4650EDB81A7EC6DA00558DB7 /* ExampleContactCell.m in Sources */,
 				4686F3FA1A7328910029ABCC /* main.m in Sources */,
 				46EB4D011A7E87C600A72AD9 /* MysteryIncInviteController.m in Sources */,
 			);

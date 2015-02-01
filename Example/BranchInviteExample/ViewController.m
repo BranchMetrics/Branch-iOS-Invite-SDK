@@ -37,6 +37,23 @@
     }];
 }
 
+// Uncomment this method to see how segmented control customization works
+//- (void)configureSegmentedControl:(HMSegmentedControl *)segmentedControl {
+//    segmentedControl.backgroundColor = [UIColor redColor];
+//    
+//    [segmentedControl addTarget:self action:@selector(invitesSent) forControlEvents:UIControlEventValueChanged]; // NOTE this will be removed
+//    segmentedControl.sectionTitles = @[ @"Foo", @"Bar" ]; // NOTE these will be removed
+//}
+
+// Uncomment these lines to see how invite tableview customizations work
+//- (UINib *)nibForContactRows {
+//    return [UINib nibWithNibName:@"ExampleContactCell" bundle:[NSBundle mainBundle]];
+//}
+//
+//- (CGFloat)heightForContactRows {
+//    return 72;
+//}
+
 - (NSString *)invitingUserId {
     return @"shortstuffsushi";
 }
