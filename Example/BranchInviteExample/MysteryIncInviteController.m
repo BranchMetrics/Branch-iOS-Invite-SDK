@@ -31,7 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.charactersLabel.text = [NSString stringWithFormat:@"We need your help, %@. Check out this url %@", [self.charactersToInvite componentsJoinedByString:@","], self.url];
+    self.charactersLabel.text = [NSString stringWithFormat:@"We need your help, %@. Check out this url %@", [self.charactersToInvite componentsJoinedByString:@", "], self.url];
 }
 
 #pragma mark - Interaction methods

@@ -13,6 +13,7 @@
 #import "BranchInviteEmailContactProvider.h"
 #import "BranchInviteTextContactProvider.h"
 #import <Branch/Branch.h>
+#import "BranchInviteBundleUtil.h"
 
 @interface BranchInviteViewController () <BranchInviteSendingCompletionDelegate, UISearchBarDelegate>
 
@@ -28,9 +29,7 @@
 @implementation BranchInviteViewController
 
 + (UINavigationController *)branchInviteViewControllerWithDelegate:(id <BranchInviteControllerDelegate>)delegate {
-    NSString *branchInviteBundlePath = [[NSBundle mainBundle] pathForResource:@"BranchInvite" ofType:@"bundle"];
-    NSBundle *branchInviteBundle = [NSBundle bundleWithPath:branchInviteBundlePath];
-
+    NSBundle *branchInviteBundle = [BranchInviteBundleUtil branchInviteBundle];
     BranchInviteViewController *branchInviteController = [[BranchInviteViewController alloc] initWithNibName:@"BranchInviteViewController" bundle:branchInviteBundle];
     branchInviteController.delegate = delegate;
 

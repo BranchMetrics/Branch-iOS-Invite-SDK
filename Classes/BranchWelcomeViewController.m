@@ -7,6 +7,7 @@
 //
 
 #import "BranchWelcomeViewController.h"
+#import "BranchInviteBundleUtil.h"
 #import <Branch/Branch.h>
 
 @interface BranchWelcomeViewController ()
@@ -30,7 +31,7 @@
 }
 
 + (BranchWelcomeViewController *)branchWelcomeViewControllerWithDelegate:(id <BranchWelcomeControllerDelegate>)delegate branchOpts:(NSDictionary *)branchOpts {
-    NSBundle *branchInviteBundle = [BranchWelcomeViewController branchInviteBundle];
+    NSBundle *branchInviteBundle = [BranchInviteBundleUtil branchInviteBundle];
     
     BranchWelcomeViewController *branchWelcomeController = [[BranchWelcomeViewController alloc] initWithNibName:@"BranchWelcomeViewController" bundle:branchInviteBundle];
     branchWelcomeController.delegate = delegate;
@@ -45,9 +46,7 @@
     [[Branch getInstance] userCompletedAction:@"viewed_personal_welcome"];
     
     // Place holder image
-    NSBundle *branchInviteBundle = [BranchWelcomeViewController branchInviteBundle];
-    NSString *userPlaceholderIconPath = [branchInviteBundle pathForResource:@"user" ofType:@"png"];
-    self.userImageView.image = [UIImage imageWithContentsOfFile:userPlaceholderIconPath];
+    self.userImageView.image = [BranchInviteBundleUtil imageNamed:@"user" type:@"png"];
 
     NSString *invitingUserFullname = self.branchOpts[@"invitingUserFullname"];
     NSString *invitingUserShortName = self.branchOpts[@"invitingUserShortName"] ?: invitingUserFullname;
@@ -89,13 +88,6 @@
 }
 
 #pragma mark - Internal methods
-+ (NSBundle *)branchInviteBundle {
-    NSString *branchInviteBundlePath = [[NSBundle mainBundle] pathForResource:@"BranchInvite" ofType:@"bundle"];
-    NSBundle *branchInviteBundle = [NSBundle bundleWithPath:branchInviteBundlePath];
-
-    return branchInviteBundle;
-}
-
 - (void)resizeWelcomeTitleForText:(NSString *)welcomeTitleText {
     CGRect welcomeTitleLabelFrame = self.welcomeTitleLabel.frame;
     CGFloat welcomeTitleLabelWidth = welcomeTitleLabelFrame.size.width;
