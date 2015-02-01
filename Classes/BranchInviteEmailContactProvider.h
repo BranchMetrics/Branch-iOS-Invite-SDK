@@ -11,4 +11,6 @@
 
 @interface BranchInviteEmailContactProvider : NSObject <BranchInviteContactProvider>
 
++ (BranchInviteEmailContactProvider *)emailContactProviderWithSubject:(NSString *)subject inviteMessageFormat:(NSString *)inviteMessageFormat;
+
 @end

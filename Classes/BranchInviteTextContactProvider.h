@@ -11,4 +11,6 @@
 
 @interface BranchInviteTextContactProvider : NSObject <BranchInviteContactProvider>
 
++ (BranchInviteTextContactProvider *)textContactProviderWithInviteMessageFormat:(NSString *)inviteMessageFormat;
+
 @end

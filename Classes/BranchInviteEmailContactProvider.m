@@ -14,11 +14,35 @@
 @interface BranchInviteEmailContactProvider () <MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) NSArray *addressBookContacts;
+@property (strong, nonatomic) NSString *subject;
+@property (strong, nonatomic) NSString *inviteMessageFormat;
 @property (weak, nonatomic) id <BranchInviteSendingCompletionDelegate> inviteSendingCompletionDelegate;
 
 @end
 
 @implementation BranchInviteEmailContactProvider
+
++ (BranchInviteEmailContactProvider *)emailContactProviderWithSubject:(NSString *)subject inviteMessageFormat:(NSString *)inviteMessageFormat {
+    return [[BranchInviteEmailContactProvider alloc] initWithSubject:subject inviteMessageFormat:inviteMessageFormat];
+}
+
+- (id)init {
+    if (self = [super init]) {
+        _subject = @"Come Join Me in this Cool App!";
+        _inviteMessageFormat = @"I've been using this cool app lately, and I was hoping you'd come and join me. You can check it out here: %@";
+    }
+    
+    return self;
+}
+
+- (id)initWithSubject:(NSString *)subject inviteMessageFormat:(NSString *)inviteMessageFormat {
+    if (self = [super init]) {
+        _subject = subject;
+        _inviteMessageFormat = inviteMessageFormat;
+    }
+    
+    return self;
+}
 
 #pragma mark - BranchInviteContactProvider methods
 - (void)loadContactsWithCallback:(callbackWithStatus)callback {
@@ -67,8 +91,8 @@
     MFMailComposeViewController *mailComposeController = [[MFMailComposeViewController alloc] init];
     [mailComposeController setMailComposeDelegate:self];
     [mailComposeController setToRecipients:emailAddresses];
-    [mailComposeController setSubject:@"Come Join Me in this Cool App!"];
-    [mailComposeController setMessageBody:[NSString stringWithFormat:@"I've been using this cool app lately, and I was hoping you'd come and join me. You can check it out here: %@", inviteUrl] isHTML:NO];
+    [mailComposeController setSubject:self.subject];
+    [mailComposeController setMessageBody:[NSString stringWithFormat:self.inviteMessageFormat, inviteUrl] isHTML:NO];
     
     return mailComposeController;
 }

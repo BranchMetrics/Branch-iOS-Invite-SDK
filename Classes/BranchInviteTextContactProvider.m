@@ -13,12 +13,33 @@
 
 @interface BranchInviteTextContactProvider () <MFMessageComposeViewControllerDelegate>
 
+@property (strong, nonatomic) NSString *inviteMessageFormat;
 @property (strong, nonatomic) NSArray *addressBookContacts;
 @property (weak, nonatomic) id <BranchInviteSendingCompletionDelegate> inviteSendingCompletionDelegate;
 
 @end
 
 @implementation BranchInviteTextContactProvider
+
++ (BranchInviteTextContactProvider *)textContactProviderWithInviteMessageFormat:(NSString *)inviteMessageFormat {
+    return [[BranchInviteTextContactProvider alloc] initWithInviteMessageFormat:inviteMessageFormat];
+}
+
+- (id)init {
+    if (self = [super init]) {
+        self.inviteMessageFormat =  @"I've been using this cool app lately, and I was hoping you'd come and join me. You can check it out here: %@";
+    }
+    
+    return self;
+}
+
+- (id)initWithInviteMessageFormat:(NSString *)inviteMessageFormat {
+    if (self = [super init]) {
+        self.inviteMessageFormat = inviteMessageFormat;
+    }
+    
+    return self;
+}
 
 #pragma mark - BranchInviteContactProvider methods
 - (void)loadContactsWithCallback:(callbackWithStatus)callback {
@@ -67,7 +88,7 @@
     MFMessageComposeViewController *messageComposeController = [[MFMessageComposeViewController alloc] init];
     [messageComposeController setMessageComposeDelegate:self];
     [messageComposeController setRecipients:phoneNumbers];
-    [messageComposeController setBody:[NSString stringWithFormat:@"I've been using this cool app lately, and I was hoping you'd come and join me. You can check it out here: %@", inviteUrl]];
+    [messageComposeController setBody:[NSString stringWithFormat:self.inviteMessageFormat, inviteUrl]];
     
     return messageComposeController;
 }

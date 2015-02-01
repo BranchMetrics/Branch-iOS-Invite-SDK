@@ -8,6 +8,9 @@
 
 #import "ViewController.h"
 #import "BranchInviteViewController.h"
+#import "BranchInviteTextContactProvider.h"
+#import "BranchInviteEmailContactProvider.h"
+#import "MysteryIncContactProvider.h"
 
 @interface ViewController () <BranchInviteControllerDelegate>
 
@@ -50,9 +53,12 @@
     return @"https://www.gravatar.com/avatar/28ed70ee3c8275f1d307d1c5b6eddfa5";
 }
 
-// TODO implement this w/ a custom provider
-//- (NSArray *)inviteContactProviders {
-//    return @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
-//}
+- (NSArray *)inviteContactProviders {
+    return @[
+        [BranchInviteEmailContactProvider emailContactProviderWithSubject:@"Check out this demo app!" inviteMessageFormat:@"Check out my demo app with Branch:\n\n%@!"],
+        [BranchInviteTextContactProvider textContactProviderWithInviteMessageFormat:@"Check out my demo app with Branch:\n\n%@!"],
+        [[MysteryIncContactProvider alloc] init]
+    ];
+}
 
 @end

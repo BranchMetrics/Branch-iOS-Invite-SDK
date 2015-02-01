@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MysteryIncInviteController">
+            <connections>
+                <outlet property="charactersLabel" destination="MIu-rL-xSp" id="ipa-r3-juO"/>
+                <outlet property="view" destination="iN0-l3-epB" id="JSf-2C-eT8"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hey Gang, bring the Mystery Machine and join me in this app!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="qzE-r7-j2o">
+                    <rect key="frame" x="153" y="24" width="294" height="44"/>
+                    <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="19"/>
+                    <color key="textColor" red="1" green="0.83333333333333337" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GXK-lM-5ck">
+                    <rect key="frame" x="262" y="524" width="77" height="30"/>
+                    <state key="normal" title="Send Invite">
+                        <color key="titleColor" red="1" green="0.83333333333333337" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="sendInvitePressed:" destination="-1" eventType="touchUpInside" id="AfD-uc-1zM"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Character Label #" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="MIu-rL-xSp">
+                    <rect key="frame" x="225" y="289" width="151" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="1" green="0.83333333330000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Jk-ZK-l1z">
+                    <rect key="frame" x="276" y="562" width="48" height="30"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" red="1" green="0.83333333333333337" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="cancelPressed:" destination="-1" eventType="touchUpInside" id="261-9y-dLW"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.092800000000000007" green="0.50691999999999982" blue="0.57999999999999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="6Jk-ZK-l1z" firstAttribute="top" secondItem="GXK-lM-5ck" secondAttribute="bottom" constant="8" id="3Ks-Rl-kUG"/>
+                <constraint firstAttribute="centerX" secondItem="6Jk-ZK-l1z" secondAttribute="centerX" id="AjN-dW-GbR"/>
+                <constraint firstItem="qzE-r7-j2o" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="O9H-Ev-4DQ"/>
+                <constraint firstAttribute="centerX" secondItem="MIu-rL-xSp" secondAttribute="centerX" id="ReT-sR-QZ8"/>
+                <constraint firstAttribute="bottom" secondItem="6Jk-ZK-l1z" secondAttribute="bottom" constant="8" id="TFl-45-BTP"/>
+                <constraint firstAttribute="centerX" secondItem="GXK-lM-5ck" secondAttribute="centerX" id="f7A-x2-W3R"/>
+                <constraint firstAttribute="centerY" secondItem="MIu-rL-xSp" secondAttribute="centerY" id="ohj-61-Jed"/>
+                <constraint firstAttribute="centerX" secondItem="qzE-r7-j2o" secondAttribute="centerX" id="zHT-DR-TK1"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
