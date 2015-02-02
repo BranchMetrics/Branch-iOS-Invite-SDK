@@ -55,6 +55,8 @@ CGFloat const PREFERRED_WIDTH = 288;
     branchWelcomeController.branchOpts = branchOpts;
     
     [customView configureWithInviteUserInfo:branchOpts];
+    [[customView continueButton] addTarget:branchWelcomeController action:@selector(continuePressed) forControlEvents:UIControlEventTouchUpInside];
+    [[customView cancelButton] addTarget:branchWelcomeController action:@selector(cancelPressed) forControlEvents:UIControlEventTouchUpInside];
 
     // We don't own the view lifecycle, so just get this out of the way
     [[Branch getInstance] userCompletedAction:@"viewed_personal_welcome"];

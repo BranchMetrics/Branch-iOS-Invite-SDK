@@ -48,12 +48,4 @@
     });
 }
 
-- (UIButton *)cancelButton {
-    return self.cancelButton;
-}
-
-- (UIButton *)continueButton {
-    return self.continueButton;
-}
-
 @end
