@@ -18,6 +18,8 @@
 		4686F4051A7328910029ABCC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4686F4041A7328910029ABCC /* Images.xcassets */; };
 		4686F4081A7328910029ABCC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4686F4061A7328910029ABCC /* LaunchScreen.xib */; };
 		4686F4141A7328910029ABCC /* BranchInviteExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4686F4131A7328910029ABCC /* BranchInviteExampleTests.m */; };
+		46E43F5F1A7F09CD007576D0 /* ExampleWelcomeScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E43F5E1A7F09CD007576D0 /* ExampleWelcomeScreen.m */; };
+		46E43F611A7F0AB6007576D0 /* ExampleWelcomeScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46E43F601A7F0AB6007576D0 /* ExampleWelcomeScreen.xib */; };
 		46EB4D011A7E87C600A72AD9 /* MysteryIncInviteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EB4D001A7E87C600A72AD9 /* MysteryIncInviteController.m */; };
 		6F4493B6CF62B5B1C7F702CF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C15FD028A5C17E81C931EA3 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -52,6 +54,9 @@
 		4686F40D1A7328910029ABCC /* BranchInviteExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BranchInviteExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4686F4121A7328910029ABCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4686F4131A7328910029ABCC /* BranchInviteExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BranchInviteExampleTests.m; sourceTree = "<group>"; };
+		46E43F5D1A7F09CD007576D0 /* ExampleWelcomeScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleWelcomeScreen.h; sourceTree = "<group>"; };
+		46E43F5E1A7F09CD007576D0 /* ExampleWelcomeScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleWelcomeScreen.m; sourceTree = "<group>"; };
+		46E43F601A7F0AB6007576D0 /* ExampleWelcomeScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleWelcomeScreen.xib; sourceTree = "<group>"; };
 		46EB4CFF1A7E87C600A72AD9 /* MysteryIncInviteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MysteryIncInviteController.h; sourceTree = "<group>"; };
 		46EB4D001A7E87C600A72AD9 /* MysteryIncInviteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MysteryIncInviteController.m; sourceTree = "<group>"; };
 		73DF93A695992563F6F3F954 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -91,6 +96,7 @@
 		4661E5701A7D363300B6130D /* ExampleCustomizations */ = {
 			isa = PBXGroup;
 			children = (
+				46E43F5C1A7F0971007576D0 /* ExampleWelcomeScreen */,
 				4661E5741A7D39AF00B6130D /* MysteryIncContactProvider */,
 				4650EDB91A7EC75800558DB7 /* ExampleContactCell */,
 			);
@@ -169,6 +175,16 @@
 				4686F4121A7328910029ABCC /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		46E43F5C1A7F0971007576D0 /* ExampleWelcomeScreen */ = {
+			isa = PBXGroup;
+			children = (
+				46E43F5D1A7F09CD007576D0 /* ExampleWelcomeScreen.h */,
+				46E43F5E1A7F09CD007576D0 /* ExampleWelcomeScreen.m */,
+				46E43F601A7F0AB6007576D0 /* ExampleWelcomeScreen.xib */,
+			);
+			name = ExampleWelcomeScreen;
 			sourceTree = "<group>";
 		};
 		DBBA0444363C87904EF705F8 /* Frameworks */ = {
@@ -273,6 +289,7 @@
 				4686F4031A7328910029ABCC /* Main.storyboard in Resources */,
 				4650EDBB1A7EC77100558DB7 /* ExampleContactCell.xib in Resources */,
 				4661E5761A7D39D000B6130D /* MysteryIncInviteController.xib in Resources */,
+				46E43F611A7F0AB6007576D0 /* ExampleWelcomeScreen.xib in Resources */,
 				4686F4081A7328910029ABCC /* LaunchScreen.xib in Resources */,
 				4686F4051A7328910029ABCC /* Images.xcassets in Resources */,
 			);
@@ -328,6 +345,7 @@
 				4686F4001A7328910029ABCC /* ViewController.m in Sources */,
 				4686F3FD1A7328910029ABCC /* AppDelegate.m in Sources */,
 				4661E5731A7D365B00B6130D /* MysteryIncContactProvider.m in Sources */,
+				46E43F5F1A7F09CD007576D0 /* ExampleWelcomeScreen.m in Sources */,
 				4650EDB81A7EC6DA00558DB7 /* ExampleContactCell.m in Sources */,
 				4686F3FA1A7328910029ABCC /* main.m in Sources */,
 				46EB4D011A7E87C600A72AD9 /* MysteryIncInviteController.m in Sources */,

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "Branch.h"
 #import "BranchWelcomeViewController.h"
+#import "ExampleWelcomeScreen.h"
 
 @interface AppDelegate () <BranchWelcomeControllerDelegate>
 
@@ -23,6 +24,9 @@
         NSLog(@"Deep Link Data: %@", params);
 
         if ([BranchWelcomeViewController shouldShowWelcome:params]) {
+            //Comment these two lines in and the comment active controller line out to see example usage of custom view for welcome
+//            ExampleWelcomeScreen *customView = [[[NSBundle mainBundle] loadNibNamed:@"ExampleWelcomeScreen" owner:nil options:nil] firstObject];
+//            BranchWelcomeViewController *welcomeController = [BranchWelcomeViewController branchWelcomeViewControllerWithCustomView:customView delegate:self branchOpts:params];
             BranchWelcomeViewController *welcomeController = [BranchWelcomeViewController branchWelcomeViewControllerWithDelegate:self branchOpts:params];
 
             self.presentingController = self.window.rootViewController;
