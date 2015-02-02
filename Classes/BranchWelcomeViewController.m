@@ -1,6 +1,6 @@
 //
 //  BranchWelcomeViewController.m
-//  Pods
+//  BranchInvite
 //
 //  Created by Graham Mueller on 1/25/15.
 //

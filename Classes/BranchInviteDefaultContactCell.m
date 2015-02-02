@@ -1,6 +1,6 @@
 //
 //  BranchInviteContactCell.m
-//  Pods
+//  BranchInvite
 //
 //  Created by Graham Mueller on 2/1/15.
 //
