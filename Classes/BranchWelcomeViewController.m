@@ -18,11 +18,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *welcomeTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeBodyLabel;
 @property (weak, nonatomic) IBOutlet UIButton *confirmInviteButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cancelTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *userImageTopConstraint;
 
 - (IBAction)continuePressed;
 - (IBAction)cancelPressed;
 
 @end
+
+CGFloat const PREFERRED_WIDTH = 288;
 
 @implementation BranchWelcomeViewController
 
@@ -46,6 +50,8 @@
     [[Branch getInstance] userCompletedAction:@"viewed_personal_welcome"];
     
     // Place holder image
+    self.userImageView.layer.masksToBounds = YES;
+    self.userImageView.layer.cornerRadius = self.userImageView.frame.size.width / 2.0;
     self.userImageView.image = [BranchInviteBundleUtil imageNamed:@"user" type:@"png"];
 
     NSString *invitingUserFullname = self.branchOpts[@"invitingUserFullname"];
@@ -56,6 +62,12 @@
         // Load the contents of this image asynchronously.
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSData *imageData = [NSData dataWithContentsOfURL:invitingUserImageUrl];
+            
+            // If the image fails to load, just leave the placeholder
+            if (!imageData) {
+                return;
+            }
+
             UIImage *invitingUserImage = [UIImage imageWithData:imageData];
            
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -73,6 +85,7 @@
 
     // Versions prior to iOS 8.0 don't auto adjust label frames
     if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1) {
+        [self adjustTopConstaints];
         [self resizeWelcomeTitleForText:welcomeTitleText];
         [self resizeWelcomeBodyForText:welcomeBodyText];
     }
@@ -88,21 +101,20 @@
 }
 
 #pragma mark - Internal methods
+- (void)adjustTopConstaints {
+    self.cancelTopConstraint.constant -= 16;
+    self.userImageTopConstraint.constant -= 20;
+}
+
 - (void)resizeWelcomeTitleForText:(NSString *)welcomeTitleText {
-    CGRect welcomeTitleLabelFrame = self.welcomeTitleLabel.frame;
-    CGFloat welcomeTitleLabelWidth = welcomeTitleLabelFrame.size.width;
-    
-    CGFloat height = [welcomeTitleText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(welcomeTitleLabelWidth, CGFLOAT_MAX)].height;
+    CGFloat height = [welcomeTitleText sizeWithFont:[UIFont boldSystemFontOfSize:20] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeTitleLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
 
     [self.view addConstraint:heightConstraint];
 }
 
 - (void)resizeWelcomeBodyForText:(NSString *)welcomeBodyText {
-    CGRect welcomeBodyLabelFrame = self.welcomeBodyLabel.frame;
-    CGFloat welcomeBodyLabelWidth = welcomeBodyLabelFrame.size.width;
-    
-    CGFloat height = [welcomeBodyText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(welcomeBodyLabelWidth, CGFLOAT_MAX)].height;
+    CGFloat height = [welcomeBodyText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeBodyLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
 
     [self.view addConstraint:heightConstraint];
