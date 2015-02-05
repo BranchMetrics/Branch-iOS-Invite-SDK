@@ -7,8 +7,9 @@
 //
 
 #import "BranchWelcomeViewController.h"
-#import "BranchInviteBundleUtil.h"
 #import <Branch/Branch.h>
+#import "BranchInvite.h"
+#import "BranchInviteBundleUtil.h"
 
 @interface BranchWelcomeViewController ()
 
@@ -73,9 +74,9 @@ CGFloat const PREFERRED_WIDTH = 288;
     self.userImageView.layer.cornerRadius = self.userImageView.frame.size.width / 2.0;
     self.userImageView.image = [BranchInviteBundleUtil imageNamed:@"user" type:@"png"];
     
-    NSString *invitingUserFullname = self.branchOpts[@"invitingUserFullname"];
-    NSString *invitingUserShortName = self.branchOpts[@"invitingUserShortName"] ?: invitingUserFullname;
-    NSURL *invitingUserImageUrl = [NSURL URLWithString:self.branchOpts[@"invitingUserImageUrl"]];
+    NSString *invitingUserFullname = self.branchOpts[BRANCH_INVITE_USER_FULLNAME_KEY];
+    NSString *invitingUserShortName = self.branchOpts[BRANCH_INVITE_USER_SHORT_NAME_KEY] ?: invitingUserFullname;
+    NSURL *invitingUserImageUrl = [NSURL URLWithString:self.branchOpts[BRANCH_INVITE_USER_IMAGE_URL_KEY]];
     
     if (invitingUserImageUrl) {
         // Load the contents of this image asynchronously.

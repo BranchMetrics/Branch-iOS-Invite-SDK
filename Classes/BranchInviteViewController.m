@@ -7,13 +7,14 @@
 //
 
 #import "BranchInviteViewController.h"
+#import <Branch/Branch.h>
+#import "BranchInvite.h"
 #import "HMSegmentedControl.h"
 #import "BranchInviteContactProvider.h"
 #import "BranchInviteSendingCompletionDelegate.h"
 #import "BranchInviteEmailContactProvider.h"
 #import "BranchInviteTextContactProvider.h"
 #import "BranchInviteDefaultContactCell.h"
-#import <Branch/Branch.h>
 #import "BranchInviteBundleUtil.h"
 
 @interface BranchInviteViewController () <BranchInviteSendingCompletionDelegate, UISearchBarDelegate>
@@ -266,12 +267,20 @@
         normalizedShortName = userFullname;
     }
     
-    return @{
-        @"invitingUserId": userId,
-        @"invitingUserFullname": userFullname,
-        @"invitingUserShortName": normalizedShortName,
-        @"invitingUserImageUrl": normalizedImageUrl
-    };
+    NSMutableDictionary *inviteParams = [[NSMutableDictionary alloc] init];
+    
+    // First, apply any customized data
+    if ([self.delegate respondsToSelector:@selector(inviteUrlCustomData)]) {
+        [inviteParams addEntriesFromDictionary:[self.delegate inviteUrlCustomData]];
+    }
+
+    // Then, add all of our data, overwriting any bad entries
+    inviteParams[BRANCH_INVITE_USER_ID_KEY] = userId;
+    inviteParams[BRANCH_INVITE_USER_FULLNAME_KEY] = userFullname;
+    inviteParams[BRANCH_INVITE_USER_SHORT_NAME_KEY] = normalizedShortName;
+    inviteParams[BRANCH_INVITE_USER_IMAGE_URL_KEY] = normalizedImageUrl;
+    
+    return inviteParams;
 }
 
 @end

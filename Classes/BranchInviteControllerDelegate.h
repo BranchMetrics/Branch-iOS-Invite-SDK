@@ -43,7 +43,7 @@
 // Will default to 44px if not provided.
 - (CGFloat)heightForContactRows;
 
-#pragma mark - Inviting User Information
+#pragma mark - Invite Information
 @required
 // Inviting user identifier. Will be bundled w/ invite url.
 - (NSString *)invitingUserId;
@@ -53,6 +53,12 @@
 - (NSString *)invitingUserFullname;
 
 @optional
+// Additional items to add to the Branch URL that will be
+// created. This can include any custom NSJSONSerializable
+// items you want. Common uses are things like redirect keys,
+// or content items to display.
+- (NSDictionary *)inviteUrlCustomData;
+
 // Inviting user short name. Will be bundled w/ invite url.
 // Shown in the Welcome screen when an invited user logs in.
 // Will default to inviting user fullname if not provided.
