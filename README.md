@@ -1,5 +1,9 @@
 # Branch-iOS-Invite-SDK
 
+![Invite](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_1.gif)
+![Open](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_2.gif)
+![Welcome](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_3.gif)
+
 The purpose of this SDK is to provide an out-of-the-box functional 'invite feature' for apps consuming the Branch SDK that want to utilize a standard invite feature in their app.
 
 There will still be some configuration on the dashboard, but the goal is to provide the most extensible, yet simple to use, full invite feature SDK. To see the basics of setting up an app with Branch, check out [the Branch iOS SDK readme](https://github.com/BranchMetrics/Branch-iOS-SDK).
