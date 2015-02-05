@@ -5,15 +5,15 @@ The purpose of this SDK is to provide an out-of-the-box functional 'invite featu
 There will still be some configuration on the dashboard, but the goal is to provide the most extensible, yet simple to use, full invite feature SDK. To see the basics of setting up an app with Branch, check out [the Branch iOS SDK readme](https://github.com/BranchMetrics/Branch-iOS-SDK).
 
 # Invite
-In your app, there will be a trigger to open the Invite UI. This will show a list of contacts and allow the user to select friends they want to invite to join them.
+In your app, there will be a trigger to open the Invite UI. This will show a list of contacts and allow the user to select friends they want to invite to join them.  
 ![Invite](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_1.gif)
 
 # Open
-Invited users will receive a message (via SMS, Email, or a custom provider you've implemented). When they open this URL, they'll be fingerprinted by the Branch server as an "invited user," which will be remember when your app is launched on their device.
+Invited users will receive a message (via SMS, Email, or a custom provider you've implemented). When they open this URL, they'll be fingerprinted by the Branch server as an "invited user," which will be remember when your app is launched on their device.  
 ![Open](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_2.gif)
 
 # Welcome
-When Invited Users enter the app, they'll be shown a Welcome UI (either the Branch default, or a custom screen). This Welcome Screen contains the inviting user's image, name, and id. The invited user can choose to accept the invite, or cancel and continue on their own.
+When Invited Users enter the app, they'll be shown a Welcome UI (either the Branch default, or a custom screen). This Welcome Screen contains the inviting user's image, name, and id. The invited user can choose to accept the invite, or cancel and continue on their own.  
 ![Welcome](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_3.gif)
 
 # Standard Usage
