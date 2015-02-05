@@ -33,7 +33,7 @@ CGFloat const PREFERRED_WIDTH = 288;
 @implementation BranchWelcomeViewController
 
 + (BOOL)shouldShowWelcome:(NSDictionary *)branchOpts {
-    return branchOpts[@"invitingUserId"] != nil;
+    return branchOpts[BRANCH_INVITE_USER_ID_KEY] != nil;
 }
 
 + (BranchWelcomeViewController *)branchWelcomeViewControllerWithDelegate:(id <BranchWelcomeControllerDelegate>)delegate branchOpts:(NSDictionary *)branchOpts {

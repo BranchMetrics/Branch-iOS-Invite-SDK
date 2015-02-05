@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source       = { :git => 'https://github.com/BranchMetrics/Branch-iOS-Invite-SDK.git', :tag => s.version.to_s }
-  s.source_files = 'Classes/*.{h,m}'
+  s.source_files = 'Classes/**/*.{h,m}'
 
   s.framework = 'AddressBook'
   s.framework = 'MessageUI'
