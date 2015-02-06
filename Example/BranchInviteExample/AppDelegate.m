@@ -55,4 +55,24 @@
     }];
 }
 
+// Comment these lines in to see customization of the Welcome screen
+//- (NSString *)welcomeTitleTextForFullname:(NSString *)invitingUserFullname shortName:(NSString *)invitingUserShortName {
+//    return [NSString stringWithFormat:@"Hey there, you were invited by %@", invitingUserFullname];
+//}
+//
+//- (NSString *)welcomeBodyTextForFullname:(NSString *)invitingUserFullname shortName:(NSString *)invitingUserShortName {
+//    return [NSString stringWithFormat:@"Come join %@ in our demo app", invitingUserShortName];
+//}
+//
+//- (NSString *)welcomeContinueButtonTextForFullname:(NSString *)invitingUserFullname shortName:(NSString *)invitingUserShortName {
+//    return @"Continue";
+//}
+//- (UIColor *)welcomeSchemeColor {
+//    return [UIColor redColor];
+//}
+//
+//- (UIColor *)welcomeBodyTextColor {
+//    return [UIColor blackColor]; // Yeah, this looks bad on red, but it gets the idea across
+//}
+
 @end
