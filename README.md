@@ -18,6 +18,12 @@ When Invited Users enter the app, they'll be shown a Welcome UI (either the Bran
 
 # Usage Guide
 
+* [Branch Web Configuration](#1-setting-up-your-app-on-the-branch-dashboard)
+* [Branch in your App](#2-setting-up-branch-in-your-app)
+* [Customization](#3-customizations)
+* [Example Usage](#4-example-usage)
+
+
 ## 1. Setting up your app on the Branch Dashboard
 
 Our dashboard is the starting point for adding apps as well as tracking users of your app. 
