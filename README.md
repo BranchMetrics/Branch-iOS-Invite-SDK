@@ -104,7 +104,20 @@ After you register your app, your app key can be retrieved on the [Settings](htt
 ##### Animated Gif
 ![Setting Key in PList Demo](https://s3-us-west-1.amazonaws.com/branch-guides/9_plist.gif)
 
-Branch must be started within your app before any calls can be made to the SDK. On top of the regular setup for a Branch app, you should add a check within the init callback to check whether the welcome screen should be shown. Modify the following two methods in your App Delegate:
+Branch must be started within your app before any calls can be made to the SDK.  
+  
+On top of the regular setup for a Branch app, you should add a check within the init callback to check whether the welcome screen should be shown. By default, the BranchWelcomeViewController will determine this based on keys in the Branch initialization dictionary.  
+
+If you want to implement a custom welcome controller flow entirely, you can check for the invite parameters with the keys provided in the BranchInvite.h file:
+
+```
+    BRANCH_INVITE_USER_ID_KEY
+    BRANCH_INVITE_USER_FULLNAME_KEY
+    BRANCH_INVITE_USER_SHORT_NAME_KEY
+    BRANCH_INVITE_USER_IMAGE_URL_KEY
+```
+
+Modify the following two methods in your App Delegate:
 
 ##### Objective-C
 
@@ -192,7 +205,7 @@ This project is built with, and currently relies on, Cocoapods. To add this proj
 
 In addition, somewhere in your project you'll need to display the BranchInviteViewController, typically in a menu or somewhere that the user can manually trigger.
 
-```
+```objc
 @implementation ViewController
 
 - (IBAction)inviteButtonPressed:(id)sender {
@@ -204,16 +217,164 @@ In addition, somewhere in your project you'll need to display the BranchInviteVi
 @end
 ```
 
-# Customizations
+## 3. Customizations
 Both the invite and welcome screens can be customized.
 
-For invitations, beyond just changing the display of the invite controller, you can additonally change the contact providers (the sources of the contacts).
+#### Invitation Customization
+The InvitiationControllerDelegate protocol has a number of items that allow you to customize the experience
 
-For the welcome screen, you can provide a custom view to be displayed, but it must conform to the specified protocol.
+###### User Info
+There are currently four bits of user info that are configurable, two of which are optional.
+
+* User ID  
+An identifier for the user, which can be used by the app to tie back to an actual user record in their system. This field is required.
+
+* User Fullname  
+The full name of the inviting user, which is displayed in the welcome screen. This is required.
+
+* User Short Name  
+A short name for the inviting user, typically their first name. Optional, but recommended.
+
+* User Image Url  
+A url to load the inviting user's image from, shown on the Welcome screen. Optional, but recommended.
+
+* Custom Url Data  
+The BranchInvite will create a pretty generic Branch short url. This hook allows you to provide any additional data you desire.
+
+###### Invite Display
+We've designed the invite screen to be attractive and intuitive, at least in our opinion. You may feel differently, but don't worry -- we provide hooks for you to customize the appearance.
+
+* Segmented Control  
+We utilize an HMSegmentedControl to list out the contact providers. One of the hooks allows you to customize the segmented control however you like. Note, however, that any events you add, or segments you provide in this configuration method will be removed.
+
+* TableViewCell Customization
+If you're prefer a different appearance to the contact rows, you have two options. You can either provide a custom class which will be registered with the table, or more extensively, a nib (with a class). Either of these classes *must* conform to the BranchInviteContactCell protocol.
+
+###### Advanced: Creating Your Own Contact Providers
+Contact Providers are potentially the biggest point of customization for an app. The default implementation will provides a couple of defaults -- Email and Text -- both of which pull from the Address Book.
+
+Sometimes this isn't enough, though. Perhaps you have a list of contacts from a different 3rd Party system. In that case, you can create your own provider that fulfills the BranchInviteContactProvider protocol. This protocol requires a number of items.
+
+* Tab Title for the Segment Control
+* Channel to be used to for the Invite Url
+* A Load method for long running loading of contacts
+* A method for the Invite screen to retrieve the Contact list
+* A method for an error message if contact loading fails
+* A method that provides a view controller to be displayed once contacts are selected.
+
+A simple example implementation:
+```objc
+@interface CustomProvider () <BranchInviteContactProvider>
+
+@property (strong, nonatomic) NSArray *cachedContacts;
+
+@end
+
+@implementation CustomProvider
+
+- (void)loadContactsWithCallback:(callbackWithStatus)callback {
+    [self loadSomethingThatTakesALongTime:^(NSArray *retrievedItems) {
+        self.cacheItems = retrievedItems;
+        callback(YES, nil);
+    }
+    failure:^(NSError *error) {
+        callback(NO, error);
+    }];
+}
+
+- (NSString *)loadFailureMessage {
+    return @"Failed to load custom contacts";
+}
+
+// The title of the segment shown in the BranchInviteViewController
+- (NSString *)segmentTitle {
+    return @"Custom Provider";
+}
+
+- (NSString *)channel {
+    return @"my_custom_channel";
+}
+
+- (NSArray *)contacts {
+    return self.cachedContacts;
+}
+
+- (UIViewController *)inviteSendingController:(NSArray *)selectedContacts inviteUrl:(NSString *)inviteUrl completionDelegate:(id <BranchInviteSendingCompletionDelegate>)completionDelegate {
+    return [CustomerController customControllerWithContacts:selectedContacts inviteUrl:inviteUrl completionDelegate:completionDelegate];
+}
+
+@end
+```
+
+#### Welcome Customization
+For the welcome screen, you can provide a custom view to be displayed, but it must conform to the specified protocol. Otherwise, you can customize the the existing controllers text color and background color.
+
+A simple example implementation:
+```objc
+@interface CustomerWelcomeScreen () <BranchWelcomeView>
+
+@property (strong, nonatomic) UIButton *customCancelButton;
+@property (strong, nonatomic) UIButton *customContinueButton;
+
+@end
+
+@implementation CustomerWelcomeScreen
+
+- (void)configureWithInviteUserInfo:(NSDictionary *)userInviteInfo {
+    // Note that this view is created completely programmatically. You could load it from a nib or whatever you like.
+    UILabel *userIdLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 240, 21)];
+    userIdLabel.text = [NSString stringWithFormat:@"User ID: %@", userInviteInfo[BRANCH_INVITE_USER_ID_KEY]];
+    [self.view addSubview:userIdLabel];
+
+    UILabel *userFullnameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 41, 240, 21)];
+    userFullnameLabel.text = [NSString stringWithFormat:@"User Fullname: %@", userInviteInfo[BRANCH_INVITE_USER_FULLNAME_KEY]];
+    [self.view addSubview:userFullnameLabel];
+
+    UILabel *userShortNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 62, 240, 21)];
+    userShortNameLabel.text = [NSString stringWithFormat:@"User Short Name: %@", userInviteInfo[BRANCH_INVITE_USER_SHORT_NAME_KEY]];
+    [self.view addSubview:userShortNameLabel];
+
+    NSString *userImageUrl = userInviteInfo[BRANCH_INVITE_USER_IMAGE_URL_KEY];
+    UIImageView *userImageView = [[UILabel alloc] initWithFrame:CGRectMake(20, 83, 64, 64)];
+    [self.view addSubview:userImageView];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:userImageUrl]];
+
+        if (!imageData) {
+            return;
+        }
+
+        UIImage *invitingUserImage = [UIImage imageWithData:imageData];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            userImageView = invitingUserImage;
+        });
+    });
+
+    self.customCancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.customCancelButton.frame = CGRectMake(20, 200, 50, 32);
+    [self.customCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+
+    self.customContinueButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.customContinueButton.frame = CGRectMake(100, 200, 50, 32);
+    [self.customContinueButton setTitle:@"Continue" forState:UIControlStateNormal];
+}
+
+- (UIButton *)cancelButton {
+    return self.customCancelButton;
+}
+
+- (UIButton *)continueButton {
+    return self.customContinueButton;
+}
+
+@end
+```
 
 For more detail on both, check out the delegates for both classes.
 
-# Example Usage
+## 4. Example Usage
 The Example folder contains a sample application that utilizes the Branch Invite code. This app contains a basic running example of how the process works, as well as how to customize it.
 
 Note that the customizations are commented out by default -- you'll need to uncomment them to see the view customizations.
@@ -228,4 +389,4 @@ To test the full cycle,
 * Reopen the app (should see the welcome screen)
 
 # Iconography
-User icon taken from icons8.com
+A big thanks to [icons8](http://icons8.com) for providing us with a license to use their awesome icons!
