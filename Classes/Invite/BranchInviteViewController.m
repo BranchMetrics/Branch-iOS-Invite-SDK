@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSArray *currentContacts;
 @property (weak, nonatomic) id <BranchInviteControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet HMSegmentedControl *segmentedControl;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentedControlHeightConstraint;
 @property (weak, nonatomic) IBOutlet UITableView *contactTable;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
@@ -74,6 +75,11 @@
 }
 
 - (void)configureSegmentedControl {
+    if ([self.contactProviders count] == 1) {
+        self.segmentedControlHeightConstraint.constant = 0;
+        return;
+    }
+
     // Set up all of the defaults
     self.segmentedControl.textColor = [UIColor whiteColor];
     self.segmentedControl.selectedTextColor = [UIColor whiteColor];

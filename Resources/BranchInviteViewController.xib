@@ -10,6 +10,7 @@
                 <outlet property="contactTable" destination="PrD-g2-lRs" id="7oX-cj-2Gd"/>
                 <outlet property="searchBar" destination="3nZ-M1-ddd" id="8QX-Mp-vsb"/>
                 <outlet property="segmentedControl" destination="GGn-J9-uch" id="RZJ-2Y-3T0"/>
+                <outlet property="segmentedControlHeightConstraint" destination="Thy-zn-lX8" id="xNY-2N-GiR"/>
                 <outlet property="view" destination="Wah-5Z-Gdf" id="VLH-Uk-WJl"/>
             </connections>
         </placeholder>
