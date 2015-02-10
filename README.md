@@ -36,7 +36,6 @@ Simply head to [Settings](https://dashboard.branch.io) to create an account to s
 BranchInvite can be found on [CocoaPods](http://cocoapods.org). To install it simply add the following line to your Podfile:
 
 ```
-    pod 'Branch'
     pod 'BranchInvite'
 ```
 

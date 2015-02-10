@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BranchInviteDefaultContactCell"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ContactCell" id="Y72-x3-Xjd" customClass="BranchInviteDefaultContactCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y72-x3-Xjd" id="J0K-Xa-8vm">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tlg-Pb-MGZ">
+                        <rect key="frame" x="8" y="8" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="G3l-vg-g3R"/>
+                            <constraint firstAttribute="width" constant="40" id="tKD-l1-bhx"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="66P-ph-jCG">
+                        <rect key="frame" x="56" y="18" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✔︎" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1xD-jS-YcC">
+                        <rect key="frame" x="291" y="18" width="21" height="21"/>
+                        <color key="backgroundColor" red="0.1764705882352941" green="0.61568627450980395" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="21" id="wdO-Zi-FXh"/>
+                            <constraint firstAttribute="height" constant="21" id="zZG-xP-SOk"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="66P-ph-jCG" firstAttribute="centerY" secondItem="Tlg-Pb-MGZ" secondAttribute="centerY" id="BVX-mQ-Hod"/>
+                    <constraint firstItem="66P-ph-jCG" firstAttribute="centerY" secondItem="1xD-jS-YcC" secondAttribute="centerY" id="RAr-xq-XPh"/>
+                    <constraint firstAttribute="trailing" secondItem="1xD-jS-YcC" secondAttribute="trailing" constant="8" id="hKD-yj-0g9"/>
+                    <constraint firstItem="Tlg-Pb-MGZ" firstAttribute="leading" secondItem="J0K-Xa-8vm" secondAttribute="leading" constant="8" id="nQU-xE-n2S"/>
+                    <constraint firstItem="Tlg-Pb-MGZ" firstAttribute="top" secondItem="J0K-Xa-8vm" secondAttribute="top" constant="8" id="q19-06-20P"/>
+                    <constraint firstItem="66P-ph-jCG" firstAttribute="leading" secondItem="Tlg-Pb-MGZ" secondAttribute="trailing" constant="8" id="qDD-wO-Phu"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="contactImageView" destination="Tlg-Pb-MGZ" id="Jsd-JG-zSU"/>
+                <outlet property="contactNameLabel" destination="66P-ph-jCG" id="qXP-8e-Zne"/>
+                <outlet property="selectionIcon" destination="1xD-jS-YcC" id="16O-9Y-I1d"/>
+            </connections>
+            <point key="canvasLocation" x="546" y="325"/>
+        </tableViewCell>
+    </objects>
+</document>
