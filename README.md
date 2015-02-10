@@ -4,85 +4,28 @@ The purpose of this SDK is to provide an out-of-the-box functional 'invite featu
 
 There will still be some configuration on the dashboard, but the goal is to provide the most extensible, yet simple to use, full invite feature SDK. To see the basics of setting up an app with Branch, check out [the Branch iOS SDK readme](https://github.com/BranchMetrics/Branch-iOS-SDK).
 
-# Invite
+# Invite Flow
 In your app, there will be a trigger to open the Invite UI. This will show a list of contacts and allow the user to select friends they want to invite to join them.  
 ![Invite](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_1.gif)
 
-# Open
-Invited users will receive a message (via SMS, Email, or a custom provider you've implemented). When they open this URL, they'll be fingerprinted by the Branch server as an "invited user," which will be remember when your app is launched on their device.  
-![Open](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_2.gif)
-
-# Welcome
-When Invited Users enter the app, they'll be shown a Welcome UI (either the Branch default, or a custom screen). This Welcome Screen contains the inviting user's image, name, and id. The invited user can choose to accept the invite, or cancel and continue on their own.  
-![Welcome](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_3.gif)
+# New User Experience (Install/Open & Personal Welcome)
+Invited users will receive a message (via SMS, Email, or a custom provider you've implemented). When they open this URL, they'll be fingerprinted by the Branch server as an "invited user," which will be remember when your app is launched on their device. When Invited Users enter the app, they'll be shown a Welcome UI (either the Branch default, or a custom screen). This Welcome Screen contains the inviting user's image, name, and id. The invited user can choose to accept the invite, or cancel and continue on their own.
+![Open](https://s3-us-west-1.amazonaws.com/branch-guides/click_open.gif)
 
 # Usage Guide
 
-* [Branch Web Configuration](#1-setting-up-your-app-on-the-branch-dashboard)
-* [Branch in your App](#2-setting-up-branch-in-your-app)
-* [Customization](#3-customizations)
-* [Example Usage](#4-example-usage)
+* [Branch App Key and Initialization](#1-get-your-branch-app-key-and-sdk-initialization)
+* [Setting up Branch in your App](#2-setting-up-branch-in-your-app)
+* [Initialization and Showing the Personalized Welcome](#3-initialization-and-showing-the-personalized-welcome)
+* [Retrieving Personal Invite Parameters from Session Init](#4-retrieving-personal-invite-parameters-from-session-init)
+* [Showing the Invite Controller and Customizations](#5-showing-the-invite-controller-and-customizations)
+* [Customization](#6-customizations-and-overrides)
+* [Example Usage](#7-example-usage)
 
 
-## 1. Setting up your app on the Branch Dashboard
+## 1. Get your Branch App Key and SDK Initialization
 
-Our dashboard is the starting point for adding apps as well as tracking users of your app. 
-
-To get started, point your browser to [https://dashboard.branch.io/](https://dashboard.branch.io/). If you haven't created an account before, you can signup and get taken through the basic setup right away. If you've signed up already, simply navigate to the [Summary](https://dashboard.branch.io/#) page and click the dropdown button in the top right. Choose "Create new app."
-
-![Dashboard Screenshot](https://s3-us-west-1.amazonaws.com/branch-guides/2_dashboard.png)
-
-You will be prompted to enter a name for your new app. Do so and press "Create."
-
-![Dashboard Screenshot](https://s3-us-west-1.amazonaws.com/branch-guides/3_create_new_app.png)
-
-Navigate to the Settings page. Scroll down to App Store Information and search for your app by name--this is the same name listed on iTunesConnect. With this information, Branch will automatically redirect users without your app installed on their devices to the App Store.
-
-In the case that your app cannot be found on the App Store (e.g. if you are distributing an enterprise app over the Internet, or you're not listed in the US app stores), you can also enter a custom URL by choosing "Custom URL to IPA file."
-
-![Dashboard Screenshot](https://s3-us-west-1.amazonaws.com/branch-guides/4_settings_app_store.png)
-
-### Customizing the default social media (OG) tags for all links
-
-This optional step will allow you to custom the default tags for all links to your app. While you can edit OG tags when creating links by including the appropriate key-value pairs in the link's data dictionary, it is a good idea to provide a default set of tags that will work for all links.
-
-On the Settings page, scroll to Social Media - Open Graph. 
-
-1. Enter your Facebook App ID (if you have one)
-1. Enter the title you want displayed with the link
-1. Enter a description of your app (recommended: two sentences)
-1. Upload a thumbnail of your app
-
-For more information on the optimal format for the title and description, see Facebook's [Sharing Best Practices](https://developers.facebook.com/docs/sharing/best-practices#tags).
-
-![Dashboard Screenshot](https://s3-us-west-1.amazonaws.com/branch-guides/5_og.png)
-
-### Register a URI scheme direct deep linking (optional but recommended)
-
-You can register your app to respond to direct deep links (yourapp:// in a mobile browser) by adding a URI scheme in the YourProject-Info.plist file (or in Swift, Info.plist).
-
-Also, in the instructions that follow, make sure to change **yourapp** to a unique string that represents your app name. You must choose a string and use the same one on the Branch Dashboard and in XCode.
-
-Before jumping into XCode, you need to add the URI Scheme to the Branch Dashboard. On the [Settings](https://dashboard.branch.io/#/settings) page, scroll down to URI Schemes (advanced), click to expand, and add in the unique string you've chosen for your app (e.g. yourapp://). Be sure to press "Save" when you're finished.
-
-![Dashboard Screenshot](https://s3-us-west-1.amazonaws.com/branch-guides/6_dashboard_uri.png)
-
-Next, you'll need to open your project in XCode and complete the following.
-
-1. Click on YourProject-Info.plist on the left (or in Swift, Info.plist).
-1. Find URL Types and click the right arrow. (If it doesn't exist, right click anywhere and choose Add Row. Scroll down and choose URL Types)
-1. Add "yourapp", where yourapp is a unique string for your app, as an item in URL Schemes as below:
-
-![URL Scheme Demo](https://s3-us-west-1.amazonaws.com/branchhost/urlScheme.png)
-
-Alternatively, you can add the URI scheme in your project's Info page.
-
-1. In Xcode, click your project in the Navigator (on the left side).
-1. Select the "Info" tab.
-1. Expand the "URL Types" section at the bottom.
-1. Click the "+" sign to add a new URI Scheme, as below:
-
-![URL Scheme Demo](https://s3-us-west-1.amazonaws.com/branchhost/urlType.png)
+Simply head to [Settings](https://dashboard.branch.io) to create an account to store all of your link data.
 
 ## 2. Setting up Branch in your app
 
@@ -110,18 +53,11 @@ After you register your app, your app key can be retrieved on the [Settings](htt
 ##### Animated Gif
 ![Setting Key in PList Demo](https://s3-us-west-1.amazonaws.com/branch-guides/9_plist.gif)
 
+### 3. Initialization and Showing the Personalized Welcome
+
 Branch must be started within your app before any calls can be made to the SDK.  
   
 On top of the regular setup for a Branch app, you should add a check within the init callback to check whether the welcome screen should be shown. By default, the BranchWelcomeViewController will determine this based on keys in the Branch initialization dictionary.  
-
-If you want to implement a custom welcome controller flow entirely, you can check for the invite parameters with the keys provided in the BranchInvite.h file:
-
-```
-    BRANCH_INVITE_USER_ID_KEY
-    BRANCH_INVITE_USER_FULLNAME_KEY
-    BRANCH_INVITE_USER_SHORT_NAME_KEY
-    BRANCH_INVITE_USER_IMAGE_URL_KEY
-```
 
 Modify the following two methods in your App Delegate:
 
@@ -207,45 +143,130 @@ The deep link handler is called every single time the app is opened, returning d
 This same code also triggers the recording of an event with Branch. If this is the first time a user has opened the app, an "install" event is registered. Every subsequent time the user opens the app, it will trigger an "open" event.
 This project is built with, and currently relies on, Cocoapods. To add this project to your app, add the following to your Podfile
 
-## Showing the Invite Controller
+## 4. Retrieving Personal Invite Parameters from Session Init
 
-In addition, somewhere in your project you'll need to display the BranchInviteViewController, typically in a menu or somewhere that the user can manually trigger.
+When you call Branch initSession and register the callback, if the user had just clicked an invite link, you can retrieve the individual parameters by using the Branch keys listed below.
+
+```
+    BRANCH_INVITE_USER_ID_KEY
+    BRANCH_INVITE_USER_FULLNAME_KEY
+    BRANCH_INVITE_USER_SHORT_NAME_KEY
+    BRANCH_INVITE_USER_IMAGE_URL_KEY
+```
+
+## 5. Showing the Invite Controller and Customizations
+
+In addition, somewhere in your project you'll need to display the **BranchInviteViewController**, typically in a menu or somewhere that the user can manually trigger. Here is the code to show the invite controller.
 
 ```objc
-@implementation ViewController
-
 - (IBAction)inviteButtonPressed:(id)sender {
     id branchInviteViewController = [BranchInviteViewController branchInviteViewControllerWithDelegate:self];
 
     [self presentViewController:branchInviteViewController animated:YES completion:NULL];
 }
-
-@end
 ```
 
-## 3. Customizations
+The view controller that shows the BranchInviteViewController must also implement the **InvitiationControllerDelegate**.
+
+First, to customize the channels that the user will have to invite their friends, you can specify contact providers in an array as below. This example will only show the contacts to be invited via SMS.
+
+```objc
+- (NSArray *)inviteContactProviders {
+    return @[
+        // SMS provider
+        [BranchInviteTextContactProvider textContactProviderWithInviteMessageFormat:@"Check out my demo app with Branch:\n\n%@!"]
+        
+        // Email provider
+        //[BranchInviteEmailContactProvider emailContactProviderWithSubject:@"Check out this demo app!" inviteMessageFormat:@"Check out my demo app with Branch:\n\n%@!"],
+
+        // Add your own custom provider
+        //[[MysteryIncContactProvider alloc] init]
+    ];
+}
+```
+
+Secondly, you must choose the parameters that will be shown in the personalized welcome to anyone who decides to install from the invite.
+
+```objc
+
+// The full name of the inviting user, which is displayed in the welcome screen. 
+// Required
+- (NSString *)invitingUserFullname {
+    return @"Graham Mueller";
+}
+
+// An identifier for the user, which can be used by the app to tie back to an actual user record in you system.
+// Optional, but recommended
+- (NSString *)invitingUserId {
+    return @"shortstuffsushi";
+}
+
+// A short name for the inviting user, typically their first name.
+// Optional, but recommended
+- (NSString *)invitingUserShortName {
+    return @"Graham";
+}
+
+// A url to load the inviting user's image from, shown on the Welcome screen.
+// Optional, but recommended
+- (NSString *)invitingUserImageUrl {
+    return @"https://www.gravatar.com/avatar/28ed70ee3c8275f1d307d1c5b6eddfa5";
+}
+```
+
+Lastly, here is where you can customize special parameters that tune the functionality of a Branch link. Below the code snippet is the table of preset keys with the specific type of functionality that they provide
+
+```objc
+// The BranchInvite will create a pretty generic Branch short url. 
+// This hook allows you to provide any additional data you desire.
+- (NSDictionary *)inviteUrlCustomData {
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+
+    [params setObject:@"Joe's My App Referral" forKey:@"$og_title"];
+    [params setObject:@"https://s3-us-west-1.amazonaws.com/myapp/joes_pic.jpg" forKey:@"$og_image_url"];
+    [params setObject:@"Join Joe in My App - it's awesome" forKey:@"$og_description"];
+
+    [params setObject:@"http://myapp.com/desktop_splash" forKey:@"$desktop_url"];
+
+    return params;
+}
+```
+
+**Note**
+You can customize the Facebook OG tags of each URL if you want to dynamically share content by using the following _optional keys in the data dictionary_. Please use this [Facebook tool](https://developers.facebook.com/tools/debug/og/object) to debug your OG tags!
+
+| Key | Value
+| --- | ---
+| "$og_title" | The title you'd like to appear for the link in social media
+| "$og_description" | The description you'd like to appear for the link in social media
+| "$og_image_url" | The URL for the image you'd like to appear for the link in social media
+| "$og_video" | The URL for the video 
+| "$og_url" | The URL you'd like to appear
+| "$og_app_id" | Your OG app ID. Optional and rarely used.
+
+Also, you do custom redirection by inserting the following _optional keys in the dictionary_:
+
+| Key | Value
+| --- | ---
+| "$desktop_url" | Where to send the user on a desktop or laptop. By default it is the Branch-hosted text-me service
+| "$android_url" | The replacement URL for the Play Store to send the user if they don't have the app. _Only necessary if you want a mobile web splash_
+| "$ios_url" | The replacement URL for the App Store to send the user if they don't have the app. _Only necessary if you want a mobile web splash_
+| "$ipad_url" | Same as above but for iPad Store
+| "$fire_url" | Same as above but for Amazon Fire Store
+| "$blackberry_url" | Same as above but for Blackberry Store
+| "$windows_phone_url" | Same as above but for Windows Store
+| "$after_click_url" | When a user returns to the browser after going to the app, take them to this URL. _iOS only; Android coming soon_
+
+You have the ability to control the direct deep linking of each link by inserting the following _optional keys in the dictionary_:
+
+| Key | Value
+| --- | ---
+| "$deeplink_path" | The value of the deep link path that you'd like us to append to your URI. For example, you could specify "$deeplink_path": "radio/station/456" and we'll open the app with the URI "yourapp://radio/station/456?link_click_id=branch-identifier". This is primarily for supporting legacy deep linking infrastructure. 
+| "$always_deeplink" | true or false. (default is not to deep link first) This key can be specified to have our linking service force try to open the app, even if we're not sure the user has the app installed. If the app is not installed, we fall back to the respective app store or $platform_url key. By default, we only open the app if we've seen a user initiate a session in your app from a Branch link (has been cookied and deep linked by Branch)
+
+
+## 6. Customizations And Overrides
 Both the invite and welcome screens can be customized.
-
-#### Invitation Customization
-The InvitiationControllerDelegate protocol has a number of items that allow you to customize the experience
-
-###### User Info
-There are currently four bits of user info that are configurable, two of which are optional.
-
-* User ID  
-An identifier for the user, which can be used by the app to tie back to an actual user record in their system. This field is required.
-
-* User Fullname  
-The full name of the inviting user, which is displayed in the welcome screen. This is required.
-
-* User Short Name  
-A short name for the inviting user, typically their first name. Optional, but recommended.
-
-* User Image Url  
-A url to load the inviting user's image from, shown on the Welcome screen. Optional, but recommended.
-
-* Custom Url Data  
-The BranchInvite will create a pretty generic Branch short url. This hook allows you to provide any additional data you desire.
 
 ###### Invite Display
 We've designed the invite screen to be attractive and intuitive, at least in our opinion. You may feel differently, but don't worry -- we provide hooks for you to customize the appearance.
@@ -256,7 +277,7 @@ We utilize an HMSegmentedControl to list out the contact providers. One of the h
 * TableViewCell Customization
 If you're prefer a different appearance to the contact rows, you have two options. You can either provide a custom class which will be registered with the table, or more extensively, a nib (with a class). Either of these classes *must* conform to the BranchInviteContactCell protocol.
 
-###### Advanced: Creating Your Own Contact Providers
+###### Creating Your Own Contact Providers
 Contact Providers are potentially the biggest point of customization for an app. The default implementation will provides a couple of defaults -- Email and Text -- both of which pull from the Address Book.
 
 Sometimes this isn't enough, though. Perhaps you have a list of contacts from a different 3rd Party system. In that case, you can create your own provider that fulfills the BranchInviteContactProvider protocol. This protocol requires a number of items.
@@ -380,7 +401,7 @@ A simple example implementation:
 
 For more detail on both, check out the delegates for both classes.
 
-## 4. Example Usage
+## 7. Example Usage
 The Example folder contains a sample application that utilizes the Branch Invite code. This app contains a basic running example of how the process works, as well as how to customize it.
 
 Note that the customizations are commented out by default -- you'll need to uncomment them to see the view customizations.
