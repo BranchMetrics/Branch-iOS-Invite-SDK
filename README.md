@@ -6,10 +6,12 @@ There will still be some configuration on the dashboard, but the goal is to prov
 
 # Invite Flow
 In your app, there will be a trigger to open the Invite UI. This will show a list of contacts and allow the user to select friends they want to invite to join them.  
+
 ![Invite](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_1.gif)
 
 # New User Experience (Install/Open & Personal Welcome)
 Invited users will receive a message (via SMS, Email, or a custom provider you've implemented). When they open this URL, they'll be fingerprinted by the Branch server as an "invited user," which will be remember when your app is launched on their device. When Invited Users enter the app, they'll be shown a Welcome UI (either the Branch default, or a custom screen). This Welcome Screen contains the inviting user's image, name, and id. The invited user can choose to accept the invite, or cancel and continue on their own.
+
 ![Open](https://s3-us-west-1.amazonaws.com/branch-guides/click_open.gif)
 
 # Usage Guide
@@ -17,7 +19,7 @@ Invited users will receive a message (via SMS, Email, or a custom provider you'v
 * [Branch App Key and Initialization](#1-get-your-branch-app-key-and-sdk-initialization)
 * [Setting up Branch in your App](#2-setting-up-branch-in-your-app)
 * [Initialization and Showing the Personalized Welcome](#3-initialization-and-showing-the-personalized-welcome)
-* [Retrieving Personal Invite Parameters from Session Init](#4-retrieving-personal-invite-parameters-from-session-init)
+* [Retrieving Personal Invite Parameters from Session Init](#4-retrieving-invite-parameters-from-session-init)
 * [Showing the Invite Controller and Customizations](#5-showing-the-invite-controller-and-customizations)
 * [Customization](#6-customizations-and-overrides)
 * [Example Usage](#7-example-usage)
@@ -31,12 +33,20 @@ Simply head to [Settings](https://dashboard.branch.io) to create an account to s
 
 ### Installing the SDK
 
-BranchInvite requires use of [CocoaPods](http://cocoapods.org). To install it simply add the following line to your Podfile:
+BranchInvite can be found on [CocoaPods](http://cocoapods.org). To install it simply add the following line to your Podfile:
 
 ```
     pod 'Branch'
     pod 'BranchInvite'
 ```
+
+#### Or download the raw files
+
+To be added!
+
+#### Or just clone this project
+
+The base source is found in the Classes folder of the project.
 
 ### Add your app key to your project
 
@@ -143,7 +153,7 @@ The deep link handler is called every single time the app is opened, returning d
 This same code also triggers the recording of an event with Branch. If this is the first time a user has opened the app, an "install" event is registered. Every subsequent time the user opens the app, it will trigger an "open" event.
 This project is built with, and currently relies on, Cocoapods. To add this project to your app, add the following to your Podfile
 
-## 4. Retrieving Personal Invite Parameters from Session Init
+## 4. Retrieving Invite Parameters from Session Init
 
 When you call Branch initSession and register the callback, if the user had just clicked an invite link, you can retrieve the individual parameters by using the Branch keys listed below.
 
@@ -268,7 +278,7 @@ You have the ability to control the direct deep linking of each link by insertin
 ## 6. Customizations And Overrides
 Both the invite and welcome screens can be customized.
 
-###### Invite Display
+#### Invite Display
 We've designed the invite screen to be attractive and intuitive, at least in our opinion. You may feel differently, but don't worry -- we provide hooks for you to customize the appearance.
 
 * Segmented Control  
@@ -277,7 +287,7 @@ We utilize an HMSegmentedControl to list out the contact providers. One of the h
 * TableViewCell Customization
 If you're prefer a different appearance to the contact rows, you have two options. You can either provide a custom class which will be registered with the table, or more extensively, a nib (with a class). Either of these classes *must* conform to the BranchInviteContactCell protocol.
 
-###### Creating Your Own Contact Providers
+#### Creating Your Own Contact Providers
 Contact Providers are potentially the biggest point of customization for an app. The default implementation will provides a couple of defaults -- Email and Text -- both of which pull from the Address Book.
 
 Sometimes this isn't enough, though. Perhaps you have a list of contacts from a different 3rd Party system. In that case, you can create your own provider that fulfills the BranchInviteContactProvider protocol. This protocol requires a number of items.
