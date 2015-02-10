@@ -41,11 +41,17 @@ BranchInvite can be found on [CocoaPods](http://cocoapods.org). To install it si
 
 #### Or download the raw files
 
-To be added!
+The Test Bed Project
+
+https://s3-us-west-1.amazonaws.com/branchhost/Branch-iOS-Invite-TestBed.zip
+
+The SDK
+
+https://s3-us-west-1.amazonaws.com/branchhost/Branch-iOS-Invite-SDK.zip
 
 #### Or just clone this project
 
-The base source is found in the Classes folder of the project.
+The base source is found in the **Source With Dependencies** folder of the project.
 
 ### Add your app key to your project
 
