@@ -76,6 +76,12 @@
 //    return 72;
 //}
 
+- (NSDictionary *)inviteUrlCustomData {
+    return @{
+        @"$ios_url": @"branchinvite://home"
+    };
+}
+
 - (NSString *)invitingUserId {
     return self.userIdField.text;
 }
