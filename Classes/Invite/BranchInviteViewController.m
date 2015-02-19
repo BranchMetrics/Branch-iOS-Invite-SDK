@@ -171,7 +171,10 @@
         [branch userCompletedAction:@"selected_contacts"];
 
         UIViewController *inviteSendingViewController = [provider inviteSendingController:selectedContacts inviteUrl:url completionDelegate:self];
-        [self presentViewController:inviteSendingViewController animated:YES completion:NULL];
+
+        if (inviteSendingViewController) {
+            [self presentViewController:inviteSendingViewController animated:YES completion:NULL];
+        }
     }];
 }
 
