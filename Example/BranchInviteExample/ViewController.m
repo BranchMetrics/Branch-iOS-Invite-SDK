@@ -156,7 +156,7 @@
     
     // The lowest point visible on the screen is the height of the screen minus the height of the keyboard, then adjusted by the current position
     // of the view. So, if the view has already been shifted upwards (negative origin), then more of the lower part of the screen is visible.
-    CGFloat lowestPointCoveredByKeyboard = viewFrame.origin.y + viewFrame.size.height - self.keyboardFrame.size.height;
+    CGFloat lowestPointCoveredByKeyboard = -viewFrame.origin.y + viewFrame.size.height - self.keyboardFrame.size.height;
     
     // The active text field's lowest point is its origin.y + its height (so, if it was at y=200, and is 21px tall, then the lowest point is 221.
     // We then check the lowest point covered by the keyboard, as described above, and check if we're below that (and if so, by how much). This
