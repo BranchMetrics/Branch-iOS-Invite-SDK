@@ -142,7 +142,7 @@
     }
     else {
         self.currentContacts = contacts;
-        [self.contactTable reloadData];
+        [self filterContactsForSearchText];
     }
 }
 
@@ -197,17 +197,7 @@
 
 #pragma mark - UISearchBarDelegate methods
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
-    NSArray *allContactsForProvider = [provider contacts];
-
-    if (searchText.length) {
-        self.currentContacts = [allContactsForProvider filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"displayName CONTAINS[cd] %@", searchText]];
-    }
-    else {
-        self.currentContacts = allContactsForProvider;
-    }
-    
-    [self.contactTable reloadData];
+    [self filterContactsForSearchText];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -244,11 +234,26 @@
 }
 
 #pragma mark - Internal methods
+- (void)filterContactsForSearchText {
+    NSString *searchText = self.searchBar.text;
+    id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
+    NSArray *allContactsForProvider = [provider contacts];
+    
+    if (searchText.length) {
+        self.currentContacts = [allContactsForProvider filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"displayName CONTAINS[cd] %@", searchText]];
+    }
+    else {
+        self.currentContacts = allContactsForProvider;
+    }
+    
+    [self.contactTable reloadData];
+}
+
 - (void)loadContactsForProviderThenLoadTable:(id <BranchInviteContactProvider>)provider {
     [provider loadContactsWithCallback:^(BOOL loaded, NSError *error) {
         if (loaded) {
             self.currentContacts = [provider contacts];
-            [self.contactTable reloadData];
+            [self filterContactsForSearchText];
         }
         else {
             NSString *failureMessage = [provider loadFailureMessage];
