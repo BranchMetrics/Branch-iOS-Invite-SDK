@@ -9,6 +9,7 @@
 #include <sys/utsname.h>
 #import "BNCPreferenceHelper.h"
 #import "BNCSystemObserver.h"
+#import "BranchServerInterface.h"
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>
 #import <SystemConfiguration/SystemConfiguration.h>
@@ -151,5 +152,36 @@
     CGFloat height = mainScreen.bounds.size.height * scaleFactor;
     return [NSNumber numberWithInteger:(NSInteger)height];
 }
+
++ (NSDictionary *)getListOfApps {
+    NSMutableArray *appsPresent = [[NSMutableArray alloc] init];
+    NSMutableArray *appsNotPresent = [[NSMutableArray alloc] init];
+    NSDictionary *appsData = [NSDictionary dictionaryWithObjects:@[appsPresent, appsNotPresent] forKeys:@[@"canOpen", @"notOpen"]];
+    
+    BNCServerResponse *serverResponse = [[[BranchServerInterface alloc] init] retrieveAppsToCheck];
+    [BNCPreferenceHelper log:FILE_NAME line:LINE_NUM message:@"returned from app check with %@", serverResponse.data];
+    if (serverResponse && serverResponse.data) {
+        NSInteger status = [serverResponse.statusCode integerValue];
+        NSArray *apps = [serverResponse.data objectForKey:@"potential_apps"];
+        UIApplication *application = [UIApplication sharedApplication];
+        if (status == 200 && apps && application) {
+            for (NSString *app in apps) {
+                NSString *uriScheme = app;
+                if ([uriScheme rangeOfString:@"://"].location != NSNotFound) {  // if (![uriScheme containsString:@"://"]) {
+                    uriScheme = [uriScheme stringByAppendingString:@"://"];
+                }
+                NSURL *url = [NSURL URLWithString:uriScheme];
+                if ([application canOpenURL:url]) {
+                    [appsPresent addObject:app];
+                } else {
+                    [appsNotPresent addObject:app];
+                }
+            }
+        }
+    }
+    
+    return appsData;
+}
+
 
 @end
