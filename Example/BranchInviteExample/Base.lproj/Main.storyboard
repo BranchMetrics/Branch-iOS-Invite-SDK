@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -94,6 +94,15 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="b43-Om-3Jo"/>
                                 </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x3d-2w-qNW">
+                                <rect key="frame" x="251" y="469" width="98" height="30"/>
+                                <state key="normal" title="View Referrals">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="viewReferralsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="EC4-QV-egI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -103,6 +112,7 @@
                             <constraint firstAttribute="centerY" secondItem="9Xl-dy-kFp" secondAttribute="centerY" id="A7D-v6-nXs"/>
                             <constraint firstAttribute="centerX" secondItem="FgZ-jE-x0J" secondAttribute="centerX" id="CRc-IF-q7S"/>
                             <constraint firstAttribute="centerX" secondItem="9Xl-dy-kFp" secondAttribute="centerX" id="E3W-kn-tcz"/>
+                            <constraint firstAttribute="centerX" secondItem="x3d-2w-qNW" secondAttribute="centerX" id="IDU-fj-HNI"/>
                             <constraint firstItem="YdZ-4R-iZC" firstAttribute="top" secondItem="dHc-uL-rQb" secondAttribute="bottom" constant="8" id="PBU-CD-XWe"/>
                             <constraint firstAttribute="centerX" secondItem="w8x-xL-mV9" secondAttribute="centerX" id="PFU-VJ-qYP"/>
                             <constraint firstItem="OeU-Sr-GsU" firstAttribute="top" secondItem="FgZ-jE-x0J" secondAttribute="bottom" constant="8" id="U0x-yu-ViF"/>
@@ -114,6 +124,7 @@
                             <constraint firstAttribute="centerX" secondItem="YdZ-4R-iZC" secondAttribute="centerX" id="fBT-Is-PTK"/>
                             <constraint firstItem="ljS-mo-4E4" firstAttribute="top" secondItem="QY5-hc-bBb" secondAttribute="bottom" constant="8" id="iPm-2G-YJ3"/>
                             <constraint firstItem="FgZ-jE-x0J" firstAttribute="top" secondItem="YdZ-4R-iZC" secondAttribute="bottom" constant="12" id="oly-wC-3TF"/>
+                            <constraint firstItem="x3d-2w-qNW" firstAttribute="top" secondItem="FHE-fC-d5c" secondAttribute="bottom" constant="8" id="slC-OX-11q"/>
                             <constraint firstAttribute="centerX" secondItem="QY5-hc-bBb" secondAttribute="centerX" id="wal-9U-ZCd"/>
                         </constraints>
                     </view>
