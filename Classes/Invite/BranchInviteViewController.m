@@ -162,7 +162,7 @@
     
     NSDictionary *invitingUserParams = [self createInvitingUserParams];
     
-    [branch getShortURLWithParams:invitingUserParams andChannel:channel andFeature:BRANCH_FEATURE_TAG_INVITE andCallback:^(NSString *url, NSError *error) {
+    [branch getReferralUrlWithParams:invitingUserParams andChannel:channel andCallback:^(NSString *url, NSError *error) {
         if (error) {
             NSLog(@"Failed to retrieve short url for invite");
             return;
