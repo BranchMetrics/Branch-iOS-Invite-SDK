@@ -11,6 +11,7 @@
 #import "BranchInviteTextContactProvider.h"
 #import "BranchInviteEmailContactProvider.h"
 #import "MysteryIncContactProvider.h"
+#import "BranchReferralController.h"
 
 @interface ViewController () <BranchInviteControllerDelegate, UITextFieldDelegate>
 
@@ -44,6 +45,12 @@
     id branchInviteViewController = [BranchInviteViewController branchInviteViewControllerWithDelegate:self];
     
     [self presentViewController:branchInviteViewController animated:YES completion:NULL];
+}
+
+- (IBAction)viewReferralsPressed:(id)sender {
+    BranchReferralController *referralController = [BranchReferralController branchReferralController];
+    
+    [self presentViewController:referralController animated:YES completion:NULL];
 }
 
 #pragma mark - BranchInviteControllerDelegate methods
@@ -100,8 +107,8 @@
 
 - (NSArray *)inviteContactProviders {
     return @[
-        [BranchInviteEmailContactProvider emailContactProviderWithSubject:@"Check out this demo app!" inviteMessageFormat:@"Check out my demo app with Branch:\n\n%@!"],
-        [BranchInviteTextContactProvider textContactProviderWithInviteMessageFormat:@"Check out my demo app with Branch:\n\n%@!"],
+        [BranchInviteEmailContactProvider emailContactProviderWithSubject:@"Check out this demo app!" inviteMessageFormat:@"Check out my demo app with Branch!:\n\n%@"],
+        [BranchInviteTextContactProvider textContactProviderWithInviteMessageFormat:@"Check out my demo app with Branch!:\n\n%@"],
         [[MysteryIncContactProvider alloc] init]
     ];
 }
