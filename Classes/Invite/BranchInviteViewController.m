@@ -66,11 +66,14 @@
 
 - (void)configureContactProviders {
     // Determine if providers are specified, or use default
+    self.contactProviders = @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
     if ([self.delegate respondsToSelector:@selector(inviteContactProviders)]) {
-        self.contactProviders = [self.delegate inviteContactProviders];
-    }
-    else {
-        self.contactProviders = @[ [[BranchInviteEmailContactProvider alloc] init], [[BranchInviteTextContactProvider alloc] init] ];
+        NSArray *contactProviders = [self.delegate inviteContactProviders];
+        
+        // Verify that the provided contact providers is a non-empty array
+        if ([contactProviders count]) {
+            self.contactProviders = contactProviders;
+        }
     }
 }
 
@@ -107,24 +110,40 @@
 - (void)configureContactTable {
     self.contactTable.allowsMultipleSelection = YES;
     
-    // Optionally allow for row height specification, or use default (44)
-    CGFloat rowHeightForContactRows = 44;
+    // Optionally allow for row height specification
+    CGFloat rowHeightForContactRows = 0;
     if ([self.delegate respondsToSelector:@selector(heightForContactRows)]) {
         rowHeightForContactRows = [self.delegate heightForContactRows];
     }
     
+    // If the delegate didn't provide a height, or provided a 0 height, use default
+    if (rowHeightForContactRows <= 0) {
+        rowHeightForContactRows = 44;
+    }
+    
     // Table configuration. Prefer custom nib to custom class, and custom class to our default.
+    BOOL registeredACell = NO;
     if ([self.delegate respondsToSelector:@selector(nibForContactRows)]) {
         UINib *nibForContactRows = [self.delegate nibForContactRows];
-        [self.contactTable registerNib:nibForContactRows forCellReuseIdentifier:@"ContactCell"];
-        self.contactTable.rowHeight = rowHeightForContactRows;
+        
+        if (nibForContactRows) {
+            [self.contactTable registerNib:nibForContactRows forCellReuseIdentifier:@"ContactCell"];
+            self.contactTable.rowHeight = rowHeightForContactRows;
+            registeredACell = YES;
+        }
     }
     else if ([self.delegate respondsToSelector:@selector(classForContactRows)]) {
         Class classForContactRows = [self.delegate classForContactRows];
-        [self.contactTable registerClass:classForContactRows forCellReuseIdentifier:@"ContactCell"];
-        self.contactTable.rowHeight = rowHeightForContactRows;
+        
+        if (classForContactRows) {
+            [self.contactTable registerClass:classForContactRows forCellReuseIdentifier:@"ContactCell"];
+            self.contactTable.rowHeight = rowHeightForContactRows;
+            registeredACell = YES;
+        }
     }
-    else {
+    
+    // If no cell was successfully registered (not implemented or nil), use default
+    if (!registeredACell) {
         [self.contactTable registerNib:[BranchInviteBundleUtil nibNamed:@"BranchInviteDefaultContactCell"] forCellReuseIdentifier:@"ContactCell"];
         self.contactTable.rowHeight = 56;
     }
@@ -270,22 +289,31 @@
     // Optional user info
     id normalizedImageUrl = [NSNull null];
     if ([self.delegate respondsToSelector:@selector(invitingUserImageUrl)]) {
-        normalizedImageUrl = [self.delegate invitingUserImageUrl];
+        NSString *providedImageUrl = [self.delegate invitingUserImageUrl];
+
+        if (providedImageUrl) {
+            normalizedImageUrl = providedImageUrl;
+        }
     }
     
-    NSString *normalizedShortName;
+    NSString *normalizedShortName = userFullname;
     if ([self.delegate respondsToSelector:@selector(invitingUserShortName)]) {
-        normalizedShortName = [self.delegate invitingUserShortName];
-    }
-    else {
-        normalizedShortName = userFullname;
+        NSString *providedShortName = [self.delegate invitingUserShortName];
+        
+        if (providedShortName) {
+            normalizedShortName = providedShortName;
+        }
     }
     
     NSMutableDictionary *inviteParams = [[NSMutableDictionary alloc] init];
     
     // First, apply any customized data
     if ([self.delegate respondsToSelector:@selector(inviteUrlCustomData)]) {
-        [inviteParams addEntriesFromDictionary:[self.delegate inviteUrlCustomData]];
+        NSDictionary *customData = [self.delegate inviteUrlCustomData];
+        
+        if (customData) {
+            [inviteParams addEntriesFromDictionary:customData];
+        }
     }
 
     // Then, add all of our data, overwriting any bad entries
