@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "Branch.h"
 #import "BranchWelcomeViewController.h"
+#import "BranchReferralController.h"
 #import "ExampleWelcomeScreen.h"
 
 @interface AppDelegate () <BranchWelcomeControllerDelegate>
@@ -34,6 +35,9 @@
             [self.presentingController presentViewController:welcomeController animated:YES completion:NULL];
         }
     }];
+    
+    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    [tabBarController addChildViewController:[BranchReferralController branchReferralControllerWithDelegate:nil]];
 
     return YES;
 }

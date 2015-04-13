@@ -13,7 +13,7 @@
 #import "MysteryIncContactProvider.h"
 #import "BranchReferralController.h"
 
-@interface ViewController () <BranchInviteControllerDelegate, UITextFieldDelegate>
+@interface ViewController () <BranchInviteControllerDelegate, BranchReferralScoreDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *userIdField;
 @property (weak, nonatomic) IBOutlet UITextField *userFullnameField;
@@ -48,7 +48,7 @@
 }
 
 - (IBAction)viewReferralsPressed:(id)sender {
-    BranchReferralController *referralController = [BranchReferralController branchReferralController];
+    BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithDelegate:self];
     
     [self presentViewController:referralController animated:YES completion:NULL];
 }
@@ -137,6 +137,11 @@
     }
 
     return NO;
+}
+
+#pragma mark - BranchReferralScore delegate
+- (void)branchReferralScoreDelegateScreenCompleted {
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - Keyboard Management methods
