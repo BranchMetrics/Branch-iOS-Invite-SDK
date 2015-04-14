@@ -56,8 +56,6 @@
         self.navBarHeightConstraint.constant = 59;
     }
     
-//    [self.creditHistoryTransactionTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"CreditHistoryTransactionCell"];
-    
     [[Branch getInstance] getCreditHistoryWithCallback:^(NSArray *transactions, NSError *error) {
         self.creditHistoryTransactions = transactions;
         [self.creditHistoryTransactionTable reloadData];
@@ -117,10 +115,33 @@
 
     NSDictionary *creditHistoryTransaction = self.creditHistoryTransactions[indexPath.row][@"transaction"];
     
-    cell.textLabel.text = creditHistoryTransaction[@"date"];
-    cell.detailTextLabel.text = [creditHistoryTransaction[@"amount"] stringValue];
+    NSNumber *amount = creditHistoryTransaction[@"amount"];
+    NSString *dateString = [self formatDateString:creditHistoryTransaction[@"date"]];
+    NSString *actionString = [amount integerValue] > 0 ? @"Referral" : @"Redeem";
+
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", actionString, dateString];
+    cell.detailTextLabel.text = [amount stringValue];
     
     return cell;
+}
+
+- (NSString *)formatDateString:(NSString *)dateString {
+    static NSDateFormatter *iso8601formatter;
+    static NSDateFormatter *tableViewFormatter;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        iso8601formatter = [[NSDateFormatter alloc] init];
+        iso8601formatter.dateFormat = @"YYYY-MM-dd'T'HH:mm:ss.SSSZ";
+
+        tableViewFormatter = [[NSDateFormatter alloc] init];
+        tableViewFormatter.dateStyle = NSDateFormatterShortStyle;
+        tableViewFormatter.timeStyle = NSDateFormatterShortStyle;
+    });
+    
+    NSDate *date = [iso8601formatter dateFromString:dateString];
+    
+    return [tableViewFormatter stringFromDate:date];
 }
 
 
@@ -183,11 +204,12 @@
 
 #pragma mark - Internals
 
-- (void)showReferralScoreText:(NSArray *)referrals {
-    NSString *referralsCount = [NSString stringWithFormat:@"%lld referrals", (long long)[referrals count]];
+- (void)showReferralScoreText:(NSArray *)transactions {
+    NSArray *referralTransactions = [transactions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"transaction.amount > 0"]];
+    NSString *referralsCount = [NSString stringWithFormat:@"%lld referrals", (long long)[referralTransactions count]];
     [self.referralCountLabel setTitle:referralsCount forState:UIControlStateNormal];
     
-    self.referralScoreLabel.text = [NSString stringWithFormat:@"%@ points", [referrals valueForKeyPath:@"@sum.transaction.amount"]];
+    self.referralScoreLabel.text = [NSString stringWithFormat:@"%@ points", [referralTransactions valueForKeyPath:@"@sum.transaction.amount"]];
 
     self.referralCountLabel.hidden = NO;
     self.referralScoreLabel.hidden = NO;
