@@ -11,13 +11,19 @@
 #import "BranchInviteViewController.h"
 #import "Branch.h"
 
-@interface BranchReferralController () <BranchInviteControllerDelegate>
+@interface BranchReferralController () <BranchInviteControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UILabel *referralCountLabel;
+@property (strong, nonatomic) NSArray *creditHistoryTransactions;
+@property (weak, nonatomic) IBOutlet UIButton *referralCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *referralScoreLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *navBarHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *referralListHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIView *pointsView;
+@property (weak, nonatomic) IBOutlet UIView *transactionsView;
+@property (weak, nonatomic) IBOutlet UITableView *creditHistoryTransactionTable;
 
 - (IBAction)inviteUsersPressed:(id)sender;
+- (IBAction)showReferralsPressed:(id)sender;
 - (IBAction)donePressed:(id)sender;
 
 @end
@@ -40,16 +46,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Don't layout under things
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
+    // Taller nav bar for iOS 7.0 and beyond since they layout under the status bar
     if (NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_7_0) {
         self.navBarHeightConstraint.constant = 59;
     }
     
-    [[Branch getInstance] getCreditHistoryWithCallback:^(NSArray *referrals, NSError *error) {
-        [self showReferralScoreText:referrals];
+//    [self.creditHistoryTransactionTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"CreditHistoryTransactionCell"];
+    
+    [[Branch getInstance] getCreditHistoryWithCallback:^(NSArray *transactions, NSError *error) {
+        self.creditHistoryTransactions = transactions;
+        [self.creditHistoryTransactionTable reloadData];
+
+        [self showReferralScoreText:transactions];
     }];
 }
 
@@ -70,8 +83,44 @@
     [self presentViewController:inviteController animated:YES completion:NULL];
 }
 
+- (void)showReferralsPressed:(id)sender {
+    [UIView animateWithDuration:0.25 animations:^{
+        if (self.referralListHeightConstraint.constant == 0) {
+            self.referralListHeightConstraint.constant = self.pointsView.frame.size.height;
+            self.transactionsView.hidden = NO;
+        }
+        else {
+            self.referralListHeightConstraint.constant = 0;
+            self.transactionsView.hidden = YES;
+        }
+        
+        [self.view layoutIfNeeded];
+    }];
+}
+
 - (void)donePressed:(id)sender {
     [self.delegate branchReferralScoreDelegateScreenCompleted];
+}
+
+#pragma mark - UITableViewDataSource / Delegate methods
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.creditHistoryTransactions count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CreditHistoryTransactionCell"];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CreditHistoryTransactionCell"];
+    }
+
+    NSDictionary *creditHistoryTransaction = self.creditHistoryTransactions[indexPath.row][@"transaction"];
+    
+    cell.textLabel.text = creditHistoryTransaction[@"date"];
+    cell.detailTextLabel.text = [creditHistoryTransaction[@"amount"] stringValue];
+    
+    return cell;
 }
 
 
@@ -135,11 +184,13 @@
 #pragma mark - Internals
 
 - (void)showReferralScoreText:(NSArray *)referrals {
-    self.referralCountLabel.hidden = NO;
-    self.referralCountLabel.text = [NSString stringWithFormat:@"%lld referrals", (long long)[referrals count]];
+    NSString *referralsCount = [NSString stringWithFormat:@"%lld referrals", (long long)[referrals count]];
+    [self.referralCountLabel setTitle:referralsCount forState:UIControlStateNormal];
     
-    self.referralScoreLabel.hidden = NO;
     self.referralScoreLabel.text = [NSString stringWithFormat:@"%@ points", [referrals valueForKeyPath:@"@sum.transaction.amount"]];
+
+    self.referralCountLabel.hidden = NO;
+    self.referralScoreLabel.hidden = NO;
 }
 
 @end
