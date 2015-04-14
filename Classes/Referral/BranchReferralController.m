@@ -13,8 +13,12 @@
 
 @interface BranchReferralController () <BranchInviteControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *referralCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *referralScoreLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *navBarHeightConstraint;
+
+- (IBAction)inviteUsersPressed:(id)sender;
+- (IBAction)donePressed:(id)sender;
 
 @end
 
@@ -36,22 +40,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+    
+    if (NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_7_0) {
+        self.navBarHeightConstraint.constant = 59;
+    }
+    
     [[Branch getInstance] getCreditHistoryWithCallback:^(NSArray *referrals, NSError *error) {
-        self.referralScoreLabel.hidden = NO;
-
-        if (error) {
-            [self showErrorMessage];
-        }
-        else if (![referrals count]) {
-            [self showNoReferralsMesasge];
-        }
-        else {
-            [self showReferralScoreText:referrals];
-        }
-
-        if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1) {
-            [self updateScoreLabelSize];
-        }
+        [self showReferralScoreText:referrals];
     }];
 }
 
@@ -136,44 +134,12 @@
 
 #pragma mark - Internals
 
-- (void)showErrorMessage {
-    self.referralScoreLabel.text = @"Unable to load referral information at this time";
-}
-
-- (void)showNoReferralsMesasge {
-    self.referralScoreLabel.text = @"You haven't referred any users yet! Press the button below to invite friends.";
-}
-
 - (void)showReferralScoreText:(NSArray *)referrals {
-    NSNumber *numReferrals = @([referrals count]);
-    NSNumber *referralsValue = [referrals valueForKeyPath:@"@sum.transaction.amount"];
+    self.referralCountLabel.hidden = NO;
+    self.referralCountLabel.text = [NSString stringWithFormat:@"%lld referrals", (long long)[referrals count]];
     
-    UIColor *accentColor = [UIColor colorWithRed:45/255.0 green:157/255.0 blue:157/255.0 alpha:1];
-    NSDictionary *valueAttributes = @{ NSFontAttributeName: [UIFont boldSystemFontOfSize:48], NSForegroundColorAttributeName: accentColor };
-    NSDictionary *labelAttributes = @{ NSForegroundColorAttributeName: accentColor };
-
-    NSString *referralString = [NSString stringWithFormat:@"You've referred\n%@ users\nfor a total of\n%@ points!", numReferrals, referralsValue];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:referralString];
-    [attributedString setAttributes:valueAttributes range:[referralString rangeOfString:[numReferrals stringValue]]];
-    [attributedString setAttributes:labelAttributes range:[referralString rangeOfString:@"users"]];
-    [attributedString setAttributes:valueAttributes range:[referralString rangeOfString:[referralsValue stringValue]]];
-    [attributedString setAttributes:labelAttributes range:[referralString rangeOfString:@"points"]];
-    
-    self.referralScoreLabel.attributedText = attributedString;
-}
-
-- (void)updateScoreLabelSize {
-    CGFloat height;
-    if (self.referralScoreLabel.attributedText) {
-        height = [self.referralScoreLabel.attributedText size].height + 20; // pad
-    }
-    else {
-        height = [self.referralScoreLabel.text sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(self.referralScoreLabel.frame.size.width, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
-    }
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.referralScoreLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
-    
-    [self.view addConstraint:heightConstraint];
+    self.referralScoreLabel.hidden = NO;
+    self.referralScoreLabel.text = [NSString stringWithFormat:@"%@ points", [referrals valueForKeyPath:@"@sum.transaction.amount"]];
 }
 
 @end
