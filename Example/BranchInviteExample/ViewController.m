@@ -12,6 +12,7 @@
 #import "BranchInviteEmailContactProvider.h"
 #import "MysteryIncContactProvider.h"
 #import "BranchReferralController.h"
+#import "CurrentUserModel.h"
 
 @interface ViewController () <BranchInviteControllerDelegate, BranchReferralScoreDelegate, UITextFieldDelegate>
 
@@ -25,6 +26,12 @@
 @end
 
 @implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self setUpCurrentUserIfNecessary];
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -40,7 +47,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
+
 #pragma mark - Interaction methods
+
 - (IBAction)inviteButtonPressed:(id)sender {
     id branchInviteViewController = [BranchInviteViewController branchInviteViewControllerWithDelegate:self];
     
@@ -53,7 +62,9 @@
     [self presentViewController:referralController animated:YES completion:NULL];
 }
 
+
 #pragma mark - BranchInviteControllerDelegate methods
+
 - (void)inviteControllerDidFinish {
     [self dismissViewControllerAnimated:YES completion:^{
         [[[UIAlertView alloc] initWithTitle:@"Hooray!" message:@"Your invites have been sent!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
@@ -90,19 +101,19 @@
 }
 
 - (NSString *)invitingUserId {
-    return self.userIdField.text;
+    return [CurrentUserModel sharedModel].userId;
 }
 
 - (NSString *)invitingUserFullname {
-    return self.userFullnameField.text;
+    return [CurrentUserModel sharedModel].userFullname;
 }
 
 - (NSString *)invitingUserShortName {
-    return self.userShortNameField.text;
+    return [CurrentUserModel sharedModel].userShortName;
 }
 
 - (NSString *)invitingUserImageUrl {
-    return self.userImageUrlField.text;
+    return [CurrentUserModel sharedModel].userImageUrl;
 }
 
 - (NSArray *)inviteContactProviders {
@@ -113,7 +124,9 @@
     ];
 }
 
+
 #pragma mark - UITextFieldDelegate methods
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.activeTextField = textField;
 
@@ -124,27 +137,38 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.userIdField) {
+        [CurrentUserModel sharedModel].userId = textField.text;
         [self.userFullnameField becomeFirstResponder];
     }
     else if (textField == self.userFullnameField) {
+        [CurrentUserModel sharedModel].userFullname = textField.text;
         [self.userShortNameField becomeFirstResponder];
     }
     else if (textField == self.userShortNameField) {
+        [CurrentUserModel sharedModel].userShortName = textField.text;
         [self.userImageUrlField becomeFirstResponder];
     }
     else {
+        [CurrentUserModel sharedModel].userImageUrl = textField.text;
         [textField resignFirstResponder];
     }
 
     return NO;
 }
 
+
 #pragma mark - BranchReferralScore delegate
+
+- (NSString *)referringUserId {
+    return [CurrentUserModel sharedModel].userId;
+}
+
 - (void)branchReferralScoreDelegateScreenCompleted {
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - Keyboard Management methods
+
 - (void)keyboardWillShow:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -160,7 +184,24 @@
     self.view.frame = viewFrame;
 }
 
+
 #pragma mark - Internal methods
+
+- (void)setUpCurrentUserIfNecessary {
+    CurrentUserModel *sharedModel = [CurrentUserModel sharedModel];
+    if (!sharedModel.userId) {
+        sharedModel.userId = @"shortstuffsushi";
+        sharedModel.userFullname = @"Graham Mueller";
+        sharedModel.userShortName = @"Graham";
+        sharedModel.userImageUrl = @"https://www.gravatar.com/avatar/28ed70ee3c8275f1d307d1c5b6eddfa5";
+    }
+    
+    self.userIdField.text = sharedModel.userId;
+    self.userFullnameField.text = sharedModel.userFullname;
+    self.userShortNameField.text = sharedModel.userShortName;
+    self.userImageUrlField.text = sharedModel.userImageUrl;
+}
+
 - (void)shiftKeyboardIfNecessary {
     CGRect viewFrame = self.view.frame;
     CGRect activeTextFieldFrame = self.activeTextField.frame;

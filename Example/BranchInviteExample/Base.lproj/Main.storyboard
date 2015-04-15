@@ -26,7 +26,7 @@
                                     <action selector="inviteButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="di1-gq-IBx"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Graham Mueller" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OeU-Sr-GsU">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OeU-Sr-GsU">
                                 <rect key="frame" x="150" y="247" width="300" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="ttX-kP-pPC"/>
@@ -43,7 +43,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Graham" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w8x-xL-mV9">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w8x-xL-mV9">
                                 <rect key="frame" x="150" y="318" width="300" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="lbJ-R6-Jo7"/>
@@ -60,7 +60,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="https://www.gravatar.com/avatar/28ed70ee3c8275f1d307d1c5b6eddfa5" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ljS-mo-4E4">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ljS-mo-4E4">
                                 <rect key="frame" x="150" y="389" width="300" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="Jk9-EZ-8CE"/>
@@ -83,7 +83,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="shortstuffsushi" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YdZ-4R-iZC">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YdZ-4R-iZC">
                                 <rect key="frame" x="150" y="176" width="300" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="AF8-ig-DOR"/>

@@ -113,35 +113,28 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CreditHistoryTransactionCell"];
     }
 
-    NSDictionary *creditHistoryTransaction = self.creditHistoryTransactions[indexPath.row][@"transaction"];
+    NSDictionary *creditHistoryItem = self.creditHistoryTransactions[indexPath.row];
+    BOOL isReferral = [self isReferral:creditHistoryItem];
+    NSDictionary *transaction = creditHistoryItem[@"transaction"];
     
-    NSNumber *amount = creditHistoryTransaction[@"amount"];
-    NSString *dateString = [self formatDateString:creditHistoryTransaction[@"date"]];
-    NSString *actionString = [amount integerValue] > 0 ? @"Referral" : @"Redeem";
+    NSNumber *amount = transaction[@"amount"];
+    NSString *dateString = [self formatDateString:transaction[@"date"]];
+    NSString *actionString;
+    
+    if (isReferral) {
+        actionString = @"Referral";
+    }
+    else if ([amount integerValue] > 0) {
+        actionString = @"Credit";
+    }
+    else {
+        actionString =  @"Redeem";
+    }
 
     cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", actionString, dateString];
     cell.detailTextLabel.text = [amount stringValue];
     
     return cell;
-}
-
-- (NSString *)formatDateString:(NSString *)dateString {
-    static NSDateFormatter *iso8601formatter;
-    static NSDateFormatter *tableViewFormatter;
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        iso8601formatter = [[NSDateFormatter alloc] init];
-        iso8601formatter.dateFormat = @"YYYY-MM-dd'T'HH:mm:ss.SSSZ";
-
-        tableViewFormatter = [[NSDateFormatter alloc] init];
-        tableViewFormatter.dateStyle = NSDateFormatterShortStyle;
-        tableViewFormatter.timeStyle = NSDateFormatterShortStyle;
-    });
-    
-    NSDate *date = [iso8601formatter dateFromString:dateString];
-    
-    return [tableViewFormatter stringFromDate:date];
 }
 
 
@@ -205,7 +198,10 @@
 #pragma mark - Internals
 
 - (void)showReferralScoreText:(NSArray *)transactions {
-    NSArray *referralTransactions = [transactions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"transaction.amount > 0"]];
+    NSArray *referralTransactions = [transactions filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDictionary *transaction, NSDictionary *bindings) {
+        return [self isReferral:transaction];
+    }]];
+
     NSString *referralsCount = [NSString stringWithFormat:@"%lld referrals", (long long)[referralTransactions count]];
     [self.referralCountLabel setTitle:referralsCount forState:UIControlStateNormal];
     
@@ -213,6 +209,39 @@
 
     self.referralCountLabel.hidden = NO;
     self.referralScoreLabel.hidden = NO;
+}
+
+- (BOOL)isReferral:(NSDictionary *)transaction {
+    NSString *currentSessionId = [self.delegate referringUserId];
+    NSString *referrer = transaction[@"referrer"];
+    NSString *referree = transaction[@"referree"];
+    
+    BOOL referreeIsSetAndIsNotMe = referree && ![referree isEqualToString:currentSessionId];
+    BOOL referrerIsSetAndIsMe = referrer && [referrer isEqualToString:currentSessionId];
+    
+    // This transaction is a referral made by me if one of the two are true:
+    // * The referree is set (BranchReferringUser type referrals), and  it is not me. If it is me, that means I was referred.
+    // * The referrer is set (BranchReferreeUser, BranchBothUsers), and is me. If it is not me, that means I wasn't the referrer.
+    return referreeIsSetAndIsNotMe || referrerIsSetAndIsMe;
+}
+
+- (NSString *)formatDateString:(NSString *)dateString {
+    static NSDateFormatter *iso8601formatter;
+    static NSDateFormatter *tableViewFormatter;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        iso8601formatter = [[NSDateFormatter alloc] init];
+        iso8601formatter.dateFormat = @"YYYY-MM-dd'T'HH:mm:ss.SSSZ";
+        
+        tableViewFormatter = [[NSDateFormatter alloc] init];
+        tableViewFormatter.dateStyle = NSDateFormatterShortStyle;
+        tableViewFormatter.timeStyle = NSDateFormatterShortStyle;
+    });
+    
+    NSDate *date = [iso8601formatter dateFromString:dateString];
+    
+    return [tableViewFormatter stringFromDate:date];
 }
 
 @end

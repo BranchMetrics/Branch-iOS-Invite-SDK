@@ -12,6 +12,7 @@
 @protocol BranchReferralScoreDelegate <NSObject>
 
 - (void)branchReferralScoreDelegateScreenCompleted;
+- (NSString *)referringUserId;
 
 @end
 

@@ -11,8 +11,9 @@
 #import "BranchWelcomeViewController.h"
 #import "BranchReferralController.h"
 #import "ExampleWelcomeScreen.h"
+#import "CurrentUserModel.h"
 
-@interface AppDelegate () <BranchWelcomeControllerDelegate>
+@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralScoreDelegate, BranchInviteControllerDelegate>
 
 @property (weak, nonatomic) UIViewController *presentingController;
 
@@ -37,13 +38,51 @@
     }];
     
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
-    [tabBarController addChildViewController:[BranchReferralController branchReferralControllerWithDelegate:nil]];
+    [tabBarController addChildViewController:[BranchReferralController branchReferralControllerWithDelegate:self]];
 
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [[Branch getInstance] handleDeepLink:url];
+}
+
+
+#pragma mark - BranchInviteControllerDelegate methods
+
+- (NSString *)invitingUserId {
+    return [CurrentUserModel sharedModel].userId;
+}
+
+- (NSString *)invitingUserFullname {
+    return [CurrentUserModel sharedModel].userFullname;
+}
+
+- (NSString *)invitingUserShortName {
+    return [CurrentUserModel sharedModel].userShortName;
+}
+
+- (NSString *)invitingUserImageUrl {
+    return [CurrentUserModel sharedModel].userImageUrl;
+}
+
+- (void)inviteControllerDidFinish {
+    // Nothing to do here since this is handled by the referral controller
+}
+
+- (void)inviteControllerDidCancel {
+    // Nothing to do here since this is handled by the referral controller
+}
+
+
+#pragma mark - BranchReferralControllerDelegate methods
+
+- (NSString *)referringUserId {
+    return [CurrentUserModel sharedModel].userId;
+}
+
+- (void)branchReferralScoreDelegateScreenCompleted {
+    // Nothing to do here since this controller is shown in a tab, and cannot be "completed," so this method will never be called
 }
 
 #pragma mark - BranchWelcomeControllerDelegate methods

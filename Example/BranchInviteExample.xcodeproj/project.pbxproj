@@ -18,6 +18,7 @@
 		4686F4051A7328910029ABCC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4686F4041A7328910029ABCC /* Images.xcassets */; };
 		4686F4081A7328910029ABCC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4686F4061A7328910029ABCC /* LaunchScreen.xib */; };
 		4686F4141A7328910029ABCC /* BranchInviteExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4686F4131A7328910029ABCC /* BranchInviteExampleTests.m */; };
+		46AF0C1D1ADEB89A000B4347 /* CurrentUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 46AF0C1C1ADEB89A000B4347 /* CurrentUserModel.m */; };
 		46E43F5F1A7F09CD007576D0 /* ExampleWelcomeScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E43F5E1A7F09CD007576D0 /* ExampleWelcomeScreen.m */; };
 		46E43F611A7F0AB6007576D0 /* ExampleWelcomeScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46E43F601A7F0AB6007576D0 /* ExampleWelcomeScreen.xib */; };
 		46EB4D011A7E87C600A72AD9 /* MysteryIncInviteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EB4D001A7E87C600A72AD9 /* MysteryIncInviteController.m */; };
@@ -54,6 +55,8 @@
 		4686F40D1A7328910029ABCC /* BranchInviteExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BranchInviteExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4686F4121A7328910029ABCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4686F4131A7328910029ABCC /* BranchInviteExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BranchInviteExampleTests.m; sourceTree = "<group>"; };
+		46AF0C1B1ADEB89A000B4347 /* CurrentUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentUserModel.h; sourceTree = "<group>"; };
+		46AF0C1C1ADEB89A000B4347 /* CurrentUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentUserModel.m; sourceTree = "<group>"; };
 		46E43F5D1A7F09CD007576D0 /* ExampleWelcomeScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleWelcomeScreen.h; sourceTree = "<group>"; };
 		46E43F5E1A7F09CD007576D0 /* ExampleWelcomeScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleWelcomeScreen.m; sourceTree = "<group>"; };
 		46E43F601A7F0AB6007576D0 /* ExampleWelcomeScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleWelcomeScreen.xib; sourceTree = "<group>"; };
@@ -143,6 +146,8 @@
 				4686F3FC1A7328910029ABCC /* AppDelegate.m */,
 				4686F3FE1A7328910029ABCC /* ViewController.h */,
 				4686F3FF1A7328910029ABCC /* ViewController.m */,
+				46AF0C1B1ADEB89A000B4347 /* CurrentUserModel.h */,
+				46AF0C1C1ADEB89A000B4347 /* CurrentUserModel.m */,
 				4686F3F71A7328910029ABCC /* Supporting Files */,
 			);
 			path = BranchInviteExample;
@@ -342,6 +347,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46AF0C1D1ADEB89A000B4347 /* CurrentUserModel.m in Sources */,
 				4686F4001A7328910029ABCC /* ViewController.m in Sources */,
 				4686F3FD1A7328910029ABCC /* AppDelegate.m in Sources */,
 				4661E5731A7D365B00B6130D /* MysteryIncContactProvider.m in Sources */,
@@ -424,7 +430,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -460,7 +466,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -474,7 +480,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = BranchInviteExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -486,7 +491,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = BranchInviteExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
