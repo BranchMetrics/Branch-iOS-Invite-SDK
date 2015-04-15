@@ -13,7 +13,7 @@
 #import "ExampleWelcomeScreen.h"
 #import "CurrentUserModel.h"
 
-@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralControllerDelegate, BranchInviteControllerDelegate>
+@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralControllerDelegate>
 
 @property (weak, nonatomic) UIViewController *presentingController;
 
@@ -48,41 +48,10 @@
 }
 
 
-#pragma mark - BranchInviteControllerDelegate methods
-
-- (NSString *)invitingUserId {
-    return [CurrentUserModel sharedModel].userId;
-}
-
-- (NSString *)invitingUserFullname {
-    return [CurrentUserModel sharedModel].userFullname;
-}
-
-- (NSString *)invitingUserShortName {
-    return [CurrentUserModel sharedModel].userShortName;
-}
-
-- (NSString *)invitingUserImageUrl {
-    return [CurrentUserModel sharedModel].userImageUrl;
-}
-
-- (void)inviteControllerDidFinish {
-    // Nothing to do here since this is handled by the referral controller
-}
-
-- (void)inviteControllerDidCancel {
-    // Nothing to do here since this is handled by the referral controller
-}
-
-
 #pragma mark - BranchReferralControllerDelegate methods
 
 - (NSString *)referringUserId {
     return [CurrentUserModel sharedModel].userId;
-}
-
-- (void)branchReferralControllerCompleted {
-    // Nothing to do here since this controller is shown in a tab, and cannot be "completed," so this method will never be called
 }
 
 #pragma mark - BranchWelcomeControllerDelegate methods

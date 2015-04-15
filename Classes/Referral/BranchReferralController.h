@@ -12,8 +12,12 @@
 
 @protocol BranchReferralControllerDelegate <NSObject>
 
-- (void)branchReferralControllerCompleted;
+// The id of the user who should be compared against for referrals. This should be the same id given to a Branch setIdentity: call
 - (NSString *)referringUserId;
+
+@optional
+// Called when displayed modally, so that it can be dismissed. Not necessary when displayed within tab or nav controller
+- (void)branchReferralControllerCompleted;
 
 @end
 

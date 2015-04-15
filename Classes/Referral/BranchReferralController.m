@@ -10,13 +10,13 @@
 #import "BranchInviteBundleUtil.h"
 #import "BranchInviteViewController.h"
 #import "Branch.h"
+#import "BranchReferralDefaultView.h"
 
-@interface BranchReferralController () <BranchInviteControllerDelegate>
+@interface BranchReferralController () <BranchReferralViewControllerDisplayDelegate>
 
 @property (weak, nonatomic) id <BranchReferralControllerDelegate> delegate;
-@property (weak, nonatomic) id <BranchInviteControllerDelegate> inviteDelegate;
-@property (weak, nonatomic) IBOutlet UIView <BranchReferralView> *contentView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *navBarHeightConstraint;
+@property (strong, nonatomic) UIView <BranchReferralView> *contentView;
+@property (strong, nonatomic) UINavigationBar *navBar;
 
 - (IBAction)donePressed:(id)sender;
 
@@ -24,27 +24,27 @@
 
 @implementation BranchReferralController
 
-+ (BranchReferralController *)branchReferralControllerWithView:(UIView <BranchReferralView> *)view delegate:(id<BranchReferralControllerDelegate>)delegate {
-    BranchReferralController *controller = [[BranchReferralController alloc] init];
-    controller.contentView = view;
-    
-    [view willMoveToSuperview:controller.view];
-    [controller.view addSubview:view]; // TODO figure this out
-    [view didMoveToSuperview];
-    
-    return controller;
-}
-
-+ (BranchReferralController *)branchReferralControllerWithDelegate:(id<BranchReferralControllerDelegate>)delegate {
++ (BranchReferralController *)branchReferralControllerWithDelegate:(id <BranchReferralControllerDelegate>)delegate {
     return [BranchReferralController branchReferralControllerWithDelegate:delegate inviteDelegate:nil];
 }
 
-+ (BranchReferralController *)branchReferralControllerWithDelegate:(id <BranchReferralControllerDelegate>)delegate inviteDelegate:(id<BranchInviteControllerDelegate>)inviteDelegate {
++ (BranchReferralController *)branchReferralControllerWithDelegate:(id <BranchReferralControllerDelegate>)delegate inviteDelegate:(id <BranchInviteControllerDelegate>)inviteDelegate {
     NSBundle *branchInviteBundle = [BranchInviteBundleUtil branchInviteBundle];
     
-    BranchReferralController *controller = [[BranchReferralController alloc] initWithNibName:@"BranchReferralController" bundle:branchInviteBundle];
+    BranchReferralDefaultView *defaultView = [[branchInviteBundle loadNibNamed:@"BranchReferralDefaultView" owner:self options:kNilOptions] objectAtIndex:0];
+    defaultView.inviteDelegate = inviteDelegate;
+    
+    return [BranchReferralController branchReferralControllerWithView:defaultView delegate:delegate];
+}
+
++ (BranchReferralController *)branchReferralControllerWithView:(UIView <BranchReferralView> *)view delegate:(id <BranchReferralControllerDelegate>)delegate {
+    BranchReferralController *controller = [[BranchReferralController alloc] init];
     controller.delegate = delegate;
-    controller.inviteDelegate = inviteDelegate;
+    controller.contentView = view;
+    
+    if ([view respondsToSelector:@selector(setControllerDisplayDelegate:)]) {
+        [view setControllerDisplayDelegate:controller];
+    }
     
     return controller;
 }
@@ -60,91 +60,72 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
+    // Build up the navigation bar and add it
     // Taller nav bar for iOS 7.0 and beyond since they layout under the status bar
-    if (NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_7_0) {
-        self.navBarHeightConstraint.constant = 59;
-    }
+    CGFloat navBarHeight = NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_7_0 ? 59 : 44;
+    self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, navBarHeight)];
+    UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(donePressed:)];
     
-    [[Branch getInstance] getCreditHistoryWithCallback:^(NSArray *transactions, NSError *error) {
-        NSArray *referrals = [transactions filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDictionary *transaction, NSDictionary *bindings) {
-            return [self isReferral:transaction];
-        }]];
+    navigationItem.rightBarButtonItem = doneButton;
+    self.navBar.items = @[ navigationItem ];
+    
+    [self.view addSubview:self.navBar];
 
-        [self.contentView setCreditHistoryItems:transactions];
-        [self.contentView setReferrals:referrals];
-    }];
+    // Ensure the view doesn't use auto resizing constraints
+    self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    // Go through the full view cycle for the content view
+    [self.contentView willMoveToSuperview:self.view];
+    [self.view addSubview:self.contentView];
+    [self.contentView didMoveToSuperview];
+    
+    // Create constraints, pinned top to bottom of navbar, left to view edge, right to view edge, bottom to view edge
+    NSLayoutConstraint *contentViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.navBar attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+    NSLayoutConstraint *contentViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+    NSLayoutConstraint *contentViewRightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+    NSLayoutConstraint *contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+    
+    // Add them
+    [self.view addConstraints:@[ contentViewTopConstraint, contentViewRightConstraint, contentViewBottomConstraint, contentViewLeftConstraint ]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     if (self.navigationController || self.tabBarController) {
-        self.navBarHeightConstraint.constant = 0;
+        CGRect navBarFrame = self.navBar.frame;
+        navBarFrame.size.height = 0;
+        self.navBar.frame = navBarFrame;
     }
+    
+    [[Branch getInstance] getCreditHistoryWithCallback:^(NSArray *transactions, NSError *error) {
+        NSArray *referrals = [transactions filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDictionary *transaction, NSDictionary *bindings) {
+            return [self isReferral:transaction];
+        }]];
+        
+        [self.contentView setCreditHistoryItems:transactions];
+        [self.contentView setReferrals:referrals];
+    }];
 }
 
 
 #pragma mark - Interaction methods
 
 - (void)donePressed:(id)sender {
-    [self.delegate branchReferralControllerCompleted];
-}
-
-
-#pragma mark - BranchInviteController methods
-
-- (void)inviteControllerDidFinish {
-    [self dismissViewControllerAnimated:YES completion:NULL];
-    
-    [self.inviteDelegate inviteControllerDidFinish];
-}
-
-- (void)inviteControllerDidCancel {
-    [self dismissViewControllerAnimated:YES completion:NULL];
-
-    [self.inviteDelegate inviteControllerDidCancel];
-}
-
-- (NSArray *)inviteContactProviders {
-    return [self.inviteDelegate respondsToSelector:@selector(inviteContactProviders)] ? [self.inviteDelegate inviteContactProviders] : nil;
-}
-
-- (void)configureSegmentedControl:(HMSegmentedControl *)segmentedControl {
-    if ([self.inviteDelegate respondsToSelector:@selector(configureSegmentedControl:)]) {
-        [self.inviteDelegate configureSegmentedControl:segmentedControl];
+    if ([self.delegate respondsToSelector:@selector(branchReferralControllerCompleted)]) {
+        [self.delegate branchReferralControllerCompleted];
     }
 }
 
-- (UINib *)nibForContactRows {
-    return [self.inviteDelegate respondsToSelector:@selector(nibForContactRows)] ? [self.inviteDelegate nibForContactRows] : nil;
+
+#pragma mark - BranchReferralViewControllerDisplayDelegate methods
+- (void)displayController:(UIViewController *)controller animated:(BOOL)animated completion:(void (^)())completion {
+    [self presentViewController:controller animated:animated completion:completion];
 }
 
-- (Class)classForContactRows {
-    return [self.inviteDelegate respondsToSelector:@selector(classForContactRows)] ? [self.inviteDelegate classForContactRows] : nil;
-}
-
-- (CGFloat)heightForContactRows {
-    return [self.inviteDelegate respondsToSelector:@selector(heightForContactRows)] ? [self.inviteDelegate heightForContactRows] : 0;
-}
-
-- (NSString *)invitingUserFullname {
-    return [self.inviteDelegate invitingUserFullname];
-}
-
-- (NSString *)invitingUserId {
-    return [self.inviteDelegate respondsToSelector:@selector(invitingUserId)] ? [self.inviteDelegate invitingUserId] : nil;
-}
-
-- (NSDictionary *)inviteUrlCustomData {
-    return [self.inviteDelegate respondsToSelector:@selector(inviteUrlCustomData)] ? [self.inviteDelegate inviteUrlCustomData] : nil;
-}
-
-- (NSString *)invitingUserShortName {
-    return [self.inviteDelegate respondsToSelector:@selector(invitingUserShortName)] ? [self.inviteDelegate invitingUserShortName] : nil;
-}
-
-- (NSString *)invitingUserImageUrl {
-    return [self.inviteDelegate respondsToSelector:@selector(invitingUserImageUrl)] ? [self.inviteDelegate invitingUserImageUrl] : nil;
+- (void)dismissControllerAnimated:(BOOL)animated completion:(void (^)())completion {
+    [self dismissViewControllerAnimated:animated completion:completion];
 }
 
 

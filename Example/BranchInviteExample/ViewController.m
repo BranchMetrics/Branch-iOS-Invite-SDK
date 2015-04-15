@@ -57,7 +57,7 @@
 }
 
 - (IBAction)viewReferralsPressed:(id)sender {
-    BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithDelegate:self];
+    BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithDelegate:self inviteDelegate:self];
     
     [self presentViewController:referralController animated:YES completion:NULL];
 }
