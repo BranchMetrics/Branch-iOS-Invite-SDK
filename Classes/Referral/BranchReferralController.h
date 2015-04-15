@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "BranchInviteViewController.h"
 
-@protocol BranchReferralScoreDelegate <NSObject>
+@protocol BranchReferralControllerDelegate <NSObject>
 
-- (void)branchReferralScoreDelegateScreenCompleted;
+- (void)branchReferralControllerCompleted;
 - (NSString *)referringUserId;
 
 @end
@@ -20,7 +20,5 @@
 
 + (BranchReferralController *)branchReferralControllerWithDelegate:(id <BranchReferralScoreDelegate, BranchInviteControllerDelegate>)delegate;
 
-@property (weak, nonatomic) id <BranchReferralScoreDelegate> delegate;
-@property (weak, nonatomic) id <BranchInviteControllerDelegate> inviteDelegate;
 
 @end

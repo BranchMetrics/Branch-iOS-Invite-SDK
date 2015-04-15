@@ -13,7 +13,7 @@
 #import "ExampleWelcomeScreen.h"
 #import "CurrentUserModel.h"
 
-@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralScoreDelegate, BranchInviteControllerDelegate>
+@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralControllerDelegate, BranchInviteControllerDelegate>
 
 @property (weak, nonatomic) UIViewController *presentingController;
 
@@ -81,7 +81,7 @@
     return [CurrentUserModel sharedModel].userId;
 }
 
-- (void)branchReferralScoreDelegateScreenCompleted {
+- (void)branchReferralControllerCompleted {
     // Nothing to do here since this controller is shown in a tab, and cannot be "completed," so this method will never be called
 }
 

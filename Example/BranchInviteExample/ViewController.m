@@ -14,7 +14,7 @@
 #import "BranchReferralController.h"
 #import "CurrentUserModel.h"
 
-@interface ViewController () <BranchInviteControllerDelegate, BranchReferralScoreDelegate, UITextFieldDelegate>
+@interface ViewController () <BranchInviteControllerDelegate, BranchReferralControllerDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *userIdField;
 @property (weak, nonatomic) IBOutlet UITextField *userFullnameField;
@@ -163,7 +163,7 @@
     return [CurrentUserModel sharedModel].userId;
 }
 
-- (void)branchReferralScoreDelegateScreenCompleted {
+- (void)branchReferralControllerCompleted {
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 

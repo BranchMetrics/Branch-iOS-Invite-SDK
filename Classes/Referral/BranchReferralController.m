@@ -16,6 +16,8 @@
 @property (strong, nonatomic) NSArray *creditHistoryTransactions;
 @property (weak, nonatomic) IBOutlet UIButton *referralCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *referralScoreLabel;
+@property (weak, nonatomic) id <BranchReferralControllerDelegate> delegate;
+@property (weak, nonatomic) id <BranchInviteControllerDelegate> inviteDelegate;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *navBarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *referralListHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIView *pointsView;
