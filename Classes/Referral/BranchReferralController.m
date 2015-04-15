@@ -11,33 +11,40 @@
 #import "BranchInviteViewController.h"
 #import "Branch.h"
 
-@interface BranchReferralController () <BranchInviteControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface BranchReferralController () <BranchInviteControllerDelegate>
 
-@property (strong, nonatomic) NSArray *creditHistoryTransactions;
-@property (weak, nonatomic) IBOutlet UIButton *referralCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *referralScoreLabel;
 @property (weak, nonatomic) id <BranchReferralControllerDelegate> delegate;
 @property (weak, nonatomic) id <BranchInviteControllerDelegate> inviteDelegate;
+@property (weak, nonatomic) IBOutlet UIView <BranchReferralView> *contentView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *navBarHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *referralListHeightConstraint;
-@property (weak, nonatomic) IBOutlet UIView *pointsView;
-@property (weak, nonatomic) IBOutlet UIView *transactionsView;
-@property (weak, nonatomic) IBOutlet UITableView *creditHistoryTransactionTable;
 
-- (IBAction)inviteUsersPressed:(id)sender;
-- (IBAction)showReferralsPressed:(id)sender;
 - (IBAction)donePressed:(id)sender;
 
 @end
 
 @implementation BranchReferralController
 
-+ (BranchReferralController *)branchReferralControllerWithDelegate:(id <BranchReferralScoreDelegate, BranchInviteControllerDelegate>)delegate {
++ (BranchReferralController *)branchReferralControllerWithView:(UIView <BranchReferralView> *)view delegate:(id<BranchReferralControllerDelegate>)delegate {
+    BranchReferralController *controller = [[BranchReferralController alloc] init];
+    controller.contentView = view;
+    
+    [view willMoveToSuperview:controller.view];
+    [controller.view addSubview:view]; // TODO figure this out
+    [view didMoveToSuperview];
+    
+    return controller;
+}
+
++ (BranchReferralController *)branchReferralControllerWithDelegate:(id<BranchReferralControllerDelegate>)delegate {
+    return [BranchReferralController branchReferralControllerWithDelegate:delegate inviteDelegate:nil];
+}
+
++ (BranchReferralController *)branchReferralControllerWithDelegate:(id <BranchReferralControllerDelegate>)delegate inviteDelegate:(id<BranchInviteControllerDelegate>)inviteDelegate {
     NSBundle *branchInviteBundle = [BranchInviteBundleUtil branchInviteBundle];
     
     BranchReferralController *controller = [[BranchReferralController alloc] initWithNibName:@"BranchReferralController" bundle:branchInviteBundle];
     controller.delegate = delegate;
-    controller.inviteDelegate = delegate;
+    controller.inviteDelegate = inviteDelegate;
     
     return controller;
 }
@@ -59,10 +66,12 @@
     }
     
     [[Branch getInstance] getCreditHistoryWithCallback:^(NSArray *transactions, NSError *error) {
-        self.creditHistoryTransactions = transactions;
-        [self.creditHistoryTransactionTable reloadData];
+        NSArray *referrals = [transactions filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDictionary *transaction, NSDictionary *bindings) {
+            return [self isReferral:transaction];
+        }]];
 
-        [self showReferralScoreText:transactions];
+        [self.contentView setCreditHistoryItems:transactions];
+        [self.contentView setReferrals:referrals];
     }];
 }
 
@@ -77,66 +86,8 @@
 
 #pragma mark - Interaction methods
 
-- (void)inviteUsersPressed:(id)sender {
-    UINavigationController *inviteController = [BranchInviteViewController branchInviteViewControllerWithDelegate:self];
-    
-    [self presentViewController:inviteController animated:YES completion:NULL];
-}
-
-- (void)showReferralsPressed:(id)sender {
-    [UIView animateWithDuration:0.25 animations:^{
-        if (self.referralListHeightConstraint.constant == 0) {
-            self.referralListHeightConstraint.constant = self.pointsView.frame.size.height;
-            self.transactionsView.hidden = NO;
-        }
-        else {
-            self.referralListHeightConstraint.constant = 0;
-            self.transactionsView.hidden = YES;
-        }
-        
-        [self.view layoutIfNeeded];
-    }];
-}
-
 - (void)donePressed:(id)sender {
-    [self.delegate branchReferralScoreDelegateScreenCompleted];
-}
-
-#pragma mark - UITableViewDataSource / Delegate methods
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.creditHistoryTransactions count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CreditHistoryTransactionCell"];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CreditHistoryTransactionCell"];
-    }
-
-    NSDictionary *creditHistoryItem = self.creditHistoryTransactions[indexPath.row];
-    BOOL isReferral = [self isReferral:creditHistoryItem];
-    NSDictionary *transaction = creditHistoryItem[@"transaction"];
-    
-    NSNumber *amount = transaction[@"amount"];
-    NSString *dateString = [self formatDateString:transaction[@"date"]];
-    NSString *actionString;
-    
-    if (isReferral) {
-        actionString = @"Referral";
-    }
-    else if ([amount integerValue] > 0) {
-        actionString = @"Credit";
-    }
-    else {
-        actionString =  @"Redeem";
-    }
-
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", actionString, dateString];
-    cell.detailTextLabel.text = [amount stringValue];
-    
-    return cell;
+    [self.delegate branchReferralControllerCompleted];
 }
 
 
@@ -199,20 +150,6 @@
 
 #pragma mark - Internals
 
-- (void)showReferralScoreText:(NSArray *)transactions {
-    NSArray *referralTransactions = [transactions filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDictionary *transaction, NSDictionary *bindings) {
-        return [self isReferral:transaction];
-    }]];
-
-    NSString *referralsCount = [NSString stringWithFormat:@"%lld referrals", (long long)[referralTransactions count]];
-    [self.referralCountLabel setTitle:referralsCount forState:UIControlStateNormal];
-    
-    self.referralScoreLabel.text = [NSString stringWithFormat:@"%@ points", [referralTransactions valueForKeyPath:@"@sum.transaction.amount"]];
-
-    self.referralCountLabel.hidden = NO;
-    self.referralScoreLabel.hidden = NO;
-}
-
 - (BOOL)isReferral:(NSDictionary *)transaction {
     NSString *currentSessionId = [self.delegate referringUserId];
     NSString *referrer = transaction[@"referrer"];
@@ -225,25 +162,6 @@
     // * The referree is set (BranchReferringUser type referrals), and  it is not me. If it is me, that means I was referred.
     // * The referrer is set (BranchReferreeUser, BranchBothUsers), and is me. If it is not me, that means I wasn't the referrer.
     return referreeIsSetAndIsNotMe || referrerIsSetAndIsMe;
-}
-
-- (NSString *)formatDateString:(NSString *)dateString {
-    static NSDateFormatter *iso8601formatter;
-    static NSDateFormatter *tableViewFormatter;
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        iso8601formatter = [[NSDateFormatter alloc] init];
-        iso8601formatter.dateFormat = @"YYYY-MM-dd'T'HH:mm:ss.SSSZ";
-        
-        tableViewFormatter = [[NSDateFormatter alloc] init];
-        tableViewFormatter.dateStyle = NSDateFormatterShortStyle;
-        tableViewFormatter.timeStyle = NSDateFormatterShortStyle;
-    });
-    
-    NSDate *date = [iso8601formatter dateFromString:dateString];
-    
-    return [tableViewFormatter stringFromDate:date];
 }
 
 @end
