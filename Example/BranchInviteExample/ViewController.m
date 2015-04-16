@@ -16,7 +16,7 @@
 
 @interface ViewController () <BranchInviteControllerDelegate, BranchReferralControllerDelegate, UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *userIdField;
+@property (weak, nonatomic) IBOutlet UILabel *userIdLabel;
 @property (weak, nonatomic) IBOutlet UITextField *userFullnameField;
 @property (weak, nonatomic) IBOutlet UITextField *userShortNameField;
 @property (weak, nonatomic) IBOutlet UITextField *userImageUrlField;
@@ -31,6 +31,9 @@
     [super viewDidLoad];
     
     [self setUpCurrentUserIfNecessary];
+    
+    UITapGestureRecognizer *dismissGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboardFromTap)];
+    [self.view addGestureRecognizer:dismissGesture];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,6 +63,10 @@
     BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithDelegate:self inviteDelegate:self];
     
     [self presentViewController:referralController animated:YES completion:NULL];
+}
+
+- (void)dismissKeyboardFromTap {
+    [self.activeTextField resignFirstResponder];
 }
 
 
@@ -134,24 +141,29 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == self.userIdField) {
-        [CurrentUserModel sharedModel].userId = textField.text;
-        [self.userFullnameField becomeFirstResponder];
-    }
-    else if (textField == self.userFullnameField) {
-        [CurrentUserModel sharedModel].userFullname = textField.text;
+    if (textField == self.userFullnameField) {
         [self.userShortNameField becomeFirstResponder];
     }
     else if (textField == self.userShortNameField) {
-        [CurrentUserModel sharedModel].userShortName = textField.text;
         [self.userImageUrlField becomeFirstResponder];
     }
     else {
-        [CurrentUserModel sharedModel].userImageUrl = textField.text;
         [textField resignFirstResponder];
     }
 
     return NO;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if (textField == self.userFullnameField) {
+        [CurrentUserModel sharedModel].userFullname = textField.text;
+    }
+    else if (textField == self.userShortNameField) {
+        [CurrentUserModel sharedModel].userShortName = textField.text;
+    }
+    else {
+        [CurrentUserModel sharedModel].userImageUrl = textField.text;
+    }
 }
 
 
@@ -188,13 +200,13 @@
 - (void)setUpCurrentUserIfNecessary {
     CurrentUserModel *sharedModel = [CurrentUserModel sharedModel];
     if (!sharedModel.userId) {
-        sharedModel.userId = @"shortstuffsushi";
+        sharedModel.userId = [NSUUID UUID].UUIDString;
         sharedModel.userFullname = @"Graham Mueller";
         sharedModel.userShortName = @"Graham";
         sharedModel.userImageUrl = @"https://www.gravatar.com/avatar/28ed70ee3c8275f1d307d1c5b6eddfa5";
     }
     
-    self.userIdField.text = sharedModel.userId;
+    self.userIdLabel.text = sharedModel.userId;
     self.userFullnameField.text = sharedModel.userFullname;
     self.userShortNameField.text = sharedModel.userShortName;
     self.userImageUrlField.text = sharedModel.userImageUrl;

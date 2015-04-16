@@ -40,7 +40,6 @@ NSString * const USER_SHORT_NAME_KEY = @"UserShortNameKey";
         [defaults setValue:userId forKey:USER_ID_KEY];
         [defaults synchronize];
 
-        [[Branch getInstance] logout];
         [[Branch getInstance] setIdentity:userId];
     }
 }
