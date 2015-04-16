@@ -19,7 +19,7 @@ CGFloat const PREFERRED_WIDTH = 288;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeBodyLabel;
 @property (weak, nonatomic) IBOutlet UIButton *cancelInviteButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmInviteButton;
-@property (weak, nonatomic) IBOutlet UILabel *earnedPointsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *earnedCreditsLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cancelTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *userImageTopConstraint;
 
@@ -66,6 +66,20 @@ CGFloat const PREFERRED_WIDTH = 288;
     return self.confirmInviteButton;
 }
 
+- (void)setReferredCreditAmount:(NSInteger)creditAmount {
+    NSString *earnedCreditsText = [self welcomeEarnedCreditsTextForAmount:creditAmount];
+    self.earnedCreditsLabel.text = earnedCreditsText;
+
+    if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1) {
+        [self resizeWelcomeEarnedCreditsForText:earnedCreditsText];
+    }
+    
+    // Fade in
+    [UIView animateWithDuration:0.25 animations:^{
+        self.earnedCreditsLabel.hidden = NO;
+    }];
+}
+
 
 #pragma mark - Internals
 
@@ -86,6 +100,9 @@ CGFloat const PREFERRED_WIDTH = 288;
         });
     });
 }
+
+
+#pragma mark - Text Normalization methods
 
 - (NSString *)welcomeTitleTextForFullname:(NSString *)invitingUserFullname shortName:(NSString *)invitingUserShortName {
     NSString *normalizedWelcomeTitleText;
@@ -123,6 +140,20 @@ CGFloat const PREFERRED_WIDTH = 288;
     return normalizedContinueButtonText;
 }
 
+- (NSString *)welcomeEarnedCreditsTextForAmount:(NSInteger)creditAmount {
+    NSString *normalizedContinueButtonText;
+    if ([self.delegate respondsToSelector:@selector(welcomeEarnedCreditsTextForAmount:)]) {
+        normalizedContinueButtonText = [self.delegate welcomeEarnedCreditsTextForAmount:creditAmount];
+    }
+    else {
+        normalizedContinueButtonText = [NSString stringWithFormat:@"You earned %lld credits for being referred!", (long long)creditAmount];
+    }
+    
+    return normalizedContinueButtonText;
+}
+
+#pragma mark - View updates
+
 - (void)customizeAppearance {
     if ([self.delegate respondsToSelector:@selector(welcomeSchemeColor)]) {
         UIColor *schemeColor = [self.delegate welcomeSchemeColor];
@@ -143,6 +174,9 @@ CGFloat const PREFERRED_WIDTH = 288;
     self.userImageTopConstraint.constant -= 20;
 }
 
+
+#pragma mark - Label resizing methods
+
 - (void)resizeWelcomeTitleForText:(NSString *)welcomeTitleText {
     CGFloat height = [welcomeTitleText sizeWithFont:[UIFont boldSystemFontOfSize:20] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeTitleLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
@@ -153,6 +187,13 @@ CGFloat const PREFERRED_WIDTH = 288;
 - (void)resizeWelcomeBodyForText:(NSString *)welcomeBodyText {
     CGFloat height = [welcomeBodyText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeBodyLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
+    
+    [self addConstraint:heightConstraint];
+}
+
+- (void)resizeWelcomeEarnedCreditsForText:(NSString *)welcomeEarnedCreditsText {
+    CGFloat height = [welcomeEarnedCreditsText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.earnedCreditsLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
     
     [self addConstraint:heightConstraint];
 }

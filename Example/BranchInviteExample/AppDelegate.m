@@ -67,6 +67,10 @@
     }];
 }
 
+- (BOOL)welcomeControllerShouldShowReferredCredits {
+    return YES;
+}
+
 // Comment these lines in to see customization of the Welcome screen
 //- (NSString *)welcomeTitleTextForFullname:(NSString *)invitingUserFullname shortName:(NSString *)invitingUserShortName {
 //    return [NSString stringWithFormat:@"Hey there, you were invited by %@", invitingUserFullname];
