@@ -80,9 +80,14 @@
 //    return [NSString stringWithFormat:@"Come join %@ in our demo app", invitingUserShortName];
 //}
 //
+//- (NSString *)welcomeEarnedCreditsTextForAmount:(NSInteger)creditAmount {
+//    return [NSString stringWithFormat:@"Sweet! You got %lld credits for being referred.", (long long)creditAmount];
+//}
+//
 //- (NSString *)welcomeContinueButtonTextForFullname:(NSString *)invitingUserFullname shortName:(NSString *)invitingUserShortName {
 //    return @"Continue";
 //}
+//
 //- (UIColor *)welcomeSchemeColor {
 //    return [UIColor redColor];
 //}

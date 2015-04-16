@@ -165,6 +165,7 @@ CGFloat const PREFERRED_WIDTH = 288;
     if ([self.delegate respondsToSelector:@selector(welcomeBodyTextColor)]) {
         UIColor *textColor = [self.delegate welcomeBodyTextColor];
         self.welcomeBodyLabel.textColor = textColor;
+        self.earnedCreditsLabel.textColor = textColor;
         [self.confirmInviteButton setTitleColor:textColor forState:UIControlStateNormal];
     }
 }
