@@ -115,7 +115,15 @@
     NSString *actionString;
     
     switch (transactionType) {
-        case 0: actionString = @"Referral"; break;
+        case 0: {
+            if ([self.referrals containsObject:transaction]) {
+                actionString = @"Referral";
+            }
+            else {
+                actionString = @"Referred";
+            }
+            break;
+        }
         case 1: actionString = @"Credit"; break;
         case 2: actionString = @"Redeem"; break;
         case 3:
