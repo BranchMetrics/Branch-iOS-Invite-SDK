@@ -114,7 +114,7 @@
     
     NSNumber *amount = transaction[@"amount"];
     NSInteger transactionType = [transaction[@"type"] integerValue];
-    NSString *dateString = [self formatDateString:transaction[@"date"]];
+    NSString *formattedDate = [self formatDateString:transaction[@"date"]];
     NSString *actionString;
     
     switch (transactionType) {
@@ -131,10 +131,15 @@
         case 2: actionString = @"You redeemed credts"; break;
         case 3:
         case 4:
-        case 5: actionString = @"A fraud reconciliation event occurred"; break;
+        case 5: actionString = @"Fraud reconciliation"; break;
     }
     
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", actionString, dateString];
+    NSString *timeString = [NSString stringWithFormat:@"(%@)", formattedDate];
+    NSString *wholeText = [NSString stringWithFormat:@"%@ %@", actionString, timeString];
+    NSMutableAttributedString *attributedActionString = [[NSMutableAttributedString alloc] initWithString:wholeText];
+    [attributedActionString addAttributes:@{ NSForegroundColorAttributeName: [UIColor lightGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:10] } range:[wholeText rangeOfString:timeString]];
+
+    cell.textLabel.attributedText = attributedActionString;
     cell.detailTextLabel.text = [amount stringValue];
     
     return cell;
