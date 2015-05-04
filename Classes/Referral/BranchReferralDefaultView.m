@@ -13,7 +13,7 @@
 @property (strong, nonatomic) NSArray *referrals;
 @property (strong, nonatomic) NSArray *creditHistoryItems;
 @property (weak, nonatomic) IBOutlet UIButton *referralCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *referralScoreLabel;
+@property (weak, nonatomic) IBOutlet UILabel *creditsLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *referralListHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIView *transactionsView;
 @property (weak, nonatomic) IBOutlet UITableView *creditHistoryTransactionTable;
@@ -49,19 +49,22 @@
 - (void)setCreditHistoryItems:(NSArray *)creditHistoryItems {
     _creditHistoryItems = creditHistoryItems;
     
+    self.creditsLabel.text = [NSString stringWithFormat:@"%@ credits", [creditHistoryItems valueForKeyPath:@"@sum.transaction.amount"]];
+
     [self.creditHistoryTransactionTable reloadData];
 }
 
 - (void)setReferrals:(NSArray *)referrals {
     _referrals = referrals;
     
-    NSString *referralsCount = [NSString stringWithFormat:@"%lld referrals", (long long)[referrals count]];
+    long long referredCount = (long long)[referrals count];
+    NSString *suffix = referredCount == 1 ? @"" : @"s";
+
+    NSString *referralsCount = [NSString stringWithFormat:@"%lld referred user%@", referredCount, suffix];
     [self.referralCountLabel setTitle:referralsCount forState:UIControlStateNormal];
     
-    self.referralScoreLabel.text = [NSString stringWithFormat:@"%@ points", [referrals valueForKeyPath:@"@sum.transaction.amount"]];
-    
     self.referralCountLabel.hidden = NO;
-    self.referralScoreLabel.hidden = NO;
+    self.creditsLabel.hidden = NO;
 }
 
 - (void)setControllerDisplayDelegate:(id <BranchReferralViewControllerDisplayDelegate>)displayDelegate {
@@ -117,18 +120,18 @@
     switch (transactionType) {
         case 0: {
             if ([self.referrals containsObject:transaction]) {
-                actionString = @"Referral";
+                actionString = @"You referred a user";
             }
             else {
-                actionString = @"Referred";
+                actionString = @"You were referred";
             }
             break;
         }
-        case 1: actionString = @"Credit"; break;
-        case 2: actionString = @"Redeem"; break;
+        case 1: actionString = @"You earned credits"; break;
+        case 2: actionString = @"You redeemed credts"; break;
         case 3:
         case 4:
-        case 5: actionString = @"Reconcile"; break;
+        case 5: actionString = @"A fraud reconciliation event occurred"; break;
     }
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", actionString, dateString];
