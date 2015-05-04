@@ -119,7 +119,7 @@
     
     switch (transactionType) {
         case 0: {
-            if ([self.referrals containsObject:transaction]) {
+            if ([self.referrals containsObject:creditHistoryItem]) {
                 actionString = @"You referred a user";
             }
             else {
