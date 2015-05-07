@@ -16,7 +16,7 @@
 
 @implementation ExampleContactCell
 
-- (void)configureCellWithContact:(BranchInviteContact *)contact selected:(BOOL)selected {
+- (void)configureCellWithContact:(BranchInviteContact *)contact selected:(BOOL)selected inviteItemColor:(UIColor *)inviteItemColor {
     self.nameLabel.text = contact.displayName;
     
     self.accessoryType = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
