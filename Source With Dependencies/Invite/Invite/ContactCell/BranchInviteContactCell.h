@@ -16,7 +16,7 @@
 
 @protocol BranchInviteContactCell <NSObject>
 
-- (void)configureCellWithContact:(BranchInviteContact *)contact selected:(BOOL)selected;
+- (void)configureCellWithContact:(BranchInviteContact *)contact selected:(BOOL)selected inviteItemColor:(UIColor *)inviteItemColor;
 - (void)updateForSelection;
 - (void)updateForDeselection;
 

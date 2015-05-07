@@ -25,6 +25,9 @@
 
 #pragma mark - View Customization
 @optional
+
+- (UIColor *)inviteItemColor;
+
 // Allows for configuration of any of the UI elements of the HMSegmentedControl.
 // Stylize however you like, but note that you should not add targets or specify tab titles.
 // These items will be removed.
