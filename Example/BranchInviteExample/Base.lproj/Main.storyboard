@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -94,6 +94,15 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="b43-Om-3Jo"/>
                                 </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQa-bV-0M3">
+                                <rect key="frame" x="225" y="473" width="149" height="30"/>
+                                <state key="normal" title="Share the User Image">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PJt-Op-BpR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -103,8 +112,10 @@
                             <constraint firstAttribute="centerY" secondItem="9Xl-dy-kFp" secondAttribute="centerY" id="A7D-v6-nXs"/>
                             <constraint firstAttribute="centerX" secondItem="FgZ-jE-x0J" secondAttribute="centerX" id="CRc-IF-q7S"/>
                             <constraint firstAttribute="centerX" secondItem="9Xl-dy-kFp" secondAttribute="centerX" id="E3W-kn-tcz"/>
+                            <constraint firstAttribute="centerX" secondItem="gQa-bV-0M3" secondAttribute="centerX" id="FmJ-fM-fOr"/>
                             <constraint firstItem="YdZ-4R-iZC" firstAttribute="top" secondItem="dHc-uL-rQb" secondAttribute="bottom" constant="8" id="PBU-CD-XWe"/>
                             <constraint firstAttribute="centerX" secondItem="w8x-xL-mV9" secondAttribute="centerX" id="PFU-VJ-qYP"/>
+                            <constraint firstItem="gQa-bV-0M3" firstAttribute="top" secondItem="FHE-fC-d5c" secondAttribute="bottom" constant="12" id="Tge-q9-w97"/>
                             <constraint firstItem="OeU-Sr-GsU" firstAttribute="top" secondItem="FgZ-jE-x0J" secondAttribute="bottom" constant="8" id="U0x-yu-ViF"/>
                             <constraint firstAttribute="centerX" secondItem="FHE-fC-d5c" secondAttribute="centerX" id="U75-gV-cg6"/>
                             <constraint firstItem="9Xl-dy-kFp" firstAttribute="top" secondItem="OeU-Sr-GsU" secondAttribute="bottom" constant="12" id="YQc-ue-4YE"/>

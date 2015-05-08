@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "Branch.h"
 #import "BranchWelcomeViewController.h"
+#import "BranchSharing.h"
 #import "ExampleWelcomeScreen.h"
 
 @interface AppDelegate () <BranchWelcomeControllerDelegate>
@@ -20,6 +21,9 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Register for sharing any time the branch options contain the sharing text key
+    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT];
+    
     [[Branch getInstance] initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
         NSLog(@"Deep Link Data: %@", params);
 
@@ -32,6 +36,13 @@
             self.presentingController = self.window.rootViewController;
             
             [self.presentingController presentViewController:welcomeController animated:YES completion:NULL];
+        }
+        
+        UIViewController *sharingController = [BranchSharing sharingControllerForBranchOpts:params];
+        if (sharingController) {
+            self.presentingController = self.window.rootViewController;
+
+            [self.presentingController presentViewController:sharingController animated:YES completion:NULL];
         }
     }];
 

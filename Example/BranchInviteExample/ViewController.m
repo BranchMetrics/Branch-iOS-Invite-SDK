@@ -11,6 +11,8 @@
 #import "BranchInviteTextContactProvider.h"
 #import "BranchInviteEmailContactProvider.h"
 #import "MysteryIncContactProvider.h"
+#import "BranchActivityItemProvider.h"
+#import "BranchSharing.h"
 
 @interface ViewController () <BranchInviteControllerDelegate, UITextFieldDelegate>
 
@@ -44,6 +46,20 @@
     id branchInviteViewController = [BranchInviteViewController branchInviteViewControllerWithDelegate:self];
     
     [self presentViewController:branchInviteViewController animated:YES completion:NULL];
+}
+
+- (IBAction)shareButtonPressed:(id)sender {
+    NSDictionary *params = @{
+        BRANCH_SHARING_SHARE_TEXT: @"This is the profile picture I used to share, isn't it great?",
+        BRANCH_SHARING_SHARE_IMAGE: self.userImageUrlField.text,
+        @"$og_image_url": self.userImageUrlField.text,
+        @"$og_title": @"This is my sweet profile picture"
+    };
+
+    UIActivityItemProvider *itemProvider = [Branch getBranchActivityItemWithParams:params];
+    UIActivityViewController *shareViewController = [[UIActivityViewController alloc] initWithActivityItems:@[ itemProvider ] applicationActivities:nil];
+    
+    [self presentViewController:shareViewController animated:YES completion:nil];
 }
 
 #pragma mark - BranchInviteControllerDelegate methods
