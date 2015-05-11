@@ -11,8 +11,10 @@
 #import "BranchWelcomeViewController.h"
 #import "BranchSharing.h"
 #import "ExampleWelcomeScreen.h"
+#import "ExampleSharingScreen.h"
+#import "ExampleSharingScreenController.h"
 
-@interface AppDelegate () <BranchWelcomeControllerDelegate>
+@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchSharingViewStyleDelegate>
 
 @property (weak, nonatomic) UIViewController *presentingController;
 
@@ -23,6 +25,17 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Register for sharing any time the branch options contain the sharing text key
     [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT];
+    
+    // Customize sharing view appearance
+//    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT styleDelegate:self];
+    
+    // Use a complete custom sharing view
+//    ExampleSharingScreen *sharingScreen = [[[NSBundle mainBundle] loadNibNamed:@"ExampleSharingScreen" owner:nil options:nil] firstObject];
+//    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT view:sharingScreen];
+
+    // Use a custom sharing controller
+//    ExampleSharingScreenController *controller = [[ExampleSharingScreenController alloc] initWithNibName:@"ExampleSharingScreen" bundle:[NSBundle mainBundle]];
+//    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT controller:controller];
     
     [[Branch getInstance] initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
         NSLog(@"Deep Link Data: %@", params);
@@ -85,5 +98,16 @@
 //- (UIColor *)welcomeBodyTextColor {
 //    return [UIColor blackColor]; // Yeah, this looks bad on red, but it gets the idea across
 //}
+
+
+#pragma mark - BranchSharingViewStyleDelegate methods
+
+- (UIColor *)branchSharingViewBackgroundColor {
+    return [UIColor blackColor];
+}
+
+- (UIColor *)branchSharingViewForegroundColor {
+    return [UIColor greenColor];
+}
 
 @end
