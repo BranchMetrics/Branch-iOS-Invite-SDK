@@ -84,7 +84,11 @@
     }];
 }
 
-// Uncomment this method to see how segmented control customization works
+// Uncomment these methods to see how segmented control customization works
+//- (UIColor *)inviteItemColor {
+//    return [UIColor redColor];
+//}
+//
 //- (void)configureSegmentedControl:(HMSegmentedControl *)segmentedControl {
 //    segmentedControl.backgroundColor = [UIColor redColor];
 //    

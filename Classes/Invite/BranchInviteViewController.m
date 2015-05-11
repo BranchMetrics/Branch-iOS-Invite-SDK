@@ -21,6 +21,7 @@
 
 @property (strong, nonatomic) NSArray *contactProviders;
 @property (strong, nonatomic) NSArray *currentContacts;
+@property (strong, nonatomic) UIColor *inviteItemColor;
 @property (weak, nonatomic) id <BranchInviteControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet HMSegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentedControlHeightConstraint;
@@ -43,6 +44,12 @@
     [super loadView];
     
     [[Branch getInstance] userCompletedAction:@"viewed_invite_screen"];
+    
+    self.inviteItemColor = [UIColor colorWithRed:45/255.0 green:157/255.0 blue:188/255.0 alpha:1];
+    
+    if ([self.delegate respondsToSelector:@selector(inviteItemColor)]) {
+        self.inviteItemColor = [self.delegate inviteItemColor];
+    }
     
     [self configureNavigationItems];
     [self configureContactProviders];
@@ -87,7 +94,7 @@
     self.segmentedControl.textColor = [UIColor whiteColor];
     self.segmentedControl.selectedTextColor = [UIColor whiteColor];
     self.segmentedControl.selectionIndicatorColor = [UIColor whiteColor];
-    self.segmentedControl.backgroundColor = [UIColor colorWithRed:45/255.0 green:157/255.0 blue:188/255.0 alpha:1];
+    self.segmentedControl.backgroundColor = self.inviteItemColor;
     self.segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleBox;
     self.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
 
@@ -233,7 +240,7 @@
     BranchInviteContact *contact = self.currentContacts[indexPath.row];
     
     BOOL isSelected = [tableView.indexPathsForSelectedRows containsObject:indexPath];
-    [cell configureCellWithContact:contact selected:isSelected];
+    [cell configureCellWithContact:contact selected:isSelected inviteItemColor:self.inviteItemColor];
 
     return cell;
 }
