@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		464197211B03CC1A00869460 /* invite-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4641971E1B03CC1A00869460 /* invite-icon.png */; };
+		464197221B03CC1A00869460 /* invite-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4641971F1B03CC1A00869460 /* invite-icon@2x.png */; };
+		464197231B03CC1A00869460 /* invite-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 464197201B03CC1A00869460 /* invite-icon@3x.png */; };
 		4650EDB81A7EC6DA00558DB7 /* ExampleContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4650EDB71A7EC6DA00558DB7 /* ExampleContactCell.m */; };
 		4650EDBB1A7EC77100558DB7 /* ExampleContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4650EDBA1A7EC77100558DB7 /* ExampleContactCell.xib */; };
 		4661E5731A7D365B00B6130D /* MysteryIncContactProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 4661E5721A7D365B00B6130D /* MysteryIncContactProvider.m */; };
@@ -36,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4641971E1B03CC1A00869460 /* invite-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite-icon.png"; sourceTree = "<group>"; };
+		4641971F1B03CC1A00869460 /* invite-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite-icon@2x.png"; sourceTree = "<group>"; };
+		464197201B03CC1A00869460 /* invite-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite-icon@3x.png"; sourceTree = "<group>"; };
 		4650EDB61A7EC6DA00558DB7 /* ExampleContactCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleContactCell.h; sourceTree = "<group>"; };
 		4650EDB71A7EC6DA00558DB7 /* ExampleContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleContactCell.m; sourceTree = "<group>"; };
 		4650EDBA1A7EC77100558DB7 /* ExampleContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleContactCell.xib; sourceTree = "<group>"; };
@@ -86,6 +92,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4641971D1B03CBF300869460 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4641971E1B03CC1A00869460 /* invite-icon.png */,
+				4641971F1B03CC1A00869460 /* invite-icon@2x.png */,
+				464197201B03CC1A00869460 /* invite-icon@3x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		4650EDB91A7EC75800558DB7 /* ExampleContactCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +157,7 @@
 		4686F3F61A7328910029ABCC /* BranchInviteExample */ = {
 			isa = PBXGroup;
 			children = (
+				4641971D1B03CBF300869460 /* Resources */,
 				4661E5701A7D363300B6130D /* ExampleCustomizations */,
 				4686F3FB1A7328910029ABCC /* AppDelegate.h */,
 				4686F3FC1A7328910029ABCC /* AppDelegate.m */,
@@ -293,10 +310,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4686F4031A7328910029ABCC /* Main.storyboard in Resources */,
+				464197211B03CC1A00869460 /* invite-icon.png in Resources */,
 				4650EDBB1A7EC77100558DB7 /* ExampleContactCell.xib in Resources */,
 				4661E5761A7D39D000B6130D /* MysteryIncInviteController.xib in Resources */,
+				464197221B03CC1A00869460 /* invite-icon@2x.png in Resources */,
 				46E43F611A7F0AB6007576D0 /* ExampleWelcomeScreen.xib in Resources */,
 				4686F4081A7328910029ABCC /* LaunchScreen.xib in Resources */,
+				464197231B03CC1A00869460 /* invite-icon@3x.png in Resources */,
 				4686F4051A7328910029ABCC /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

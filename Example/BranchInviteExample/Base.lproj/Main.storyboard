@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LHv-UG-y3T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LHv-UG-y3T">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
-        <!--Item-->
+        <!--Invite-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
@@ -123,7 +123,7 @@
                             <constraint firstAttribute="centerX" secondItem="QY5-hc-bBb" secondAttribute="centerX" id="wal-9U-ZCd"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="mTk-80-Jlr"/>
+                    <tabBarItem key="tabBarItem" title="Invite" image="invite-icon.png" id="mTk-80-Jlr"/>
                     <connections>
                         <outlet property="userFullnameField" destination="OeU-Sr-GsU" id="4yA-l7-f5t"/>
                         <outlet property="userIdLabel" destination="ly6-3n-ewg" id="QKX-jb-WJY"/>
@@ -154,4 +154,7 @@
             <point key="canvasLocation" x="583" y="370"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="invite-icon.png" width="25" height="25"/>
+    </resources>
 </document>
