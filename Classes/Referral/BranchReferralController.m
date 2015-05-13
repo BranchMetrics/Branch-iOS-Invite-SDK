@@ -109,6 +109,14 @@
     }];
 }
 
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    [super willMoveToParentViewController:parent];
+    
+    // Set up the tab item defaults
+    self.title = @"Referrals";
+    self.tabBarItem.image = [BranchInviteBundleUtil imageNamed:@"referrals-icon" type:@"png"];
+}
+
 
 #pragma mark - Interaction methods
 
