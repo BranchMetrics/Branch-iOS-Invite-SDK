@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BranchSharingDelegate.h"
+#import "BranchSharingView.h"
 #import "BranchSharing.h"
 
-@interface BranchSharingDefaultView : UIView <BranchSharingDelegate>
+@interface BranchSharingDefaultView : UIView <BranchSharingView>
 
 @property (weak, nonatomic) id <BranchSharingViewStyleDelegate> styleDelegate;
 

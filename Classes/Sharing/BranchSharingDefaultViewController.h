@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BranchSharingDelegate.h"
+#import "BranchSharingController.h"
+#import "BranchSharingView.h"
 
-@interface BranchSharingDefaultViewController : UIViewController <BranchSharingDelegate>
+@interface BranchSharingDefaultViewController : UIViewController <BranchSharingController>
 
-- (void)setBranchSharingView:(UIView <BranchSharingDelegate> *)sharingView;
+- (void)setBranchSharingView:(UIView <BranchSharingView> *)sharingView;
 - (void)configureWithSharingData:(NSDictionary *)sharingData;
 
 @end

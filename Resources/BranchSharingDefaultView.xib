@@ -24,11 +24,25 @@
                         <constraint firstAttribute="width" constant="320" id="GCN-jA-jUp"/>
                     </constraints>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YQs-XT-rcD">
+                    <rect key="frame" x="274" y="354" width="53" height="30"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="QnZ-7h-HYv"/>
+                    </constraints>
+                    <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                    <state key="normal" title="Done">
+                        <color key="titleColor" red="0.17647058823529413" green="0.61568627450980395" blue="0.73725490196078436" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.17647058823529413" green="0.61568627450980395" blue="0.73725490196078436" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="centerX" secondItem="YQs-XT-rcD" secondAttribute="centerX" id="59e-Tu-wu7"/>
                 <constraint firstItem="zLN-K7-z63" firstAttribute="top" secondItem="hi9-ty-7zy" secondAttribute="bottom" constant="8" id="LEK-pd-Rcl"/>
                 <constraint firstItem="zLN-K7-z63" firstAttribute="trailing" secondItem="hi9-ty-7zy" secondAttribute="trailing" constant="-8" id="Zz7-1p-Y9a"/>
+                <constraint firstItem="YQs-XT-rcD" firstAttribute="top" secondItem="zLN-K7-z63" secondAttribute="bottom" constant="8" id="aFz-je-qb7"/>
                 <constraint firstAttribute="centerX" secondItem="hi9-ty-7zy" secondAttribute="centerX" id="cwv-6r-0kM"/>
                 <constraint firstItem="zLN-K7-z63" firstAttribute="leading" secondItem="hi9-ty-7zy" secondAttribute="leading" constant="8" id="d9f-Hg-Yy3"/>
                 <constraint firstItem="hi9-ty-7zy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="vcm-zK-MfL"/>
@@ -36,6 +50,7 @@
             <connections>
                 <outlet property="contentImageView" destination="hi9-ty-7zy" id="vH7-v6-U8t"/>
                 <outlet property="contentTextLabel" destination="zLN-K7-z63" id="D8J-VG-goR"/>
+                <outlet property="doneButton" destination="YQs-XT-rcD" id="CGd-uL-c9a"/>
             </connections>
         </view>
     </objects>

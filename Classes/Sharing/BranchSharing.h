@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BranchSharingDelegate.h"
+#import "BranchSharingView.h"
+#import "BranchSharingController.h"
 
 extern NSString * const BRANCH_SHARING_SHARE_TEXT;
 extern NSString * const BRANCH_SHARING_SHARE_IMAGE;
@@ -23,9 +24,9 @@ extern NSString * const BRANCH_SHARING_SHARE_IMAGE;
 
 + (void)registerForSharingEventsWithKey:(NSString *)key;
 + (void)registerForSharingEventsWithKey:(NSString *)key styleDelegate:(id <BranchSharingViewStyleDelegate>)delegate;
-+ (void)registerForSharingEventsWithKey:(NSString *)key view:(UIView <BranchSharingDelegate> *)view;
-+ (void)registerForSharingEventsWithKey:(NSString *)key controller:(UIViewController <BranchSharingDelegate> *)controller;
++ (void)registerForSharingEventsWithKey:(NSString *)key view:(UIView <BranchSharingView> *)view;
++ (void)registerForSharingEventsWithKey:(NSString *)key controller:(UIViewController <BranchSharingController> *)controller;
 
-+ (UIViewController *)sharingControllerForBranchOpts:(NSDictionary *)branchOpts;
++ (UIViewController <BranchSharingController> *)sharingControllerForBranchOpts:(NSDictionary *)branchOpts delegate:(id <BranchSharingControllerDelegate>)delegate;
 
 @end

@@ -14,7 +14,7 @@
 #import "ExampleSharingScreen.h"
 #import "ExampleSharingScreenController.h"
 
-@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchSharingViewStyleDelegate>
+@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchSharingViewStyleDelegate, BranchSharingControllerDelegate>
 
 @property (weak, nonatomic) UIViewController *presentingController;
 
@@ -51,7 +51,7 @@
             [self.presentingController presentViewController:welcomeController animated:YES completion:NULL];
         }
         
-        UIViewController *sharingController = [BranchSharing sharingControllerForBranchOpts:params];
+        UIViewController *sharingController = [BranchSharing sharingControllerForBranchOpts:params delegate:self];
         if (sharingController) {
             self.presentingController = self.window.rootViewController;
 
@@ -109,5 +109,12 @@
 - (UIColor *)branchSharingViewForegroundColor {
     return [UIColor greenColor];
 }
+
+#pragma mark - BranchSharingControllerDelegate methods
+
+- (void)branchSharingControllerCompleted {
+    [self.window.rootViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
 
 @end

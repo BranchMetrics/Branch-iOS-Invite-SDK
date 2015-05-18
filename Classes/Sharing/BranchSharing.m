@@ -16,12 +16,13 @@ NSString * const BRANCH_SHARING_SHARE_IMAGE = @"BranchShareImage";
 
 @implementation BranchSharing
 
-+ (UIViewController *)sharingControllerForBranchOpts:(NSDictionary *)branchOpts {
-    UIViewController <BranchSharingDelegate> *sharingController;
++ (UIViewController <BranchSharingController> *)sharingControllerForBranchOpts:(NSDictionary *)branchOpts delegate:(id <BranchSharingControllerDelegate>)delegate {
+    UIViewController <BranchSharingController> *sharingController;
     NSDictionary *sharingControllers = [BranchSharing sharingControllers];
     for (NSString *potentialSharingKey in [sharingControllers allKeys]) {
         if (branchOpts[potentialSharingKey]) {
             sharingController = sharingControllers[potentialSharingKey];
+            sharingController.delegate = delegate;
             [sharingController configureWithSharingData:branchOpts];
             break;
         }
@@ -45,14 +46,14 @@ NSString * const BRANCH_SHARING_SHARE_IMAGE = @"BranchShareImage";
     [BranchSharing registerForSharingEventsWithKey:key view:defaultView];
 }
 
-+ (void)registerForSharingEventsWithKey:(NSString *)key view:(UIView <BranchSharingDelegate> *)view {
++ (void)registerForSharingEventsWithKey:(NSString *)key view:(UIView <BranchSharingView> *)view {
     BranchSharingDefaultViewController *controller = [[BranchSharingDefaultViewController alloc] init];
     [controller setBranchSharingView:view];
 
     [BranchSharing sharingControllers][key] = controller;
 }
 
-+ (void)registerForSharingEventsWithKey:(NSString *)key controller:(UIViewController <BranchSharingDelegate> *)controller {
++ (void)registerForSharingEventsWithKey:(NSString *)key controller:(UIViewController <BranchSharingControllerDelegate> *)controller {
     [BranchSharing sharingControllers][key] = controller;
 }
 

@@ -10,11 +10,13 @@
 
 @interface BranchSharingDefaultViewController ()
 
-@property (strong, nonatomic) UIView <BranchSharingDelegate> *branchSharingView;
+@property (strong, nonatomic) UIView <BranchSharingView> *branchSharingView;
 
 @end
 
 @implementation BranchSharingDefaultViewController
+
+@synthesize delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,12 +29,18 @@
     NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.branchSharingView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
     
     self.branchSharingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.branchSharingView.doneButton addTarget:self action:@selector(donePressed) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addConstraints:@[ topConstraint, rightConstraint, bottomConstraint, leftConstraint ]];
 }
 
 - (void)configureWithSharingData:(NSDictionary *)sharingData {
     [self.branchSharingView configureWithSharingData:sharingData];
+}
+
+#pragma mark - Interaction methods
+- (void)donePressed {
+    [self.delegate branchSharingControllerCompleted];
 }
 
 @end

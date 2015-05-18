@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
 @property (weak, nonatomic) IBOutlet UILabel *contentTextLabel;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @end
 
