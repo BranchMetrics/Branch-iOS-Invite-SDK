@@ -8,8 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Base protocol for items that intend to be used for sharing.
+ */
 @protocol BranchSharingDelegate <NSObject>
 
+/**
+ Configure the item with a dictionary of sharing data
+ */
 - (void)configureWithSharingData:(NSDictionary *)sharingData;
 
 @end
