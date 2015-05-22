@@ -19,7 +19,6 @@ CGFloat const PREFERRED_WIDTH = 288;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeBodyLabel;
 @property (weak, nonatomic) IBOutlet UIButton *cancelInviteButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmInviteButton;
-@property (weak, nonatomic) IBOutlet UILabel *earnedCreditsLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cancelTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *userImageTopConstraint;
 
@@ -64,20 +63,6 @@ CGFloat const PREFERRED_WIDTH = 288;
 
 - (UIButton *)continueButton {
     return self.confirmInviteButton;
-}
-
-- (void)setReferredCreditAmount:(NSInteger)creditAmount {
-    NSString *earnedCreditsText = [self welcomeEarnedCreditsTextForAmount:creditAmount];
-    self.earnedCreditsLabel.text = earnedCreditsText;
-
-    if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1) {
-        [self resizeWelcomeEarnedCreditsForText:earnedCreditsText];
-    }
-    
-    // Fade in
-    [UIView animateWithDuration:0.25 animations:^{
-        self.earnedCreditsLabel.hidden = NO;
-    }];
 }
 
 
@@ -165,7 +150,6 @@ CGFloat const PREFERRED_WIDTH = 288;
     if ([self.delegate respondsToSelector:@selector(welcomeBodyTextColor)]) {
         UIColor *textColor = [self.delegate welcomeBodyTextColor];
         self.welcomeBodyLabel.textColor = textColor;
-        self.earnedCreditsLabel.textColor = textColor;
         [self.confirmInviteButton setTitleColor:textColor forState:UIControlStateNormal];
     }
 }
@@ -188,13 +172,6 @@ CGFloat const PREFERRED_WIDTH = 288;
 - (void)resizeWelcomeBodyForText:(NSString *)welcomeBodyText {
     CGFloat height = [welcomeBodyText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeBodyLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
-    
-    [self addConstraint:heightConstraint];
-}
-
-- (void)resizeWelcomeEarnedCreditsForText:(NSString *)welcomeEarnedCreditsText {
-    CGFloat height = [welcomeEarnedCreditsText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.earnedCreditsLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
     
     [self addConstraint:heightConstraint];
 }

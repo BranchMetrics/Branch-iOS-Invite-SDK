@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -71,12 +71,6 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="288" translatesAutoresizingMaskIntoConstraints="NO" id="LfW-pz-rQb">
-                    <rect key="frame" x="279" y="229" width="42" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" red="0.1764705882" green="0.61568627450000002" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -88,10 +82,8 @@
                 <constraint firstItem="SOf-O5-Nx9" firstAttribute="top" secondItem="Rj8-Qz-eTI" secondAttribute="bottom" constant="8" id="QXB-w1-Mt0"/>
                 <constraint firstAttribute="bottom" secondItem="2Rb-wX-yF0" secondAttribute="bottom" constant="16" id="YaG-Bz-CtM"/>
                 <constraint firstItem="Rj8-Qz-eTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="dE4-mj-yCm"/>
-                <constraint firstAttribute="centerX" secondItem="LfW-pz-rQb" secondAttribute="centerX" id="ezy-Hg-ONe"/>
                 <constraint firstItem="SOf-O5-Nx9" firstAttribute="top" secondItem="Rj8-Qz-eTI" secondAttribute="bottom" constant="20" id="fr8-A6-VFA"/>
                 <constraint firstAttribute="trailing" secondItem="Rj8-Qz-eTI" secondAttribute="trailing" id="gGX-gN-Ewn"/>
-                <constraint firstItem="LfW-pz-rQb" firstAttribute="top" secondItem="SOf-O5-Nx9" secondAttribute="bottom" constant="16" id="tbL-xr-rQx"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">
@@ -104,7 +96,6 @@
                 <outlet property="cancelInviteButton" destination="kv2-l0-R3n" id="35K-xK-yDL"/>
                 <outlet property="cancelTopConstraint" destination="CZk-zh-bWd" id="K0f-by-u6g"/>
                 <outlet property="confirmInviteButton" destination="2Rb-wX-yF0" id="bvj-Sb-TqA"/>
-                <outlet property="earnedCreditsLabel" destination="LfW-pz-rQb" id="WKN-Hc-61x"/>
                 <outlet property="userImageTopConstraint" destination="H0N-lH-WwU" id="tQK-HQ-Mez"/>
                 <outlet property="userImageView" destination="iEM-Xz-y9V" id="Lc6-1E-dXA"/>
                 <outlet property="welcomeBodyLabel" destination="SOf-O5-Nx9" id="fNi-nM-Qt2"/>

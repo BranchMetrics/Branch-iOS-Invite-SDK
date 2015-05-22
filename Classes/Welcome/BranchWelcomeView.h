@@ -23,10 +23,4 @@
 // The button the controller should attach itself to to capture continue events.
 - (UIButton *)continueButton;
 
-@optional
-// This method allows the welcome screen to show the amount of credits the current
-// user is earning by being referred. This should be used in conjunction with the
-// BranchWelcomeControllerDelegate method `welcomeControllerShouldShowReferredCredits`
-- (void)setReferredCreditAmount:(NSInteger)creditAmount;
-
 @end
