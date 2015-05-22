@@ -11,6 +11,7 @@
 #import "BranchWelcomeViewController.h"
 #import "BranchReferralController.h"
 #import "ExampleWelcomeScreen.h"
+#import "ExampleReferralScreen.h"
 #import "CurrentUserModel.h"
 
 @interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralControllerDelegate>
@@ -22,8 +23,9 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [Branch setDebug];
-    [[Branch getInstance] initSessionWithLaunchOptions:launchOptions isReferrable:YES andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+    Branch *branch = [Branch getInstance];
+    [branch setDebug];
+    [branch initSessionWithLaunchOptions:launchOptions isReferrable:YES andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
         NSLog(@"Deep Link Data: %@", params);
 
         if ([BranchWelcomeViewController shouldShowWelcome:params]) {
@@ -38,8 +40,12 @@
         }
     }];
     
+    //Comment these two lines in and the comment active controller line out to see example usage of custom view for referrals
+//    ExampleReferralScreen *customView = [[[NSBundle mainBundle] loadNibNamed:@"ExampleReferralScreen" owner:nil options:nil] firstObject];
+//    BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithView:customView delegate:self];
+    BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithDelegate:self];
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
-    [tabBarController addChildViewController:[BranchReferralController branchReferralControllerWithDelegate:self]];
+    [tabBarController addChildViewController:referralController];
 
     return YES;
 }
