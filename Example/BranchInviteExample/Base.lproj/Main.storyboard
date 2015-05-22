@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LHv-UG-y3T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LHv-UG-y3T">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Invite-->
@@ -123,7 +123,7 @@
                             <constraint firstAttribute="centerX" secondItem="QY5-hc-bBb" secondAttribute="centerX" id="wal-9U-ZCd"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Invite" image="invite-icon.png" id="mTk-80-Jlr"/>
+                    <tabBarItem key="tabBarItem" title="Invite" image="invite-icon.png" id="EDJ-DS-rH2"/>
                     <connections>
                         <outlet property="userFullnameField" destination="OeU-Sr-GsU" id="4yA-l7-f5t"/>
                         <outlet property="userIdLabel" destination="ly6-3n-ewg" id="QKX-jb-WJY"/>
@@ -134,6 +134,77 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1395" y="370"/>
+        </scene>
+        <!--Credits-->
+        <scene sceneID="Noh-TM-ImV">
+            <objects>
+                <viewController id="OTR-qN-8lo" customClass="CreditsController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PEf-9F-4lP"/>
+                        <viewControllerLayoutGuide type="bottom" id="hF0-5K-Qh5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EHB-nX-Nh6">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credits" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4IF-Bs-1Q7">
+                                <rect key="frame" x="273" y="192" width="55" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Credits Available #" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8E-PD-AUe">
+                                <rect key="frame" x="238" y="221" width="124" height="17"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6AJ-ms-icz">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="BK4-4K-pst">
+                                        <rect key="frame" x="282" y="257" width="37" height="37"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.70000000000000007" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="BK4-4K-pst" secondAttribute="centerY" id="2gD-JQ-Lby"/>
+                                    <constraint firstAttribute="centerX" secondItem="BK4-4K-pst" secondAttribute="centerX" id="Lkk-6Z-M0l"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iqO-KP-B1m">
+                                <rect key="frame" x="240" y="285" width="121" height="30"/>
+                                <state key="normal" title="Redeem 5 credits">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="redeemCreditsButton:" destination="OTR-qN-8lo" eventType="touchUpInside" id="8A2-Lm-Jer"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6AJ-ms-icz" firstAttribute="leading" secondItem="EHB-nX-Nh6" secondAttribute="leading" id="0NF-ON-EUr"/>
+                            <constraint firstItem="iqO-KP-B1m" firstAttribute="top" secondItem="w8E-PD-AUe" secondAttribute="bottom" constant="47" id="0fN-66-UkQ"/>
+                            <constraint firstItem="w8E-PD-AUe" firstAttribute="top" secondItem="4IF-Bs-1Q7" secondAttribute="bottom" constant="8" id="3bn-fd-I5Y"/>
+                            <constraint firstAttribute="centerX" secondItem="iqO-KP-B1m" secondAttribute="centerX" id="Bex-dE-PhO"/>
+                            <constraint firstAttribute="centerY" secondItem="iqO-KP-B1m" secondAttribute="centerY" id="Bpm-4x-eQh"/>
+                            <constraint firstItem="6AJ-ms-icz" firstAttribute="top" secondItem="EHB-nX-Nh6" secondAttribute="top" id="Clv-W4-drm"/>
+                            <constraint firstAttribute="centerX" secondItem="w8E-PD-AUe" secondAttribute="centerX" id="J1a-wk-3mi"/>
+                            <constraint firstAttribute="trailing" secondItem="6AJ-ms-icz" secondAttribute="trailing" id="Mkf-7Y-WRl"/>
+                            <constraint firstAttribute="centerX" secondItem="4IF-Bs-1Q7" secondAttribute="centerX" id="MlU-U6-F10"/>
+                            <constraint firstItem="hF0-5K-Qh5" firstAttribute="top" secondItem="6AJ-ms-icz" secondAttribute="bottom" id="bzG-2C-Psv"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Credits" image="credits-icon.png" id="dWv-be-kyQ"/>
+                    <connections>
+                        <outlet property="creditCountLabel" destination="w8E-PD-AUe" id="qjo-Sf-tjs"/>
+                        <outlet property="loadingMask" destination="6AJ-ms-icz" id="GRY-VY-wG0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WZr-SR-tID" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1395" y="1119"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="wWr-wL-ZrU">
@@ -147,6 +218,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="klC-kM-spc"/>
+                        <segue destination="OTR-qN-8lo" kind="relationship" relationship="viewControllers" id="lBJ-eL-1UD"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ynB-lI-CcF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -155,6 +227,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="credits-icon.png" width="25" height="25"/>
         <image name="invite-icon.png" width="25" height="25"/>
     </resources>
 </document>

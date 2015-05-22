@@ -14,6 +14,10 @@
 		4650EDBB1A7EC77100558DB7 /* ExampleContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4650EDBA1A7EC77100558DB7 /* ExampleContactCell.xib */; };
 		4659B33B1B0FA8810019767C /* ExampleReferralScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4659B33A1B0FA8810019767C /* ExampleReferralScreen.m */; };
 		4659B33D1B0FAA0F0019767C /* ExampleReferralScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4659B33C1B0FAA0F0019767C /* ExampleReferralScreen.xib */; };
+		4659B3411B0FC6FD0019767C /* credits-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4659B33E1B0FC6FD0019767C /* credits-icon.png */; };
+		4659B3421B0FC6FD0019767C /* credits-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4659B33F1B0FC6FD0019767C /* credits-icon@2x.png */; };
+		4659B3431B0FC6FD0019767C /* credits-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4659B3401B0FC6FD0019767C /* credits-icon@3x.png */; };
+		4659B3461B0FC7A70019767C /* CreditsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4659B3451B0FC7A70019767C /* CreditsController.m */; };
 		4661E5731A7D365B00B6130D /* MysteryIncContactProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 4661E5721A7D365B00B6130D /* MysteryIncContactProvider.m */; };
 		4661E5761A7D39D000B6130D /* MysteryIncInviteController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4661E5751A7D39D000B6130D /* MysteryIncInviteController.xib */; };
 		4686F3FA1A7328910029ABCC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4686F3F91A7328910029ABCC /* main.m */; };
@@ -50,6 +54,11 @@
 		4659B3391B0FA8810019767C /* ExampleReferralScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleReferralScreen.h; sourceTree = "<group>"; };
 		4659B33A1B0FA8810019767C /* ExampleReferralScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleReferralScreen.m; sourceTree = "<group>"; };
 		4659B33C1B0FAA0F0019767C /* ExampleReferralScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleReferralScreen.xib; sourceTree = "<group>"; };
+		4659B33E1B0FC6FD0019767C /* credits-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "credits-icon.png"; sourceTree = "<group>"; };
+		4659B33F1B0FC6FD0019767C /* credits-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "credits-icon@2x.png"; sourceTree = "<group>"; };
+		4659B3401B0FC6FD0019767C /* credits-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "credits-icon@3x.png"; sourceTree = "<group>"; };
+		4659B3441B0FC7A70019767C /* CreditsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsController.h; sourceTree = "<group>"; };
+		4659B3451B0FC7A70019767C /* CreditsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsController.m; sourceTree = "<group>"; };
 		4661E5711A7D365B00B6130D /* MysteryIncContactProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MysteryIncContactProvider.h; sourceTree = "<group>"; };
 		4661E5721A7D365B00B6130D /* MysteryIncContactProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MysteryIncContactProvider.m; sourceTree = "<group>"; };
 		4661E5751A7D39D000B6130D /* MysteryIncInviteController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MysteryIncInviteController.xib; sourceTree = "<group>"; };
@@ -103,6 +112,9 @@
 				4641971E1B03CC1A00869460 /* invite-icon.png */,
 				4641971F1B03CC1A00869460 /* invite-icon@2x.png */,
 				464197201B03CC1A00869460 /* invite-icon@3x.png */,
+				4659B33E1B0FC6FD0019767C /* credits-icon.png */,
+				4659B33F1B0FC6FD0019767C /* credits-icon@2x.png */,
+				4659B3401B0FC6FD0019767C /* credits-icon@3x.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -181,6 +193,8 @@
 				4686F3FF1A7328910029ABCC /* ViewController.m */,
 				46AF0C1B1ADEB89A000B4347 /* CurrentUserModel.h */,
 				46AF0C1C1ADEB89A000B4347 /* CurrentUserModel.m */,
+				4659B3441B0FC7A70019767C /* CreditsController.h */,
+				4659B3451B0FC7A70019767C /* CreditsController.m */,
 				4686F3F71A7328910029ABCC /* Supporting Files */,
 			);
 			path = BranchInviteExample;
@@ -333,6 +347,9 @@
 				46E43F611A7F0AB6007576D0 /* ExampleWelcomeScreen.xib in Resources */,
 				4686F4081A7328910029ABCC /* LaunchScreen.xib in Resources */,
 				464197231B03CC1A00869460 /* invite-icon@3x.png in Resources */,
+				4659B3431B0FC6FD0019767C /* credits-icon@3x.png in Resources */,
+				4659B3411B0FC6FD0019767C /* credits-icon.png in Resources */,
+				4659B3421B0FC6FD0019767C /* credits-icon@2x.png in Resources */,
 				4686F4051A7328910029ABCC /* Images.xcassets in Resources */,
 				4659B33D1B0FAA0F0019767C /* ExampleReferralScreen.xib in Resources */,
 			);
@@ -391,6 +408,7 @@
 				4661E5731A7D365B00B6130D /* MysteryIncContactProvider.m in Sources */,
 				46E43F5F1A7F09CD007576D0 /* ExampleWelcomeScreen.m in Sources */,
 				4650EDB81A7EC6DA00558DB7 /* ExampleContactCell.m in Sources */,
+				4659B3461B0FC7A70019767C /* CreditsController.m in Sources */,
 				4686F3FA1A7328910029ABCC /* main.m in Sources */,
 				46EB4D011A7E87C600A72AD9 /* MysteryIncInviteController.m in Sources */,
 				4659B33B1B0FA8810019767C /* ExampleReferralScreen.m in Sources */,
