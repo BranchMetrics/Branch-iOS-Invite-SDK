@@ -9,9 +9,12 @@
 #import "AppDelegate.h"
 #import "Branch.h"
 #import "BranchWelcomeViewController.h"
+#import "BranchReferralController.h"
 #import "ExampleWelcomeScreen.h"
+#import "ExampleReferralScreen.h"
+#import "CurrentUserModel.h"
 
-@interface AppDelegate () <BranchWelcomeControllerDelegate>
+@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralControllerDelegate>
 
 @property (weak, nonatomic) UIViewController *presentingController;
 
@@ -20,7 +23,9 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [[Branch getInstance] initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+    Branch *branch = [Branch getInstance];
+    [branch setDebug];
+    [branch initSessionWithLaunchOptions:launchOptions isReferrable:YES andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
         NSLog(@"Deep Link Data: %@", params);
 
         if ([BranchWelcomeViewController shouldShowWelcome:params]) {
@@ -34,12 +39,26 @@
             [self.presentingController presentViewController:welcomeController animated:YES completion:NULL];
         }
     }];
+    
+    //Comment these two lines in and the comment active controller line out to see example usage of custom view for referrals
+//    ExampleReferralScreen *customView = [[[NSBundle mainBundle] loadNibNamed:@"ExampleReferralScreen" owner:nil options:nil] firstObject];
+//    BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithView:customView delegate:self];
+    BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithDelegate:self];
+    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    [tabBarController addChildViewController:referralController];
 
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [[Branch getInstance] handleDeepLink:url];
+}
+
+
+#pragma mark - BranchReferralControllerDelegate methods
+
+- (NSString *)referringUserId {
+    return [CurrentUserModel sharedModel].userId;
 }
 
 #pragma mark - BranchWelcomeControllerDelegate methods
@@ -55,6 +74,10 @@
     }];
 }
 
+- (BOOL)welcomeControllerShouldShowReferredCredits {
+    return YES;
+}
+
 // Comment these lines in to see customization of the Welcome screen
 //- (NSString *)welcomeTitleTextForFullname:(NSString *)invitingUserFullname shortName:(NSString *)invitingUserShortName {
 //    return [NSString stringWithFormat:@"Hey there, you were invited by %@", invitingUserFullname];
@@ -64,9 +87,14 @@
 //    return [NSString stringWithFormat:@"Come join %@ in our demo app", invitingUserShortName];
 //}
 //
+//- (NSString *)welcomeEarnedCreditsTextForAmount:(NSInteger)creditAmount {
+//    return [NSString stringWithFormat:@"Sweet! You got %lld credits for being referred.", (long long)creditAmount];
+//}
+//
 //- (NSString *)welcomeContinueButtonTextForFullname:(NSString *)invitingUserFullname shortName:(NSString *)invitingUserShortName {
 //    return @"Continue";
 //}
+//
 //- (UIColor *)welcomeSchemeColor {
 //    return [UIColor redColor];
 //}

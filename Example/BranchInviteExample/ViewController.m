@@ -11,10 +11,12 @@
 #import "BranchInviteTextContactProvider.h"
 #import "BranchInviteEmailContactProvider.h"
 #import "MysteryIncContactProvider.h"
+#import "BranchReferralController.h"
+#import "CurrentUserModel.h"
 
-@interface ViewController () <BranchInviteControllerDelegate, UITextFieldDelegate>
+@interface ViewController () <BranchInviteControllerDelegate, BranchReferralControllerDelegate, UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *userIdField;
+@property (weak, nonatomic) IBOutlet UILabel *userIdLabel;
 @property (weak, nonatomic) IBOutlet UITextField *userFullnameField;
 @property (weak, nonatomic) IBOutlet UITextField *userShortNameField;
 @property (weak, nonatomic) IBOutlet UITextField *userImageUrlField;
@@ -24,6 +26,15 @@
 @end
 
 @implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self setUpCurrentUserIfNecessary];
+    
+    UITapGestureRecognizer *dismissGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboardFromTap)];
+    [self.view addGestureRecognizer:dismissGesture];
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -39,14 +50,28 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
+
 #pragma mark - Interaction methods
+
 - (IBAction)inviteButtonPressed:(id)sender {
     id branchInviteViewController = [BranchInviteViewController branchInviteViewControllerWithDelegate:self];
     
     [self presentViewController:branchInviteViewController animated:YES completion:NULL];
 }
 
+- (IBAction)viewReferralsPressed:(id)sender {
+    BranchReferralController *referralController = [BranchReferralController branchReferralControllerWithDelegate:self inviteDelegate:self];
+    
+    [self presentViewController:referralController animated:YES completion:NULL];
+}
+
+- (void)dismissKeyboardFromTap {
+    [self.activeTextField resignFirstResponder];
+}
+
+
 #pragma mark - BranchInviteControllerDelegate methods
+
 - (void)inviteControllerDidFinish {
     [self dismissViewControllerAnimated:YES completion:^{
         [[[UIAlertView alloc] initWithTitle:@"Hooray!" message:@"Your invites have been sent!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
@@ -81,36 +106,36 @@
 //}
 
 - (NSDictionary *)inviteUrlCustomData {
-    return @{
-        @"$ios_url": @"branchinvite://home"
-    };
+    return @{ };
 }
 
 - (NSString *)invitingUserId {
-    return self.userIdField.text;
+    return [CurrentUserModel sharedModel].userId;
 }
 
 - (NSString *)invitingUserFullname {
-    return self.userFullnameField.text;
+    return [CurrentUserModel sharedModel].userFullname;
 }
 
 - (NSString *)invitingUserShortName {
-    return self.userShortNameField.text;
+    return [CurrentUserModel sharedModel].userShortName;
 }
 
 - (NSString *)invitingUserImageUrl {
-    return self.userImageUrlField.text;
+    return [CurrentUserModel sharedModel].userImageUrl;
 }
 
 - (NSArray *)inviteContactProviders {
     return @[
-        [BranchInviteEmailContactProvider emailContactProviderWithSubject:@"Check out this demo app!" inviteMessageFormat:@"Check out my demo app with Branch:\n\n%@!"],
-        [BranchInviteTextContactProvider textContactProviderWithInviteMessageFormat:@"Check out my demo app with Branch:\n\n%@!"],
+        [BranchInviteEmailContactProvider emailContactProviderWithSubject:@"Check out this demo app!" inviteMessageFormat:@"Check out my demo app with Branch!:\n\n%@"],
+        [BranchInviteTextContactProvider textContactProviderWithInviteMessageFormat:@"Check out my demo app with Branch!:\n\n%@"],
         [[MysteryIncContactProvider alloc] init]
     ];
 }
 
+
 #pragma mark - UITextFieldDelegate methods
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.activeTextField = textField;
 
@@ -120,10 +145,7 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == self.userIdField) {
-        [self.userFullnameField becomeFirstResponder];
-    }
-    else if (textField == self.userFullnameField) {
+    if (textField == self.userFullnameField) {
         [self.userShortNameField becomeFirstResponder];
     }
     else if (textField == self.userShortNameField) {
@@ -136,7 +158,31 @@
     return NO;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if (textField == self.userFullnameField) {
+        [CurrentUserModel sharedModel].userFullname = textField.text;
+    }
+    else if (textField == self.userShortNameField) {
+        [CurrentUserModel sharedModel].userShortName = textField.text;
+    }
+    else {
+        [CurrentUserModel sharedModel].userImageUrl = textField.text;
+    }
+}
+
+
+#pragma mark - BranchReferralScore delegate
+
+- (NSString *)referringUserId {
+    return [CurrentUserModel sharedModel].userId;
+}
+
+- (void)branchReferralControllerCompleted {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
 #pragma mark - Keyboard Management methods
+
 - (void)keyboardWillShow:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -152,7 +198,24 @@
     self.view.frame = viewFrame;
 }
 
+
 #pragma mark - Internal methods
+
+- (void)setUpCurrentUserIfNecessary {
+    CurrentUserModel *sharedModel = [CurrentUserModel sharedModel];
+    if (!sharedModel.userId) {
+        sharedModel.userId = [NSUUID UUID].UUIDString;
+        sharedModel.userFullname = @"Graham Mueller";
+        sharedModel.userShortName = @"Graham";
+        sharedModel.userImageUrl = @"https://www.gravatar.com/avatar/28ed70ee3c8275f1d307d1c5b6eddfa5";
+    }
+    
+    self.userIdLabel.text = sharedModel.userId;
+    self.userFullnameField.text = sharedModel.userFullname;
+    self.userShortNameField.text = sharedModel.userShortName;
+    self.userImageUrlField.text = sharedModel.userImageUrl;
+}
+
 - (void)shiftKeyboardIfNecessary {
     CGRect viewFrame = self.view.frame;
     CGRect activeTextFieldFrame = self.activeTextField.frame;
