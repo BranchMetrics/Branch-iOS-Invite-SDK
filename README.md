@@ -120,6 +120,8 @@ Modify the following two methods in your App Delegate:
 
 ##### Swift
 ```swift
+class AppDelegate: UIResponder, UIApplicationDelegate, BranchWelcomeControllerDelegate
+
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // anything else you need to do in this method
     // ...
@@ -133,9 +135,9 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
         }
 
         if (BranchWelcomeViewController.shouldShowWelcome(params)) {
-            let welcomeController: BranchWelcomeViewController = BranchWelcomeViewController.branchWelcomeViewControllerWithDelegate(self branchOpts:params);
-
-            self.window.rootViewController.presentViewController(welcomeController animated:YES completion:NULL);
+            let welcomeController: BranchWelcomeViewController = BranchWelcomeViewController(delegate: self, branchOpts: params)
+                
+            self.window!.rootViewController!.presentViewController(welcomeController, animated: true, completion: nil)
         }
     })
         
