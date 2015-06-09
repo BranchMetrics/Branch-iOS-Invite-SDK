@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BranchSharingDelegate.h"
 
-@protocol BranchSharingControllerDelegate <BranchSharingDelegate>
+@protocol BranchSharingControllerDelegate
 
 - (void)branchSharingControllerCompleted;
 

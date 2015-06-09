@@ -22,7 +22,8 @@ Invited users will receive a message (via SMS, Email, or a custom provider you'v
 * [Retrieving Personal Invite Parameters from Session Init](#4-retrieving-invite-parameters-from-session-init)
 * [Showing the Invite Controller and Customizations](#5-showing-the-invite-controller-and-customizations)
 * [Customization](#6-customizations-and-overrides)
-* [Example Usage](#7-example-usage)
+* [Referral Management](#7-referral-management)
+* [Example Usage](#8-example-usage)
 
 
 ## 1. Get your Branch App Key and SDK Initialization
@@ -59,7 +60,7 @@ After you register your app, your app key can be retrieved on the [Settings](htt
 
 1. In plist file, mouse hover "Information Property List" which is the root item under the Key column.
 1. After about half a second, you will see a "+" sign appear. Click it.
-1. In the newly added row, fill in "bnc_app_key" for its key, leave type as String, and enter your app key obtained in above steps in its value column.
+1. In the newly added row, fill in "branch_key" for its key, leave type as String, and enter your app key obtained in above steps in its value column.
 1. Save the plist file.
 
 ##### Screenshot
@@ -416,19 +417,52 @@ A simple example implementation:
 
 For more detail on both, check out the delegates for both classes.
 
-## 7. Example Usage
+## 7. Referral Management
+If you're using our referral feature, your users will want to be able to see a few of things:  
+  * How many points they've earned.  
+  * How many users they have referred.  
+  * Some log of the transactions that have contributed to their earnings.
+  
+The set up for this can be somewhat of a hassle, since you need to do some complicated querying to determine these items. The good news is that we've added that feature to this SDK as well. Adding a referral screen is super simple, and requires only a few lines of set up. The view can easily be displayed modally, or even be dropped into a tab bar set up.
+
+For the default view (no styling) this is as simple as
+```
+- (void)showMyReferrals {
+    BranchReferralController *controller = [BranchReferralController branchReferralControllerWithDelegate:self]
+    [self presentViewController:controller animated:YES completion:NULL];
+}
+```
+
+Of course, as with everything in this SDK, the referral screen is entirely configurable. If the default view isn't to your taste, you can provide your own custom view to the constructor, as long as it conforms to the `BranchReferralView` protocol, which includes three methods you'll want to implement.
+```
+- (void)setCreditHistoryItems:(NSArray *)creditHistoryItems {
+    // this is *all* of the transactions for the user, useful for showing in a list
+}
+
+- (void)setReferrals:(NSArray *)referrals {
+    // this is the set of transactions that were this user *referring* another user
+}
+
+- (void)setControllerDisplayDelegate:(id <BranchReferralViewControllerDisplayDelegate>)displayDelegate {
+    // this delegate allows you to dismiss this view when the user is done viewing
+}
+```
+
+You can find more specific info within each of the header files, or just try out the example app to see working examples.
+
+## 8. Example Usage
 The Example folder contains a sample application that utilizes the Branch Invite code. This app contains a basic running example of how the process works, as well as how to customize it.
 
 Note that the customizations are commented out by default -- you'll need to uncomment them to see the view customizations.
 
 To run this project, you'll need to execute `pod install` from within the Example directory.
 
-To test the full cycle,
-* Open the app
-* Send yourself an invite (note, you must be in your contact book with an email address or phone number)
-* Close the app (kill the app entirely)
-* Open the invite link
-* Reopen the app (should see the welcome screen)
+To test the full cycle,  
+  * Open the app  
+  * Send yourself an invite (note, you must be in your contact book with an email address or phone number)  
+  * Close the app (kill the app entirely)  
+  * Open the invite link  
+  * Reopen the app (should see the welcome screen)  
 
 # Iconography
 A big thanks to [icons8](http://icons8.com) for providing us with a license to use their awesome icons!
