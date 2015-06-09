@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		460179501B011B0C00E7BD8C /* ExampleSharingScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4601794F1B011B0C00E7BD8C /* ExampleSharingScreen.m */; };
+		460179521B011B4E00E7BD8C /* ExampleSharingScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 460179511B011B4E00E7BD8C /* ExampleSharingScreen.xib */; };
+		460179551B0140FD00E7BD8C /* ExampleSharingScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 460179541B0140FD00E7BD8C /* ExampleSharingScreenController.m */; };
 		464197211B03CC1A00869460 /* invite-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4641971E1B03CC1A00869460 /* invite-icon.png */; };
 		464197221B03CC1A00869460 /* invite-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4641971F1B03CC1A00869460 /* invite-icon@2x.png */; };
 		464197231B03CC1A00869460 /* invite-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 464197201B03CC1A00869460 /* invite-icon@3x.png */; };
@@ -45,6 +48,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4601794E1B011B0C00E7BD8C /* ExampleSharingScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleSharingScreen.h; sourceTree = "<group>"; };
+		4601794F1B011B0C00E7BD8C /* ExampleSharingScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleSharingScreen.m; sourceTree = "<group>"; };
+		460179511B011B4E00E7BD8C /* ExampleSharingScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleSharingScreen.xib; sourceTree = "<group>"; };
+		460179531B0140FD00E7BD8C /* ExampleSharingScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleSharingScreenController.h; sourceTree = "<group>"; };
+		460179541B0140FD00E7BD8C /* ExampleSharingScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleSharingScreenController.m; sourceTree = "<group>"; };
 		4641971E1B03CC1A00869460 /* invite-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite-icon.png"; sourceTree = "<group>"; };
 		4641971F1B03CC1A00869460 /* invite-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite-icon@2x.png"; sourceTree = "<group>"; };
 		464197201B03CC1A00869460 /* invite-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite-icon@3x.png"; sourceTree = "<group>"; };
@@ -106,6 +114,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4601794D1AFD444E00E7BD8C /* ExampleSharingScreen */ = {
+			isa = PBXGroup;
+			children = (
+				460179531B0140FD00E7BD8C /* ExampleSharingScreenController.h */,
+				460179541B0140FD00E7BD8C /* ExampleSharingScreenController.m */,
+				4601794E1B011B0C00E7BD8C /* ExampleSharingScreen.h */,
+				4601794F1B011B0C00E7BD8C /* ExampleSharingScreen.m */,
+				460179511B011B4E00E7BD8C /* ExampleSharingScreen.xib */,
+			);
+			name = ExampleSharingScreen;
+			sourceTree = "<group>";
+		};
 		4641971D1B03CBF300869460 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +162,7 @@
 		4661E5701A7D363300B6130D /* ExampleCustomizations */ = {
 			isa = PBXGroup;
 			children = (
+				4601794D1AFD444E00E7BD8C /* ExampleSharingScreen */,
 				4659B3381B0FA8570019767C /* ExampleReferralView */,
 				46E43F5C1A7F0971007576D0 /* ExampleWelcomeScreen */,
 				4661E5741A7D39AF00B6130D /* MysteryIncContactProvider */,
@@ -339,6 +360,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				460179521B011B4E00E7BD8C /* ExampleSharingScreen.xib in Resources */,
 				4686F4031A7328910029ABCC /* Main.storyboard in Resources */,
 				464197211B03CC1A00869460 /* invite-icon.png in Resources */,
 				4650EDBB1A7EC77100558DB7 /* ExampleContactCell.xib in Resources */,
@@ -404,7 +426,9 @@
 			files = (
 				46AF0C1D1ADEB89A000B4347 /* CurrentUserModel.m in Sources */,
 				4686F4001A7328910029ABCC /* ViewController.m in Sources */,
+				460179501B011B0C00E7BD8C /* ExampleSharingScreen.m in Sources */,
 				4686F3FD1A7328910029ABCC /* AppDelegate.m in Sources */,
+				460179551B0140FD00E7BD8C /* ExampleSharingScreenController.m in Sources */,
 				4661E5731A7D365B00B6130D /* MysteryIncContactProvider.m in Sources */,
 				46E43F5F1A7F09CD007576D0 /* ExampleWelcomeScreen.m in Sources */,
 				4650EDB81A7EC6DA00558DB7 /* ExampleContactCell.m in Sources */,

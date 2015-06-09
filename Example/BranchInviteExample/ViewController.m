@@ -11,6 +11,9 @@
 #import "BranchInviteTextContactProvider.h"
 #import "BranchInviteEmailContactProvider.h"
 #import "MysteryIncContactProvider.h"
+#import "BranchActivityItemProvider.h"
+#import "BranchSharing.h"
+#import "UIViewController+BranchShare.h"
 #import "BranchReferralController.h"
 #import "CurrentUserModel.h"
 
@@ -57,6 +60,18 @@
     id branchInviteViewController = [BranchInviteViewController branchInviteViewControllerWithDelegate:self];
     
     [self presentViewController:branchInviteViewController animated:YES completion:NULL];
+}
+
+- (IBAction)shareButtonPressed:(id)sender {
+    NSString *sharingText = @"This is the profile picture I used to test out Branch's sharing functionality, isn't it great?";
+    NSDictionary *params = @{
+        BRANCH_SHARING_SHARE_TEXT: sharingText,
+        BRANCH_SHARING_SHARE_IMAGE: self.userImageUrlField.text,
+        @"$og_image_url": self.userImageUrlField.text,
+        @"$og_title": @"Branch Sharing Profile Picture"
+    };
+    
+    [self shareText:sharingText andParams:params];
 }
 
 - (IBAction)viewReferralsPressed:(id)sender {

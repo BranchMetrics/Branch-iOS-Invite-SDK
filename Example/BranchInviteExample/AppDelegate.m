@@ -9,12 +9,16 @@
 #import "AppDelegate.h"
 #import "Branch.h"
 #import "BranchWelcomeViewController.h"
+#import "BranchSharing.h"
+#import "ExampleWelcomeScreen.h"
+#import "ExampleSharingScreen.h"
+#import "ExampleSharingScreenController.h"
 #import "BranchReferralController.h"
 #import "ExampleWelcomeScreen.h"
 #import "ExampleReferralScreen.h"
 #import "CurrentUserModel.h"
 
-@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralControllerDelegate>
+@interface AppDelegate () <BranchWelcomeControllerDelegate, BranchReferralControllerDelegate, BranchSharingViewStyleDelegate, BranchSharingControllerDelegate>
 
 @property (weak, nonatomic) UIViewController *presentingController;
 
@@ -23,6 +27,20 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Register for sharing any time the branch options contain the sharing text key
+    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT];
+    
+    // Customize sharing view appearance
+//    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT styleDelegate:self];
+    
+    // Use a complete custom sharing view
+//    ExampleSharingScreen *sharingScreen = [[[NSBundle mainBundle] loadNibNamed:@"ExampleSharingScreen" owner:nil options:nil] firstObject];
+//    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT view:sharingScreen];
+
+    // Use a custom sharing controller
+//    ExampleSharingScreenController *controller = [[ExampleSharingScreenController alloc] initWithNibName:@"ExampleSharingScreen" bundle:[NSBundle mainBundle]];
+//    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT controller:controller];
+    
     Branch *branch = [Branch getInstance];
     [branch setDebug];
     [branch initSessionWithLaunchOptions:launchOptions isReferrable:YES andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
@@ -37,6 +55,13 @@
             self.presentingController = self.window.rootViewController;
             
             [self.presentingController presentViewController:welcomeController animated:YES completion:NULL];
+        }
+        
+        UIViewController *sharingController = [BranchSharing sharingControllerForBranchOpts:params delegate:self];
+        if (sharingController) {
+            self.presentingController = self.window.rootViewController;
+
+            [self.presentingController presentViewController:sharingController animated:YES completion:NULL];
         }
     }];
     
@@ -102,5 +127,22 @@
 //- (UIColor *)welcomeBodyTextColor {
 //    return [UIColor blackColor]; // Yeah, this looks bad on red, but it gets the idea across
 //}
+
+
+#pragma mark - BranchSharingViewStyleDelegate methods
+
+- (UIColor *)branchSharingViewBackgroundColor {
+    return [UIColor blackColor];
+}
+
+- (UIColor *)branchSharingViewForegroundColor {
+    return [UIColor greenColor];
+}
+
+#pragma mark - BranchSharingControllerDelegate methods
+
+- (void)branchSharingControllerCompleted {
+    [self.window.rootViewController dismissViewControllerAnimated:YES completion:NULL];
+}
 
 @end
