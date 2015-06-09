@@ -23,7 +23,8 @@ Invited users will receive a message (via SMS, Email, or a custom provider you'v
 * [Showing the Invite Controller and Customizations](#5-showing-the-invite-controller-and-customizations)
 * [Customization](#6-customizations-and-overrides)
 * [Referral Management](#7-referral-management)
-* [Example Usage](#8-example-usage)
+* [Sharing Content](#8-sharing-content)
+* [Example Usage](#9-example-usage)
 
 
 ## 1. Get your Branch App Key and SDK Initialization
@@ -37,7 +38,7 @@ Simply head to [Settings](https://dashboard.branch.io) to create an account to s
 BranchInvite can be found on [CocoaPods](http://cocoapods.org). To install it simply add the following line to your Podfile:
 
 ```
-    pod 'BranchInvite'
+pod 'BranchInvite'
 ```
 
 #### Or download the raw files
@@ -450,7 +451,88 @@ Of course, as with everything in this SDK, the referral screen is entirely confi
 
 You can find more specific info within each of the header files, or just try out the example app to see working examples.
 
-## 8. Example Usage
+## 8. Sharing Content
+One of the additional features available in the Invite SDK is a simple hook for content sharing. One of the more painful parts of app developement is frequently trying to figure out how to do app routing from within the AppDelegate. The sharing feature allows you to provide a key which, when present in a Branch open dictionary, allows you to show the appropriate screen. As with the other items in the SDK, appearance is totally customizable.
+
+The simplest use case is to just register to default view provided by Branch, though this is quite plain and will likely not match your app's appearance. Note that your AppDelegate should conform the the `BranchSharingControllerDelegate` protocol in order to handle dismissing the content view.
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Register for sharing any time the branch options contain the sharing text key
+    [BranchSharing registerForSharingEventsWithKey:BRANCH_SHARING_SHARE_TEXT];
+
+    [[Branch getInstance] initSessionWithLaunchOptions:launchOptions isReferrable:YES andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+        if (error) {
+            NSLog(@"Init failed: %@", error);
+            return;
+        }
+        
+        UIViewController *sharingController = [BranchSharing sharingControllerForBranchOpts:params delegate:self];
+        if (sharingController) {
+            self.presentingController = self.window.rootViewController;
+
+            [self.presentingController presentViewController:sharingController animated:YES completion:NULL];
+        }
+    }];
+```
+
+You can also provide your own view and/or controller to customize the experience further as well. Note that you *do not* need to use the BRANCH_SHARING_SHARE_TEXT key to register unless you're using the dfeault view. For your own content, you can provide whatever Branch link keys are useful for you!
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Register for sharing any time the branch options contain some arbitrary key
+    ExampleSharingScreenController *controller = [[ExampleSharingScreenController alloc] initWithNibName:@"ExampleSharingScreen" bundle:[NSBundle mainBundle]];
+    [BranchSharing registerForSharingEventsWithKey:@"my_key_indicating_sharing" controller:controller];
+    
+        [[Branch getInstance] initSessionWithLaunchOptions:launchOptions isReferrable:YES andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+        if (error) {
+            NSLog(@"Init failed: %@", error);
+            return;
+        }
+        
+        UIViewController *sharingController = [BranchSharing sharingControllerForBranchOpts:params delegate:self];
+        if (sharingController) {
+            self.presentingController = self.window.rootViewController;
+
+            [self.presentingController presentViewController:sharingController animated:YES completion:NULL];
+        }
+    }];
+```
+
+In this case, your controller would need to conform to the `BranchSharingController` protocol, something like this:
+```
+@interface ExampleSharingScreenController ()
+
+@property (weak, nonatomic) IBOutlet UILabel *shareTextLabel;
+@property (weak, nonatomic) IBOutlet UILabel *shareImageUrlLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *shareImageView;
+
+@end
+
+@implementation ExampleSharingScreenController
+
+- (void)configureWithSharingData:(NSDictionary *)sharingData {
+    NSString *shareText = sharingData[@"my_sharing_text_key"];
+    NSString *shareImageUrl = sharingData[@"my_sharing_image_key"];
+    
+    self.shareTextLabel.text = shareText;
+    self.shareImageUrlLabel.text = shareImageUrl;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:shareImageUrl]];
+        UIImage *image = [UIImage imageWithData:imageData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.shareImageView.image = image;
+        });
+    });
+}
+
+@end
+```
+
+Check out the Example project for more specific details and example implementations.
+
+## 9. Example Usage
 The Example folder contains a sample application that utilizes the Branch Invite code. This app contains a basic running example of how the process works, as well as how to customize it.
 
 Note that the customizations are commented out by default -- you'll need to uncomment them to see the view customizations.
