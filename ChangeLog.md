@@ -1,5 +1,9 @@
 Branch iOS Invite SDK change log
 
+- v0.3.1
+  * Added ability to specify fonts.
+  * Welcome Controller will not consider itself as "should show" if user is already identified.
+
 - v0.3.0
   * Added sharing content classes.
 
