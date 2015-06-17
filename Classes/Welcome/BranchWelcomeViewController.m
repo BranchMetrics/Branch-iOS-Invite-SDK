@@ -27,7 +27,7 @@ NSInteger const DEFAULT_REFERRAL_LINK_RETRY_COUNT = 3;
 @implementation BranchWelcomeViewController
 
 + (BOOL)shouldShowWelcome:(NSDictionary *)branchOpts {
-    return branchOpts[BRANCH_INVITE_USER_FULLNAME_KEY] != nil;
+    return branchOpts[BRANCH_INVITE_USER_FULLNAME_KEY] != nil && ![[Branch getInstance] isUserIdentified];
 }
 
 + (BranchWelcomeViewController *)branchWelcomeViewControllerWithDelegate:(id <BranchWelcomeControllerDelegate>)delegate branchOpts:(NSDictionary *)branchOpts {
