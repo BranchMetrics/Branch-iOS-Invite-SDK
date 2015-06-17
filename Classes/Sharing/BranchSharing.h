@@ -15,8 +15,10 @@ extern NSString * const BRANCH_SHARING_SHARE_IMAGE;
 
 @protocol BranchSharingViewStyleDelegate <NSObject>
 
+@optional
 - (UIColor *)branchSharingViewBackgroundColor;
 - (UIColor *)branchSharingViewForegroundColor;
+- (UIFont *)branchSharingViewFont;
 
 @end
 

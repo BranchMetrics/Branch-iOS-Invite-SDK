@@ -26,6 +26,10 @@
     if ([self.styleDelegate respondsToSelector:@selector(branchSharingViewForegroundColor)]) {
         self.contentTextLabel.textColor = [self.styleDelegate branchSharingViewForegroundColor];
     }
+    
+    if ([self.styleDelegate respondsToSelector:@selector(branchSharingViewFont)]) {
+        self.contentTextLabel.font = [self.styleDelegate branchSharingViewFont];
+    }
 
     self.contentTextLabel.text = sharingData[BRANCH_SHARING_SHARE_TEXT];
     

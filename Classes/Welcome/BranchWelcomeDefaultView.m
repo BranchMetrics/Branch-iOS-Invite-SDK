@@ -152,6 +152,14 @@ CGFloat const PREFERRED_WIDTH = 288;
         self.welcomeBodyLabel.textColor = textColor;
         [self.confirmInviteButton setTitleColor:textColor forState:UIControlStateNormal];
     }
+    
+    if ([self.delegate respondsToSelector:@selector(titleTextFont)]) {
+        self.welcomeTitleLabel.font = [self.delegate titleTextFont];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(bodyTextFont)]) {
+        self.welcomeBodyLabel.font = [self.delegate bodyTextFont];
+    }
 }
 
 - (void)adjustTopConstaints {

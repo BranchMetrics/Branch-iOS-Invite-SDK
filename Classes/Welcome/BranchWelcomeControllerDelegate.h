@@ -47,4 +47,10 @@
 // Color for body text.
 - (UIColor *)welcomeBodyTextColor;
 
+// Font to set the title text
+- (UIFont *)titleTextFont;
+
+// Font for body text.
+- (UIFont *)bodyTextFont;
+
 @end
