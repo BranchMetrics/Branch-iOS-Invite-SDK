@@ -55,7 +55,7 @@
 }
 
 - (NSString *)channel {
-    return @"Text";
+    return @"sms";
 }
 
 - (NSArray *)contacts {
