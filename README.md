@@ -1,83 +1,99 @@
-# Branch-iOS-Invite-SDK
+# Branch-iOS-Invite-SDK User Guide
 
-The purpose of this SDK is to provide an out-of-the-box functional 'invite feature' for apps consuming the Branch SDK that want to utilize a standard invite feature in their app.
+##Introduction
 
-There will still be some configuration on the dashboard, but the goal is to provide the most extensible, yet simple to use, full invite feature SDK. To see the basics of setting up an app with Branch, check out [the Branch iOS SDK readme](https://github.com/BranchMetrics/Branch-iOS-SDK).
+This iOS Invite SDK provides an out-of-the-box functional 'invite feature' for apps consuming the Branch SDK that want to utilize a standard invite feature in their app.
 
-# Invite Flow
-In your app, there will be a trigger to open the Invite UI. This will show a list of contacts and allow the user to select friends they want to invite to join them.  
+This iOS Invite SDK user guide provides you with step-by-step instructions on how to set up the invite feature. If you haven't set up an app with Branch yet, check out [the Branch iOS SDK readme](https://github.com/BranchMetrics/Branch-iOS-SDK).
 
-![Invite](https://s3-us-west-1.amazonaws.com/branchhost/invite_sdk_1.gif)
+##Table of Contents
+The iOS Invite SDK user guide includes the following sections:
 
-# New User Experience (Install/Open & Personal Welcome)
-Invited users will receive a message (via SMS, Email, or a custom provider you've implemented). When they open this URL, they'll be fingerprinted by the Branch server as an "invited user," which will be remember when your app is launched on their device. When Invited Users enter the app, they'll be shown a Welcome UI (either the Branch default, or a custom screen). This Welcome Screen contains the inviting user's image, name, and id. The invited user can choose to accept the invite, or cancel and continue on their own.
+Section Titles  | 
+------------- | 
+[Introduction] (#introduction)| 
+|[Pre-requistes] (#1-pre-requistes)      
+[Installing the iOS Invite SDK](#2-installing-the-iOS-invite-sdk)| 
+[Getting Your Branch Key](#4-getting-your-branch-key)|
+[Adding Your Branch Key to Your Project](#5-adding-your-branch-key-to-your-project)|
+[Showing the Invite Controller and Customizations](#5-showing-the-invite-controller-and-customizations)|
+[Customization](#6-customizations-and-overrides)|
+[Referral Management](#7-referral-management)|
+[Example Usage](#9-example-usage)|
 
-![Open](https://s3-us-west-1.amazonaws.com/branch-guides/click_open.gif)
+##Pre-requistes
+You must have the following completed before you can use the invite feature:
 
-# Usage Guide
+- An account to access the Dashboard and store all of your link data 
+- A configured dashboard for your iOS app
 
-* [Branch App Key and Initialization](#1-get-your-branch-app-key-and-sdk-initialization)
-* [Setting up Branch in your App](#2-setting-up-branch-in-your-app)
-* [Initialization and Showing the Personalized Welcome](#3-initialization-and-showing-the-personalized-welcome)
-* [Retrieving Personal Invite Parameters from Session Init](#4-retrieving-invite-parameters-from-session-init)
-* [Showing the Invite Controller and Customizations](#5-showing-the-invite-controller-and-customizations)
-* [Customization](#6-customizations-and-overrides)
-* [Referral Management](#7-referral-management)
-* [Sharing Content](#8-sharing-content)
-* [Example Usage](#9-example-usage)
+**Notes:**
+
+- If you need to create an account, go to <https://dashboard.branch.io> and sign up for one. (It's free).
+- If you haven't configured your dashboard, go to the [Integrating the SDK Quick Start Guide] (https://dev.branch.io/recipes/quickstart_guide/ios/#configuring-the-dashboard-for-your-ios-app) and complete step 1.
 
 
-## 1. Get your Branch App Key and SDK Initialization
+##Installing the iOS Invite SDK
+You can install the iOS Invite SDK in one of three ways: 
 
-Simply head to [Settings](https://dashboard.branch.io) to create an account to store all of your link data.
+* From CocoaPods 
+* By dowloading the raw files
+* By cloning this project
 
-## 2. Setting up Branch in your app
+###CocaPods
 
-### Installing the SDK
-
-BranchInvite can be found on [CocoaPods](http://cocoapods.org). To install it simply add the following line to your Podfile:
+ To install BranchInvite on [CocoaPods](http://cocoapods.org), add the following line to your Podfile:
 
 ```
 pod 'BranchInvite'
 ```
 
-#### Or download the raw files
+###Download 
 
-The Test Bed Project
+If you don’t use CocoaPods, you can download and install BarnchInvite from the raw files. See links below.
 
-https://s3-us-west-1.amazonaws.com/branchhost/Branch-iOS-Invite-TestBed.zip
+- The Test Bed Project
 
-The SDK
+	<https://s3-us-west-1.amazonaws.com/branchhost/Branch-iOS-Invite-TestBed.zip>
 
-https://s3-us-west-1.amazonaws.com/branchhost/Branch-iOS-Invite-SDK.zip
+- The SDK
 
-#### Or just clone this project
+	<https://s3-us-west-1.amazonaws.com/branchhost/Branch-iOS-Invite-SDK.zip>
 
-The base source is found in the **Source With Dependencies** folder of the project.
+###Clone
+You can also just clone this project. The base source is found in the **Source With Dependencies** folder of the project.
 
-### Add your app key to your project
+## Getting Your Branch Key
 
-After you register your app, your app key can be retrieved on the [Settings](https://dashboard.branch.io/#/settings) page of the dashboard. Now you need to add it to YourProject-Info.plist (Info.plist for Swift).
+Your Branch key is located in the first area of the [Settings](https://dashboard.branch.io/#/settings) page of the Dashboard. This is the Branch key you must add to your project as described in the next section [(Adding Your Branch Key to Your Project)](#5). 
 
-1. In plist file, mouse hover "Information Property List" which is the root item under the Key column.
-1. After about half a second, you will see a "+" sign appear. Click it.
-1. In the newly added row, fill in "branch_key" for its key, leave type as String, and enter your app key obtained in above steps in its value column.
-1. Save the plist file.
+**Note:** Before you can get your Branch key, you must have an account and a configured dashboard. See [Pre-requistes](#1-pre-requistes) for more information. 
 
-##### Screenshot
-![Setting Key in PList Demo](https://s3-us-west-1.amazonaws.com/branch-guides/10_plist.png)
+## Adding Your Branch Key to Your Project
+Follow the instructions below to add your Branch key to YourProject-Info.plist (Info.plist for Swift) file.
 
-##### Animated Gif
-![Setting Key in PList Demo](https://s3-us-west-1.amazonaws.com/branch-guides/9_plist.gif)
+1. In the **Key** columun of your project's plist file, hover over the **Information Property List** row until the "+" (add row) icon displays. (Or you can click the **Information Property List** row to display the add row icon).
+1. Click the "+" (add row) icon to add a new row.
+1. In the new row, type in the following (see Figures 1 and 2 below):
+	* In the **Key** columun, type "branch_key."
+	* By default, the **Type** columun displays the dictionary type as **String**. The dictionary type should remain as **String**. (No change is required for this step). 
+	* In the **Value** columun, enter your Branch key that you retrieved from the [Settings] (https://dashboard.branch.io/#/settings) page of the Dashboard.
+1. Save the plist file.	
 
-### 3. Initialization and Showing the Personalized Welcome
+
+![Setting Key in PList Demo](https://s3-us-west-1.amazonaws.com/branch-guides/9_plist.gif) Figure 1. Adding Your Branch Key to Your Project (Animated gif)
+
+![Setting Key in PList Demo](https://s3-us-west-1.amazonaws.com/branch-guides/10_plist.png) Figure 2. Adding Your Branch Key to Your Project (Image)
+
+### Initialization and Displaying the Personalized Welcome
 
 Branch must be started within your app before any calls can be made to the SDK.  
   
-On top of the regular setup for a Branch app, you should add a check within the init callback to check whether the welcome screen should be shown. By default, the BranchWelcomeViewController will determine this based on keys in the Branch initialization dictionary.  
+In addition to the regular setup for a Branch app, you should add a check within the init callback to check whether the welcome screen should be shown. By default, the BranchWelcomeViewController will determine this based on keys in the Branch initialization dictionary.  
 
 Modify the following two methods in your App Delegate:
 
+####Methods
 ##### Objective-C
 
 ```objc
@@ -157,12 +173,12 @@ func application(application: UIApplication, openURL url: NSURL, sourceApplicati
 }
 ```
 
-The deep link handler is called every single time the app is opened, returning deep link data if the user tapped on a link that led to this app open.
+The deep link handler is called every single time the app is opened, returning deep link data if the user tapped on a link that led to this app being opened.
 
 This same code also triggers the recording of an event with Branch. If this is the first time a user has opened the app, an "install" event is registered. Every subsequent time the user opens the app, it will trigger an "open" event.
 This project is built with, and currently relies on, Cocoapods. To add this project to your app, add the following to your Podfile
 
-## 4. Retrieving Invite Parameters from Session Init
+## Retrieving Invite Parameters from Session Init
 
 When you call Branch initSession and register the callback, if the user had just clicked an invite link, you can retrieve the individual parameters by using the Branch keys listed below.
 
@@ -173,7 +189,7 @@ When you call Branch initSession and register the callback, if the user had just
     BRANCH_INVITE_USER_IMAGE_URL_KEY
 ```
 
-## 5. Showing the Invite Controller and Customizations
+## Displaying the Invite Controller and Customizations
 
 In addition, somewhere in your project you'll need to display the **BranchInviteViewController**, typically in a menu or somewhere that the user can manually trigger. Here is the code to show the invite controller.
 
@@ -284,10 +300,10 @@ You have the ability to control the direct deep linking of each link by insertin
 | "$always_deeplink" | true or false. (default is not to deep link first) This key can be specified to have our linking service force try to open the app, even if we're not sure the user has the app installed. If the app is not installed, we fall back to the respective app store or $platform_url key. By default, we only open the app if we've seen a user initiate a session in your app from a Branch link (has been cookied and deep linked by Branch)
 
 
-## 6. Customizations And Overrides
+## Customizations and Overrides
 Both the invite and welcome screens can be customized.
 
-#### Invite Display
+### Invite Display
 We've designed the invite screen to be attractive and intuitive, at least in our opinion. You may feel differently, but don't worry -- we provide hooks for you to customize the appearance.
 
 * Segmented Control  
@@ -296,7 +312,7 @@ We utilize an HMSegmentedControl to list out the contact providers. One of the h
 * TableViewCell Customization
 If you're prefer a different appearance to the contact rows, you have two options. You can either provide a custom class which will be registered with the table, or more extensively, a nib (with a class). Either of these classes *must* conform to the BranchInviteContactCell protocol.
 
-#### Creating Your Own Contact Providers
+### Creating Your Own Contact Providers
 Contact Providers are potentially the biggest point of customization for an app. The default implementation will provides a couple of defaults -- Email and Text -- both of which pull from the Address Book.
 
 Sometimes this isn't enough, though. Perhaps you have a list of contacts from a different 3rd Party system. In that case, you can create your own provider that fulfills the BranchInviteContactProvider protocol. This protocol requires a number of items.
@@ -352,7 +368,7 @@ A simple example implementation:
 @end
 ```
 
-#### Welcome Customization
+### Welcome Customization
 For the welcome screen, you can provide a custom view to be displayed, but it must conform to the specified protocol. Otherwise, you can customize the the existing controllers text color and background color.
 
 A simple example implementation:
@@ -420,7 +436,15 @@ A simple example implementation:
 
 For more detail on both, check out the delegates for both classes.
 
-## 7. Referral Management
+## Referral Management
+
+You can add a referral screen (with only a few lines of set up) that can display modally or in a tab bar. Listed below are some of the referral options you can display to your users:
+
+* How many points they've earned.  
+* How many users they have referred. 
+* Some log of the transactions that have contributed to their earnings.
+
+
 If you're using our referral feature, your users will want to be able to see a few of things:  
   * How many points they've earned.  
   * How many users they have referred.  
@@ -428,13 +452,18 @@ If you're using our referral feature, your users will want to be able to see a f
   
 The set up for this can be somewhat of a hassle, since you need to do some complicated querying to determine these items. The good news is that we've added that feature to this SDK as well. Adding a referral screen is super simple, and requires only a few lines of set up. The view can easily be displayed modally, or even be dropped into a tab bar set up.
 
-For the default view (no styling) this is as simple as
+###Adding a Default Referral Screen 
+
+
+For the default view (no styling), the referral screen is as follows:
+
 ```
 - (void)showMyReferrals {
     BranchReferralController *controller = [BranchReferralController branchReferralControllerWithDelegate:self]
     [self presentViewController:controller animated:YES completion:NULL];
 }
 ```
+###Adding a Custom Referral Screen 
 
 Of course, as with everything in this SDK, the referral screen is entirely configurable. If the default view isn't to your taste, you can provide your own custom view to the constructor, as long as it conforms to the `BranchReferralView` protocol, which includes three methods you'll want to implement.
 ```
@@ -453,7 +482,7 @@ Of course, as with everything in this SDK, the referral screen is entirely confi
 
 You can find more specific info within each of the header files, or just try out the example app to see working examples.
 
-## 8. Sharing Content
+## Sharing Content
 One of the additional features available in the Invite SDK is a simple hook for content sharing. One of the more painful parts of app developement is frequently trying to figure out how to do app routing from within the AppDelegate. The sharing feature allows you to provide a key which, when present in a Branch open dictionary, allows you to show the appropriate screen. As with the other items in the SDK, appearance is totally customizable.
 
 The simplest use case is to just register to default view provided by Branch, though this is quite plain and will likely not match your app's appearance. Note that your AppDelegate should conform the the `BranchSharingControllerDelegate` protocol in order to handle dismissing the content view.
@@ -534,19 +563,20 @@ In this case, your controller would need to conform to the `BranchSharingControl
 
 Check out the Example project for more specific details and example implementations.
 
-## 9. Example Usage
+## Example Usage
 The Example folder contains a sample application that utilizes the Branch Invite code. This app contains a basic running example of how the process works, as well as how to customize it.
 
-Note that the customizations are commented out by default -- you'll need to uncomment them to see the view customizations.
+**Note:** The customizations are commented out by default -- you'll need to uncomment them to see the view customizations.
 
 To run this project, you'll need to execute `pod install` from within the Example directory.
 
-To test the full cycle,  
-  * Open the app  
-  * Send yourself an invite (note, you must be in your contact book with an email address or phone number)  
-  * Close the app (kill the app entirely)  
-  * Open the invite link  
-  * Reopen the app (should see the welcome screen)  
+To test the full cycle:
+  
+  1. Open the app. 
+  1. Send yourself an invite (note, you must be in your contact book with an email address or phone number)
+  1. Close the app (kill the app entirely)
+  1. Open the invite link
+  1. Reopen the app (should see the welcome screen)  
 
 # Iconography
-A big thanks to [icons8](http://icons8.com) for providing us with a license to use their awesome icons!
+A big thanks to [icons8](http://icons8.com) for providing us with a license to use their awesome icons.
