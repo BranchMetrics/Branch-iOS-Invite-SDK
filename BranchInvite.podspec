@@ -29,5 +29,5 @@ Use the Branch SDK (branch.io) to create and power the links that point back to 
   }
 
   s.dependency 'Branch'
-  s.dependency 'HMSegmentedControl', '1.4'
+  s.dependency 'HMSegmentedControl'
 end
