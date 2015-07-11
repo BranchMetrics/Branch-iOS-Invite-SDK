@@ -17,7 +17,7 @@
 
 - (void)shareText:(NSString *)text andParams:(NSDictionary *)params {
     NSString *feature = BRANCH_FEATURE_TAG_SHARE;
-    UIActivityItemProvider *itemProvider = [Branch getBranchActivityItemWithParams:params andFeature:feature andStage:nil andTags:nil];
+    UIActivityItemProvider *itemProvider = [Branch getBranchActivityItemWithParams:params feature:feature stage:nil tags:nil];
     UIActivityViewController *shareViewController = [[UIActivityViewController alloc] initWithActivityItems:@[ text, itemProvider ] applicationActivities:nil];
 
     [self presentViewController:shareViewController animated:YES completion:nil];
