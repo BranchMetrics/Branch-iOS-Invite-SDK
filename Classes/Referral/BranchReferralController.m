@@ -144,8 +144,8 @@
     NSString *referrer = transaction[@"referrer"];
     NSString *referree = transaction[@"referree"];
     
-    BOOL referreeIsSetAndIsNotMe = referree && referree != (id)[NSNull null] && ![referree isEqualToString:currentSessionId];
-    BOOL referrerIsSetAndIsMe = referrer && referrer != (id)[NSNull null] && [referrer isEqualToString:currentSessionId];
+    BOOL referreeIsSetAndIsNotMe = referree && ![referree isEqualToString:currentSessionId];
+    BOOL referrerIsSetAndIsMe = referrer && [referrer isEqualToString:currentSessionId];
     
     // This transaction is a referral made by me if one of the two are true:
     // * The referree is set (BranchReferringUser type referrals), and  it is not me. If it is me, that means I was referred.
