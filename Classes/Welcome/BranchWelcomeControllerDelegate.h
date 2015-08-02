@@ -53,4 +53,7 @@
 // Font for body text.
 - (UIFont *)bodyTextFont;
 
+// Font for continue button text.
+- (UIFont *)continueButtonFont;
+
 @end
