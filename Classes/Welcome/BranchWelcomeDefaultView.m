@@ -160,6 +160,10 @@ CGFloat const PREFERRED_WIDTH = 288;
     if ([self.delegate respondsToSelector:@selector(bodyTextFont)]) {
         self.welcomeBodyLabel.font = [self.delegate bodyTextFont];
     }
+    
+    if ([self.delegate respondsToSelector:@selector(continueButtonFont)]) {
+        self.continueButton.titleLabel.font = [self.delegate continueButtonFont];
+    }
 }
 
 - (void)adjustTopConstaints {
