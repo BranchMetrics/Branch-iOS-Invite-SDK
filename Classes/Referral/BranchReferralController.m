@@ -9,7 +9,7 @@
 #import "BranchReferralController.h"
 #import "BranchInviteBundleUtil.h"
 #import "BranchInviteViewController.h"
-#import "Branch.h"
+#import <Branch/Branch.h>
 #import "BranchReferralDefaultView.h"
 
 @interface BranchReferralController () <BranchReferralViewControllerDisplayDelegate>
