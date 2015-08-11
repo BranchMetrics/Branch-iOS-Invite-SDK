@@ -1,5 +1,12 @@
 Branch iOS Invite SDK change log
 
+- v0.3.4
+  * Revert 0.3.3.
+  * Add ability to customize welcome screen "continue" button font.
+  * Fix several imports to work with Cocoapods + Swift + use_frameworks.
+
+- v0.3.3 Bumped HMSegmentedControl version.
+
 - v0.3.2 Making sure constants are in line with the iOS SDK.
 
 - v0.3.1
