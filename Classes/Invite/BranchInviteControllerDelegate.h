@@ -6,7 +6,7 @@
 //
 //
 
-#import "HMSegmentedControl.h"
+#import <HMSegmentedControl/HMSegmentedControl.h>
 
 @protocol BranchInviteControllerDelegate <NSObject>
 
