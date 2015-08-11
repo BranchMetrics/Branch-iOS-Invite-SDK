@@ -17,7 +17,7 @@
 
 #import "BranchInviteContact.h"
 #import "BranchInviteSendingCompletionDelegate.h"
-#import "Branch.h"
+#import <Branch/Branch.h>
 
 @protocol BranchInviteContactProvider <NSObject>
 

@@ -9,7 +9,7 @@
 #import "BranchInviteViewController.h"
 #import <Branch/Branch.h>
 #import "BranchInvite.h"
-#import "HMSegmentedControl.h"
+#import <HMSegmentedControl/HMSegmentedControl.h>
 #import "BranchInviteContactProvider.h"
 #import "BranchInviteSendingCompletionDelegate.h"
 #import "BranchInviteEmailContactProvider.h"

@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+BranchShare.h"
-#import "Branch.h"
+#import <Branch/Branch.h>
 
 @implementation UIViewController (BranchShare)
 
