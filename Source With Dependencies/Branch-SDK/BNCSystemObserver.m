@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Branch Metrics. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #include <sys/utsname.h>
 #import "BNCPreferenceHelper.h"
 #import "BNCSystemObserver.h"
-#import "BranchServerInterface.h"
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>
 #import <SystemConfiguration/SystemConfiguration.h>
@@ -79,6 +79,10 @@
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
++ (NSString *)getBundleID {
+    return [[NSBundle mainBundle] bundleIdentifier];
+}
+
 + (NSString *)getCarrier {
     NSString *carrierName = nil;
     
@@ -124,7 +128,7 @@
 }
 
 + (NSNumber *)getUpdateState {
-    NSString *storedAppVersion = [BNCPreferenceHelper getAppVersion];
+    NSString *storedAppVersion = [BNCPreferenceHelper preferenceHelper].appVersion;
     NSString *currentAppVersion = [BNCSystemObserver getAppVersion];
     NSFileManager *manager = [NSFileManager defaultManager];
     
@@ -140,10 +144,10 @@
     
     // No stored version
     if (!storedAppVersion) {
-        // Modification and Creation date are more than 60 seconds different indicates an update
-        // This would be the case that they were installing a new version of the app that was
+        // Modification and Creation date are more than 24 hours' worth of seconds different indicates
+        // an update. This would be the case that they were installing a new version of the app that was
         // adding Branch for the first time, where we don't already have an NSUserDefaults value.
-        if (ABS([modificationDate timeIntervalSinceDate:creationDate]) > 60) {
+        if (ABS([modificationDate timeIntervalSinceDate:creationDate]) > 86400) {
             return @2;
         }
         
@@ -163,7 +167,7 @@
 
 + (void)setUpdateState {
     NSString *currentAppVersion = [BNCSystemObserver getAppVersion];
-    [BNCPreferenceHelper setAppVersion:currentAppVersion];
+    [BNCPreferenceHelper preferenceHelper].appVersion = currentAppVersion;
 }
 
 + (NSString *)getOS {
@@ -189,30 +193,24 @@
     return [NSNumber numberWithInteger:(NSInteger)height];
 }
 
-+ (NSDictionary *)getListOfApps {
++ (NSDictionary *)getOpenableAppDictFromList:(NSArray *)apps {
     NSMutableArray *appsPresent = [[NSMutableArray alloc] init];
     NSMutableArray *appsNotPresent = [[NSMutableArray alloc] init];
-    NSDictionary *appsData = [NSDictionary dictionaryWithObjects:@[appsPresent, appsNotPresent] forKeys:@[@"canOpen", @"notOpen"]];
+    NSDictionary *appsData = @{ @"canOpen": appsPresent, @"notOpen": appsNotPresent };
     
-    BNCServerResponse *serverResponse = [[[BranchServerInterface alloc] init] retrieveAppsToCheck];
-    [BNCPreferenceHelper log:FILE_NAME line:LINE_NUM message:@"returned from app check with %@", serverResponse.data];
-    if (serverResponse && serverResponse.data) {
-        NSInteger status = [serverResponse.statusCode integerValue];
-        NSArray *apps = [serverResponse.data objectForKey:@"potential_apps"];
-        UIApplication *application = [UIApplication sharedApplication];
-        if (status == 200 && apps && application) {
-            for (NSString *app in apps) {
-                NSString *uriScheme = app;
-                if ([uriScheme rangeOfString:@"://"].location != NSNotFound) {  // if (![uriScheme containsString:@"://"]) {
-                    uriScheme = [uriScheme stringByAppendingString:@"://"];
-                }
-                NSURL *url = [NSURL URLWithString:uriScheme];
-                if ([application canOpenURL:url]) {
-                    [appsPresent addObject:app];
-                } else {
-                    [appsNotPresent addObject:app];
-                }
-            }
+    UIApplication *application = [UIApplication sharedApplication];
+    for (NSString *app in apps) {
+        NSString *uriScheme = app;
+        if ([uriScheme rangeOfString:@"://"].location != NSNotFound) {
+            uriScheme = [uriScheme stringByAppendingString:@"://"];
+        }
+
+        NSURL *url = [NSURL URLWithString:uriScheme];
+        if ([application canOpenURL:url]) {
+            [appsPresent addObject:app];
+        }
+        else {
+            [appsNotPresent addObject:app];
         }
     }
     
