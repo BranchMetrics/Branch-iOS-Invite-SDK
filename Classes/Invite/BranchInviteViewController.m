@@ -91,8 +91,8 @@
     }
 
     // Set up all of the defaults
-    self.segmentedControl.textColor = [UIColor whiteColor];
-    self.segmentedControl.selectedTextColor = [UIColor whiteColor];
+    self.segmentedControl.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+    self.segmentedControl.selectedTitleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     self.segmentedControl.selectionIndicatorColor = [UIColor whiteColor];
     self.segmentedControl.backgroundColor = self.inviteItemColor;
     self.segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleBox;
