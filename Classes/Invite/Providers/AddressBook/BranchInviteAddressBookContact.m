@@ -11,7 +11,6 @@
 @implementation BranchInviteAddressBookContact
 
 - (void)dealloc {
-    CFRelease(self.contact);
 }
 
 @end

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'BranchInvite'
-  s.version      = '0.3.4'
+  s.version      = '0.3.5'
   s.summary      = 'Invitation functionality for use in conjunction with the Branch iOS SDK'
   s.description  = <<-DESC
 - Want the highest possible conversions on your invite feature?
@@ -15,7 +15,7 @@ Use the Branch SDK (branch.io) to create and power the links that point back to 
   s.author       = { 'Graham Mueller' => 'graham.mueller315@gmail.com' }
   s.license      = 'Proprietary'
 
-  s.platform     = :ios, '6.0'
+  s.platform     = :ios, '7.0'
   s.requires_arc = true
 
   s.source       = { :git => 'https://github.com/BranchMetrics/Branch-iOS-Invite-SDK.git', :tag => s.version.to_s }
@@ -29,5 +29,5 @@ Use the Branch SDK (branch.io) to create and power the links that point back to 
   }
 
   s.dependency 'Branch'
-  s.dependency 'HMSegmentedControl', '1.4' # Note, this is *required* because later versions don't support iOS 6.
+  s.dependency 'HMSegmentedControl', '~> 1.5.2'
 end
