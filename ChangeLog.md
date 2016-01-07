@@ -2,6 +2,7 @@ Branch iOS Invite SDK change log
 - v0.3.5
   * updated project file to latest format
   * updated to latest HMSegmentedView and fixed obsolete calls
+  * fixed warnings in sample app
 
 - v0.3.4
   * Revert 0.3.3.
