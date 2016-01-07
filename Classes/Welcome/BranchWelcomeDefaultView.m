@@ -175,15 +175,19 @@ CGFloat const PREFERRED_WIDTH = 288;
 #pragma mark - Label resizing methods
 
 - (void)resizeWelcomeTitleForText:(NSString *)welcomeTitleText {
-    CGFloat height = [welcomeTitleText sizeWithFont:[UIFont boldSystemFontOfSize:20] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeTitleLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
+    NSAttributedString *titleText = [[NSAttributedString alloc] initWithString:welcomeTitleText];
+    CGRect titleRect = [titleText boundingRectWithSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil];
+
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeTitleLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:titleRect.size.height];
     
     [self addConstraint:heightConstraint];
 }
 
 - (void)resizeWelcomeBodyForText:(NSString *)welcomeBodyText {
-    CGFloat height = [welcomeBodyText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX)].height;
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeBodyLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:height];
+    NSAttributedString *bodyText = [[NSAttributedString alloc] initWithString:welcomeBodyText];
+    CGRect bodyRect = [bodyText boundingRectWithSize:CGSizeMake(PREFERRED_WIDTH, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil];
+    
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.welcomeBodyLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:bodyRect.size.height];
     
     [self addConstraint:heightConstraint];
 }
