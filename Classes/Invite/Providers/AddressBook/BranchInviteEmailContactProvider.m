@@ -129,6 +129,7 @@
     else {
         callback(NO, nil);
     }
+    CFRelease(addressBook);
 }
 
 - (void)loadContactsFromAddressBook:(ABAddressBookRef)addressBook callback:(callbackWithStatus)callback {
