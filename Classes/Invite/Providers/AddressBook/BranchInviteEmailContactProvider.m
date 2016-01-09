@@ -110,7 +110,7 @@
 #pragma mark - Internals
 - (void)loadContactsFromAddressBookIfPossible:(callbackWithStatus)callback {
     ABAuthorizationStatus authorizationStatus = ABAddressBookGetAuthorizationStatus();
-    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, nil); // TODO pass in options and error maybe?
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL); // TODO pass in options and error maybe?
     
     if (authorizationStatus == kABAuthorizationStatusNotDetermined) {
         ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
@@ -129,7 +129,6 @@
     else {
         callback(NO, nil);
     }
-    CFRelease(addressBook);
 }
 
 - (void)loadContactsFromAddressBook:(ABAddressBookRef)addressBook callback:(callbackWithStatus)callback {
