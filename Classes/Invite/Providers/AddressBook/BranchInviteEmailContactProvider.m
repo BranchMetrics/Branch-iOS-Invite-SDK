@@ -110,7 +110,7 @@
 #pragma mark - Internals
 //please note that 'addressBook' leaks, but, being a ref, should only waste a few (8?) bytes
 // calling CFRelease on it at the end of this method, which prevents the leak, causes the method just
-// below this one to cras
+// below this one to crash, possibly due to the lengthy sorting.
 - (void)loadContactsFromAddressBookIfPossible:(callbackWithStatus)callback {
     ABAuthorizationStatus authorizationStatus = ABAddressBookGetAuthorizationStatus();
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL); // TODO pass in options and error maybe?
