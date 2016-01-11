@@ -1,8 +1,10 @@
 Branch iOS Invite SDK change log
+- v0.3.7
+ * didn't check in fix before submitting. busy friday, apologies.
+
 - v0.3.6
   * fixed leak
   * submission mistake on 0.3.5
-
 
 - v0.3.5
   * updated project file to latest format
