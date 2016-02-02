@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BranchReferralDefaultView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qyu-wG-WW1">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="277"/>
+                    <subviews>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UMf-TK-hLz">
+                            <rect key="frame" x="285" y="109" width="30" height="60"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                            <state key="normal">
+                                <color key="titleColor" red="0.1764705882" green="0.61568627450000002" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="showReferralsPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="IUD-AD-HZE"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="UMf-TK-hLz" secondAttribute="centerY" id="FI2-vd-lMH"/>
+                        <constraint firstAttribute="centerX" secondItem="UMf-TK-hLz" secondAttribute="centerX" id="Q14-59-Dso"/>
+                    </constraints>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F7m-ao-2eM">
+                    <rect key="frame" x="0.0" y="277" width="600" height="0.0"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dCO-52-fkn">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <outlet property="dataSource" destination="iN0-l3-epB" id="oam-nJ-uUF"/>
+                                <outlet property="delegate" destination="iN0-l3-epB" id="Fup-1b-T65"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="dCO-52-fkn" firstAttribute="leading" secondItem="F7m-ao-2eM" secondAttribute="leading" id="2gp-BT-3KV"/>
+                        <constraint firstItem="dCO-52-fkn" firstAttribute="top" secondItem="F7m-ao-2eM" secondAttribute="top" id="BQ3-mp-6FS"/>
+                        <constraint firstAttribute="bottom" secondItem="dCO-52-fkn" secondAttribute="bottom" id="IWY-jf-PBP"/>
+                        <constraint firstAttribute="trailing" secondItem="dCO-52-fkn" secondAttribute="trailing" id="LTu-14-ZpJ"/>
+                        <constraint firstAttribute="height" id="Q1Z-u0-zWj"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9BK-F7-KAB">
+                    <rect key="frame" x="0.0" y="277" width="600" height="277"/>
+                    <subviews>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="288" translatesAutoresizingMaskIntoConstraints="NO" id="4AU-Rb-Bb2">
+                            <rect key="frame" x="300" y="139" width="0.0" height="0.0"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mIU-15-nss" customClass="BranchReferralTriangleView">
+                            <rect key="frame" x="276" y="0.0" width="48" height="24"/>
+                            <color key="backgroundColor" red="0.1764705882" green="0.61568627450000002" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="bvi-eo-2EI"/>
+                                <constraint firstAttribute="height" constant="24" id="l7g-ET-794"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.1764705882" green="0.61568627450000002" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="mIU-15-nss" secondAttribute="centerX" id="2Bz-NT-bgm"/>
+                        <constraint firstAttribute="centerX" secondItem="4AU-Rb-Bb2" secondAttribute="centerX" id="6UF-c4-3gp"/>
+                        <constraint firstAttribute="centerY" secondItem="4AU-Rb-Bb2" secondAttribute="centerY" id="7mH-hu-I59"/>
+                        <constraint firstItem="mIU-15-nss" firstAttribute="top" secondItem="9BK-F7-KAB" secondAttribute="top" id="npA-dM-LX7"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7m-z0-xVS">
+                    <rect key="frame" x="239" y="562" width="121" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="S8X-HS-Ldc"/>
+                    </constraints>
+                    <state key="normal" title="Invite More Users">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="inviteUsersPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="vhp-xK-ujc"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="F7m-ao-2eM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4N7-DE-211"/>
+                <constraint firstItem="9BK-F7-KAB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4Va-rp-CEh"/>
+                <constraint firstItem="qyu-wG-WW1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CsR-up-d1r"/>
+                <constraint firstAttribute="trailing" secondItem="qyu-wG-WW1" secondAttribute="trailing" id="FhU-Hm-Bzj"/>
+                <constraint firstAttribute="bottom" secondItem="b7m-z0-xVS" secondAttribute="bottom" constant="8" id="LpT-km-hXM"/>
+                <constraint firstAttribute="trailing" secondItem="F7m-ao-2eM" secondAttribute="trailing" id="QGP-qB-AX4"/>
+                <constraint firstItem="F7m-ao-2eM" firstAttribute="top" secondItem="qyu-wG-WW1" secondAttribute="bottom" id="WEB-0j-XaQ"/>
+                <constraint firstAttribute="centerX" secondItem="b7m-z0-xVS" secondAttribute="centerX" id="ZLI-50-s33"/>
+                <constraint firstItem="qyu-wG-WW1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Zlq-eA-hKT"/>
+                <constraint firstItem="9BK-F7-KAB" firstAttribute="top" secondItem="F7m-ao-2eM" secondAttribute="bottom" id="fCB-9K-0fy"/>
+                <constraint firstItem="qyu-wG-WW1" firstAttribute="height" secondItem="9BK-F7-KAB" secondAttribute="height" id="fLm-4z-cvE"/>
+                <constraint firstAttribute="trailing" secondItem="9BK-F7-KAB" secondAttribute="trailing" id="uVq-cr-hPw"/>
+                <constraint firstItem="b7m-z0-xVS" firstAttribute="top" secondItem="9BK-F7-KAB" secondAttribute="bottom" constant="8" id="zar-mL-BZH"/>
+            </constraints>
+            <connections>
+                <outlet property="creditHistoryTransactionTable" destination="dCO-52-fkn" id="FuG-3G-evr"/>
+                <outlet property="creditsLabel" destination="4AU-Rb-Bb2" id="lMO-ue-Bv3"/>
+                <outlet property="inviteButton" destination="b7m-z0-xVS" id="vIE-6o-VIB"/>
+                <outlet property="inviteButtonBottomConstraint" destination="LpT-km-hXM" id="RhV-Zg-NBc"/>
+                <outlet property="inviteButtonHeightConstraint" destination="S8X-HS-Ldc" id="miN-pw-QTc"/>
+                <outlet property="pointsView" destination="9BK-F7-KAB" id="0H7-iD-p6F"/>
+                <outlet property="pointsViewBottomConstraint" destination="zar-mL-BZH" id="fQl-dX-fKQ"/>
+                <outlet property="referralCountLabel" destination="UMf-TK-hLz" id="T1S-O0-Gwt"/>
+                <outlet property="referralListHeightConstraint" destination="Q1Z-u0-zWj" id="8nR-sb-bnm"/>
+                <outlet property="transactionsView" destination="F7m-ao-2eM" id="baj-gF-fyd"/>
+            </connections>
+            <point key="canvasLocation" x="594" y="330"/>
+        </view>
+    </objects>
+</document>
