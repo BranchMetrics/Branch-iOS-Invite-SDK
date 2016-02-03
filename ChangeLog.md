@@ -1,6 +1,10 @@
 Branch iOS Invite SDK change log
+
+- v0.3.8
+  * fix crash on iPad flavor of devices
+
 - v0.3.7
- * didn't check in fix before submitting. busy friday, apologies.
+  * didn't check in fix before submitting. busy friday, apologies.
 
 - v0.3.6
   * fixed leak
