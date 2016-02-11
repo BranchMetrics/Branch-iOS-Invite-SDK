@@ -160,7 +160,7 @@ func application(application: UIApplication, openURL url: NSURL, sourceApplicati
 The deep link handler is called every single time the app is opened, returning deep link data if the user tapped on a link that led to this app open.
 
 This same code also triggers the recording of an event with Branch. If this is the first time a user has opened the app, an "install" event is registered. Every subsequent time the user opens the app, it will trigger an "open" event.
-This project is built with, and currently relies on, Cocoapods. To add this project to your app, add the following to your Podfile
+This project is built with, and currently relies on, CocoaPods. To add this project to your app, add the following to your Podfile
 
 ## 4. Retrieving Invite Parameters from Session Init
 
