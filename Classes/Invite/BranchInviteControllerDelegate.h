@@ -52,9 +52,10 @@
 // Shown in the Welcome screen when an invited user logs in.
 - (NSString *)invitingUserFullname;
 
-@optional
 // Inviting user identifier. Will be bundled w/ invite url.
 - (NSString *)invitingUserId;
+
+@optional
 
 // Additional items to add to the Branch URL that will be
 // created. This can include any custom NSJSONSerializable
