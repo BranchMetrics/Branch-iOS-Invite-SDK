@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'BranchInvite'
-  s.version      = '0.3.8'
+  s.version      = '0.3.9'
   s.summary      = 'Invitation functionality for use in conjunction with the Branch iOS SDK'
   s.description  = <<-DESC
 - Want the highest possible conversions on your invite feature?
