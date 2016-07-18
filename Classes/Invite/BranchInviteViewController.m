@@ -202,8 +202,6 @@
             [self presentViewController:inviteSendingViewController animated:YES completion:NULL];
         }
     }];
-
-    }
 }
 
 #pragma mark - InviteSendingControllerDelegate
