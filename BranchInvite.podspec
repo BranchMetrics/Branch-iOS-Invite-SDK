@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'BranchInvite'
-  s.version      = '0.3.9'
+  s.version      = '0.3.10'
   s.summary      = 'Invitation functionality for use in conjunction with the Branch iOS SDK'
   s.description  = <<-DESC
 - Want the highest possible conversions on your invite feature?
@@ -12,7 +12,7 @@ Use the Branch SDK (branch.io) to create and power the links that point back to 
                     DESC
   s.homepage     = 'https://branch.io'
   s.screenshots  = "https://s3-us-west-1.amazonaws.com/branch-guides/click_open.gif"
-  s.author       = { 'Graham Mueller' => 'graham.mueller315@gmail.com' }
+  s.author       = { 'Branch' => 'support@branch.io' }
   s.license      = 'Proprietary'
 
   s.platform     = :ios, '7.0'

@@ -1,6 +1,6 @@
 PODS:
   - Branch (0.11.13)
-  - BranchInvite (0.3.5):
+  - BranchInvite (0.3.9):
     - Branch
     - HMSegmentedControl (~> 1.5.2)
   - HMSegmentedControl (1.5.2)
@@ -10,11 +10,13 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   BranchInvite:
-    :path: ".."
+    :path: ..
 
 SPEC CHECKSUMS:
   Branch: 37553775450de2d844b03a0854c37d6271d967e7
-  BranchInvite: cf7f85aca1ce5f8210b4b7e42f55b927b0dce138
+  BranchInvite: b1641791738e0071fc26d3705b54de87378ce886
   HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 70b184c4c1a81dc556563a1392cb0390efab8727
+
+COCOAPODS: 1.0.1
