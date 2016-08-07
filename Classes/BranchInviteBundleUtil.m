@@ -7,12 +7,12 @@
 //
 
 #import "BranchInviteBundleUtil.h"
+#import "BranchInviteViewController.h"
 
 @implementation BranchInviteBundleUtil
 
 + (NSBundle *)branchInviteBundle {
-    NSString *branchInviteBundlePath = [[NSBundle mainBundle] pathForResource:@"BranchInvite" ofType:@"bundle"];
-    NSBundle *branchInviteBundle = [NSBundle bundleWithPath:branchInviteBundlePath];
+    NSBundle *branchInviteBundle = [NSBundle bundleForClass:[BranchInviteViewController class]];
     
     return branchInviteBundle;
 }
