@@ -12,7 +12,8 @@
 @implementation BranchInviteBundleUtil
 
 + (NSBundle *)branchInviteBundle {
-    NSBundle *branchInviteBundle = [NSBundle bundleForClass:[BranchInviteViewController class]];
+    NSString *branchInviteBundlePath = [[NSBundle bundleForClass:[BranchInviteViewController class]] pathForResource:@"BranchInvite" ofType:@"bundle"];
+    NSBundle *branchInviteBundle = [NSBundle bundleWithPath:branchInviteBundlePath];
     
     return branchInviteBundle;
 }
