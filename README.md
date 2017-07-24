@@ -1,3 +1,7 @@
+# THIS REPO IS DEPRECATED
+
+This repo is no longer supported by Branch, however the code should still be working fine if implemented using the documentation below. Branch will not be able to assist with troubleshooting or resolving any bugs with this code.
+
 # Branch-iOS-Invite-SDK
 
 The purpose of this SDK is to provide an out-of-the-box functional 'invite feature' for apps consuming the Branch SDK that want to utilize a standard invite feature in their app.
