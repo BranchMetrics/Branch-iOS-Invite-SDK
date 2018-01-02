@@ -1,7 +1,13 @@
 Branch iOS Invite SDK change log
 
+- v0.3.11
+  * Updated project to Xcode 9.
+  * Updated xibs for Xcode 9.
+  * Fixed code warnings for Xcode 9.
+  * Fixed a problem where UI was updated from the wrong thread.
+
 - v0.3.8
-  * fix crash on iPad flavor of devices
+  * fix crash on iPad flavor of devices.
 
 - v0.3.7
   * didn't check in fix before submitting. busy friday, apologies.

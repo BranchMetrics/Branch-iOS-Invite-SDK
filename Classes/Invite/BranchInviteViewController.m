@@ -17,6 +17,24 @@
 #import "BranchInviteDefaultContactCell.h"
 #import "BranchInviteBundleUtil.h"
 
+/*
+static inline void BNCPerformBlockOnMainThreadSync(void(^block)(void)) {
+    if (block) {
+        if ([NSThread isMainThread]) {
+            block();
+        } else {
+            dispatch_sync(dispatch_get_main_queue(), block);
+        }
+    }
+}
+*/
+
+static inline void BNCPerformBlockOnMainThreadAsync(void(^block)(void)) {
+    if (block) {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
+}
+
 @interface BranchInviteViewController () <BranchInviteSendingCompletionDelegate, UISearchBarDelegate>
 
 @property (strong, nonatomic) NSArray *contactProviders;
@@ -157,6 +175,7 @@
 }
 
 #pragma mark - Interaction Methods
+
 - (void)providerChanged {
     id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
     NSArray *contacts = [provider contacts];
@@ -205,6 +224,7 @@
 }
 
 #pragma mark - InviteSendingControllerDelegate
+
 - (void)invitesSent {
     // Don't show this dismissal, let our delegate show the animation.
     // Otherwise you see two levels of dismissal, which looks kind of weird.
@@ -221,7 +241,8 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-#pragma mark - UISearchBarDelegate methods
+#pragma mark - UISearchBarDelegate Methods
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     [self filterContactsForSearchText];
 }
@@ -231,6 +252,7 @@
 }
 
 #pragma mark - UITableView Data Source / Delegate methods
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.currentContacts count];
 }
@@ -248,25 +270,31 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.searchBar resignFirstResponder];
     
-    UITableViewCell <BranchInviteContactCell>*cell = (UITableViewCell <BranchInviteContactCell>*)[tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell <BranchInviteContactCell>*cell =
+        (UITableViewCell <BranchInviteContactCell>*)[tableView cellForRowAtIndexPath:indexPath];
     [cell updateForSelection];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.searchBar resignFirstResponder];
 
-    UITableViewCell <BranchInviteContactCell>*cell = (UITableViewCell <BranchInviteContactCell>*)[tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell <BranchInviteContactCell>*cell =
+        (UITableViewCell <BranchInviteContactCell>*)[tableView cellForRowAtIndexPath:indexPath];
     [cell updateForDeselection];
 }
 
-#pragma mark - Internal methods
+#pragma mark - Internal Methods
+
 - (void)filterContactsForSearchText {
+    BNCLogAssert([NSThread isMainThread]);
     NSString *searchText = self.searchBar.text;
     id <BranchInviteContactProvider> provider = self.contactProviders[self.segmentedControl.selectedSegmentIndex];
     NSArray *allContactsForProvider = [provider contacts];
     
     if (searchText.length) {
-        self.currentContacts = [allContactsForProvider filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"displayName CONTAINS[cd] %@", searchText]];
+        self.currentContacts =
+            [allContactsForProvider filteredArrayUsingPredicate:
+                [NSPredicate predicateWithFormat:@"displayName CONTAINS[cd] %@", searchText]];
     }
     else {
         self.currentContacts = allContactsForProvider;
@@ -277,14 +305,22 @@
 
 - (void)loadContactsForProviderThenLoadTable:(id <BranchInviteContactProvider>)provider {
     [provider loadContactsWithCallback:^(BOOL loaded, NSError *error) {
-        if (loaded) {
-            self.currentContacts = [provider contacts];
-            [self filterContactsForSearchText];
-        }
-        else {
-            NSString *failureMessage = [provider loadFailureMessage];
-            [[[UIAlertView alloc] initWithTitle:@"Failed to load contacts" message:failureMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-        }
+        BNCPerformBlockOnMainThreadAsync(^{
+            if (loaded) {
+                self.currentContacts = [provider contacts];
+                [self filterContactsForSearchText];
+            }
+            else {
+                NSString *failureMessage = [provider loadFailureMessage];
+                [[[UIAlertView alloc]
+                    initWithTitle:@"Failed to load contacts"
+                    message:failureMessage
+                    delegate:nil
+                    cancelButtonTitle:@"OK"
+                    otherButtonTitles:nil]
+                        show];
+            }
+        });
     }];
 }
 

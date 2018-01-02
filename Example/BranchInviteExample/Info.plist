@@ -56,6 +56,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSContactsUsageDescription</key>
+	<string>This app wants to use your contacts so you can send invites.</string>
 	<key>branch_key</key>
 	<string>key_live_nmnzhZwUsMdHwtjZ4n1uQbjmkhk7lRbu</string>
 </dict>

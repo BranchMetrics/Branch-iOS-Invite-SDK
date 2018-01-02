@@ -31,13 +31,18 @@
 + (BranchReferralController *)branchReferralControllerWithDelegate:(id <BranchReferralControllerDelegate>)delegate inviteDelegate:(id <BranchInviteControllerDelegate>)inviteDelegate {
     NSBundle *branchInviteBundle = [BranchInviteBundleUtil branchInviteBundle];
     
-    BranchReferralDefaultView *defaultView = [[branchInviteBundle loadNibNamed:@"BranchReferralDefaultView" owner:self options:kNilOptions] objectAtIndex:0];
+    BranchReferralDefaultView *defaultView =
+        [[branchInviteBundle loadNibNamed:@"BranchReferralDefaultView"
+            owner:self
+            options:nil]
+                firstObject];
     defaultView.inviteDelegate = inviteDelegate;
     
     return [BranchReferralController branchReferralControllerWithView:defaultView delegate:delegate];
 }
 
-+ (BranchReferralController *)branchReferralControllerWithView:(UIView <BranchReferralView> *)view delegate:(id <BranchReferralControllerDelegate>)delegate {
++ (BranchReferralController *)branchReferralControllerWithView:(UIView <BranchReferralView> *)view
+        delegate:(id <BranchReferralControllerDelegate>)delegate {
     BranchReferralController *controller = [[BranchReferralController alloc] init];
     controller.delegate = delegate;
     controller.contentView = view;
@@ -48,7 +53,6 @@
     
     return controller;
 }
-
 
 #pragma mark - View Lifecycle
 
@@ -65,7 +69,12 @@
     CGFloat navBarHeight = NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_7_0 ? 59 : 44;
     self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, navBarHeight)];
     UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(donePressed:)];
+    UIBarButtonItem *doneButton =
+        [[UIBarButtonItem alloc]
+            initWithTitle:@"Done"
+            style:UIBarButtonItemStyleDone
+            target:self
+            action:@selector(donePressed:)];
     
     navigationItem.rightBarButtonItem = doneButton;
     self.navBar.items = @[ navigationItem ];
@@ -117,7 +126,6 @@
     self.tabBarItem.image = [BranchInviteBundleUtil imageNamed:@"referrals-icon" type:@"png"];
 }
 
-
 #pragma mark - Interaction methods
 
 - (void)donePressed:(id)sender {
@@ -126,13 +134,16 @@
     }
 }
 
-
 #pragma mark - BranchReferralViewControllerDisplayDelegate methods
-- (void)displayController:(UIViewController *)controller animated:(BOOL)animated completion:(void (^)())completion {
+
+- (void)displayController:(UIViewController *)controller
+                 animated:(BOOL)animated
+               completion:(void (^)(void))completion {
     [self presentViewController:controller animated:animated completion:completion];
 }
 
-- (void)dismissControllerAnimated:(BOOL)animated completion:(void (^)())completion {
+- (void)dismissControllerAnimated:(BOOL)animated
+                       completion:(void (^)(void))completion {
     [self dismissViewControllerAnimated:animated completion:completion];
 }
 

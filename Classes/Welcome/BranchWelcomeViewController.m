@@ -30,16 +30,23 @@ NSInteger const DEFAULT_REFERRAL_LINK_RETRY_COUNT = 3;
     return branchOpts[BRANCH_INVITE_USER_FULLNAME_KEY] != nil && ![[Branch getInstance] isUserIdentified];
 }
 
-+ (BranchWelcomeViewController *)branchWelcomeViewControllerWithDelegate:(id <BranchWelcomeControllerDelegate>)delegate branchOpts:(NSDictionary *)branchOpts {
++ (BranchWelcomeViewController *)branchWelcomeViewControllerWithDelegate:(id <BranchWelcomeControllerDelegate>)delegate
+                                                              branchOpts:(NSDictionary *)branchOpts {
     NSBundle *branchInviteBundle = [BranchInviteBundleUtil branchInviteBundle];
 
-    BranchWelcomeDefaultView *defaultView = [[branchInviteBundle loadNibNamed:@"BranchWelcomeDefaultView" owner:self options:kNilOptions] objectAtIndex:0];
+    BranchWelcomeDefaultView *defaultView =
+        [[branchInviteBundle loadNibNamed:@"BranchWelcomeDefaultView"
+            owner:self
+            options:nil]
+                firstObject];
     defaultView.delegate = delegate;
     
     return [BranchWelcomeViewController branchWelcomeViewControllerWithCustomView:defaultView delegate:delegate branchOpts:branchOpts];
 }
 
-+ (BranchWelcomeViewController *)branchWelcomeViewControllerWithCustomView:(UIView <BranchWelcomeView>*)customView delegate:(id <BranchWelcomeControllerDelegate>)delegate branchOpts:(NSDictionary *)branchOpts {
++ (BranchWelcomeViewController *)branchWelcomeViewControllerWithCustomView:(UIView <BranchWelcomeView>*)customView
+        delegate:(id <BranchWelcomeControllerDelegate>)delegate
+        branchOpts:(NSDictionary *)branchOpts {
     BranchWelcomeViewController *branchWelcomeController = [[BranchWelcomeViewController alloc] init];
 
     branchWelcomeController.view = customView;
@@ -55,7 +62,6 @@ NSInteger const DEFAULT_REFERRAL_LINK_RETRY_COUNT = 3;
     
     return branchWelcomeController;
 }
-
 
 #pragma mark - Interaction methods
 

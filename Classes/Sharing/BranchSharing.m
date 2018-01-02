@@ -35,12 +35,22 @@ NSString * const BRANCH_SHARING_SHARE_IMAGE = @"BranchShareImage";
 #pragma mark - View Registration
 
 + (void)registerForSharingEventsWithKey:(NSString *)key {
-    BranchSharingDefaultView *defaultView = [[[BranchInviteBundleUtil branchInviteBundle] loadNibNamed:@"BranchSharingDefaultView" owner:self options:kNilOptions] firstObject];
+    BranchSharingDefaultView *defaultView =
+        [[[BranchInviteBundleUtil branchInviteBundle]
+            loadNibNamed:@"BranchSharingDefaultView"
+            owner:self
+            options:nil]
+                firstObject];
     [BranchSharing registerForSharingEventsWithKey:key view:defaultView];
 }
 
 + (void)registerForSharingEventsWithKey:(NSString *)key styleDelegate:(id <BranchSharingViewStyleDelegate>)delegate {
-    BranchSharingDefaultView *defaultView = [[[BranchInviteBundleUtil branchInviteBundle] loadNibNamed:@"BranchSharingDefaultView" owner:self options:kNilOptions] firstObject];
+    BranchSharingDefaultView *defaultView =
+        [[[BranchInviteBundleUtil branchInviteBundle]
+            loadNibNamed:@"BranchSharingDefaultView"
+            owner:self
+            options:nil]
+                firstObject];
     defaultView.styleDelegate = delegate;
 
     [BranchSharing registerForSharingEventsWithKey:key view:defaultView];

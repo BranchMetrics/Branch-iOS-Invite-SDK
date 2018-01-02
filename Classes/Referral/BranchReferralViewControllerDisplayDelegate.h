@@ -10,7 +10,10 @@
 
 @protocol BranchReferralViewControllerDisplayDelegate <NSObject>
 
-- (void)displayController:(UIViewController *)controller animated:(BOOL)animated completion:(void (^)())completion;
-- (void)dismissControllerAnimated:(BOOL)animated completion:(void (^)())completion;
+- (void)displayController:(UIViewController *)controller
+                 animated:(BOOL)animated
+               completion:(void (^)(void))completion;
 
+- (void)dismissControllerAnimated:(BOOL)animated
+                       completion:(void (^)(void))completion;
 @end
