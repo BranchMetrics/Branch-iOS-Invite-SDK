@@ -73,6 +73,7 @@ static inline void BNCPerformBlockOnMainThreadAsync(void(^block)(void)) {
     [self configureContactProviders];
     [self configureSegmentedControl];
     [self configureContactTable];
+    [self changeNavigationBarBackgroundColor];
     
     // Load contacts for the first provider
     [self loadContactsForProviderThenLoadTable:[self.contactProviders firstObject]];
@@ -366,6 +367,10 @@ static inline void BNCPerformBlockOnMainThreadAsync(void(^block)(void)) {
     inviteParams[BRANCH_INVITE_USER_IMAGE_URL_KEY] = normalizedImageUrl;
     
     return inviteParams;
+}
+
+-(void) changeNavigationBarBackgroundColor {
+    self.navigationController.navigationBar.backgroundColor = UIColor.whiteColor;
 }
 
 @end
